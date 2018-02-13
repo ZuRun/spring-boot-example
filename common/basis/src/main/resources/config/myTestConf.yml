@@ -1,0 +1,9 @@
+t2:
+  name: aaa99
+test:
+  name: 哈哈😀_aa
+  age: ${random.int}
+#${random.int} # 随机数
+
+# 端口号
+server.port: 18888
