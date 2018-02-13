@@ -10,13 +10,14 @@ import me.zuhr.demo.redis.utils.RedisUtils;
  */
 @Service
 public class TestService {
-//    @Autowired
-//    RedisUtils redisUtils;
-//
-//
-//    public void test(){
-//        redisUtils.set("kk","xxxxxxxkk");
-//        Object obj=redisUtils.get("test");
-//        System.out.println(obj);
-//    }
+    @Autowired
+    RedisUtils redisUtils;
+
+
+    public String test(String key) {
+//        redisUtils.set(key, "xxxxxxxkk_" + System.currentTimeMillis());
+        String value = redisUtils.getValue(key);
+        System.out.println(value);
+        return value;
+    }
 }

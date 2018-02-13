@@ -28,7 +28,15 @@ public class TestAction {
 
     @RequestMapping("redis")
     public String redis() {
-//        testService.test();
+        long beginStr = System.currentTimeMillis();
+//        for(int i=0;i<10;i++) {
+            String k1 = testService.test("k1");
+//            String k2 = testService.test("k2");
+//            String k3 = testService.test("k3");
+//        }
+        long timeStr = System.currentTimeMillis() - beginStr;
+        System.out.println("StringRedisSerializer time:" + timeStr);
+
         return "ok";
     }
 }

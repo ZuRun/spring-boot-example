@@ -85,6 +85,13 @@ public class RedisConfig {
 //        template.afterPropertiesSet();
 //        return template;
 //    }
+
+    /**
+     * 可以删了
+     *
+     * @param connectionFactory
+     * @return
+     */
     @Bean
     RedisTemplate<String, Object> objRedisTemplate(@Qualifier("jedisConnectionFactory") JedisConnectionFactory connectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
