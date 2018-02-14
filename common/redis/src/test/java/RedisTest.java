@@ -1,5 +1,4 @@
 import me.zuhr.demo.redis.RedisApplicationTest;
-import me.zuhr.demo.redis.RedisSingleton;
 import me.zuhr.demo.redis.utils.RedisUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,25 +35,27 @@ public class RedisTest {
         String val = "zuuu!!!!!!!!!!!!!!!!!!!!"+System.currentTimeMillis();
         Map map = new HashMap();
         map.put("xxxx", "xxxx1");
-        map.put("yyyy", "yyyy1");
+        map.put("yyyy", "yyyy1正在");
 
-        long beginStr = System.currentTimeMillis();
         redisUtils.setValue(key, val);
         redisUtils.set(key2, map);
 
+        long beginStr = System.currentTimeMillis();
+
         for (int i = 0; i < 1000; i++) {
 //            redisUtils.setValue(key, val.concat("_"+i));
-            redisUtils.getValue(key);
+            redisUtils.get(key2);
         }
+
+
+        long timeStr = System.currentTimeMillis() - beginStr;
+        System.out.println("StringRedisSerializer time:" + timeStr);
         String str = redisUtils.getValue(key);
         Map resultMap = (Map) redisUtils.get(key2);
         System.out.println(str);
         System.out.println(resultMap);
         System.out.println("----------------");
 
-
-        long timeStr = System.currentTimeMillis() - beginStr;
-        System.out.println("StringRedisSerializer time:" + timeStr);
     }
 
     @Test

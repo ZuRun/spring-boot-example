@@ -15,6 +15,8 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
@@ -85,36 +87,100 @@ public class RedisConfig {
 //        template.afterPropertiesSet();
 //        return template;
 //    }
+    @Bean
+    StringRedisSerializer stringRedisSerializer() {
+        return new StringRedisSerializer();
+    }
+
+    @Bean
+    JdkSerializationRedisSerializer jdkSerializationRedisSerializer() {
+        return new JdkSerializationRedisSerializer();
+    }
+
+    @Bean
+    Jackson2JsonRedisSerializer jackson2JsonRedisSerializer() {
+        return new Jackson2JsonRedisSerializer(Object.class);
+    }
 
     /**
-     * 可以删了
-     *
      * @param connectionFactory
      * @return
      */
     @Bean
-    RedisTemplate<String, Object> objRedisTemplate(@Qualifier("jedisConnectionFactory") JedisConnectionFactory connectionFactory) {
+    RedisTemplate<String, Object> jdkRedisTemplate(
+            @Qualifier("jedisConnectionFactory") JedisConnectionFactory connectionFactory,
+            @Qualifier("jdkSerializationRedisSerializer") RedisSerializer jdkSerializationRedisSerializer,
+            @Qualifier("stringRedisSerializer") RedisSerializer stringRedisSerializer) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
         redisTemplate.setConnectionFactory(connectionFactory);
-        redisTemplate.setDefaultSerializer(new Jackson2JsonRedisSerializer(Object.class));
-        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
-        redisTemplate.setKeySerializer(stringRedisSerializer);
-//        redisTemplate.setValueSerializer(stringRedisSerializer);
-        redisTemplate.setHashKeySerializer(stringRedisSerializer);
+
+        changeSerializer(redisTemplate, jdkSerializationRedisSerializer, stringRedisSerializer);
         return redisTemplate;
     }
 
-
     /**
-     * 注:Qualifier注解用来指定bean,消除重复bean提示
-     *
      * @param connectionFactory
      * @return
      */
     @Bean
-    public RedisUtils redisUtils(@Qualifier("jedisConnectionFactory") JedisConnectionFactory connectionFactory) {
-        return new RedisUtils(connectionFactory);
+    RedisTemplate<String, String> stringRedisTemplate(
+            @Qualifier("jedisConnectionFactory") JedisConnectionFactory connectionFactory,
+            @Qualifier("stringRedisSerializer") RedisSerializer stringRedisSerializer) {
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<String, String>();
+        redisTemplate.setConnectionFactory(connectionFactory);
+
+        changeSerializer(redisTemplate, stringRedisSerializer, stringRedisSerializer);
+        return redisTemplate;
     }
+
+    /**
+     * @param connectionFactory
+     * @return
+     */
+    @Bean
+    RedisTemplate<String, Object> jackson2RedisTemplate(
+            @Qualifier("jedisConnectionFactory") JedisConnectionFactory connectionFactory,
+            @Qualifier("jackson2JsonRedisSerializer") RedisSerializer jackson2JsonRedisSerializer,
+            @Qualifier("stringRedisSerializer") RedisSerializer stringRedisSerializer) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
+        redisTemplate.setConnectionFactory(connectionFactory);
+
+        changeSerializer(redisTemplate, jackson2JsonRedisSerializer, stringRedisSerializer);
+        return redisTemplate;
+    }
+
+    /**
+     * 更改序列化方式
+     * 约定所有的key都为string
+     *
+     * @param redisTemplate
+     * @param redisSerializer
+     * @param stringRedisSerializer
+     */
+    private void changeSerializer(RedisTemplate redisTemplate,
+                                  RedisSerializer redisSerializer,
+                                  RedisSerializer stringRedisSerializer) {
+
+        redisTemplate.setKeySerializer(stringRedisSerializer);
+        redisTemplate.setHashKeySerializer(stringRedisSerializer);
+
+        redisTemplate.setDefaultSerializer(redisSerializer);
+        redisTemplate.setValueSerializer(redisSerializer);
+        redisTemplate.setHashValueSerializer(redisSerializer);
+        redisTemplate.afterPropertiesSet();
+
+    }
+
+//    /**
+//     * 注:Qualifier注解用来指定bean,消除重复bean提示
+//     *
+//     * @param connectionFactory
+//     * @return
+//     */
+//    @Bean
+//    public RedisUtils redisUtils(@Qualifier("jedisConnectionFactory") JedisConnectionFactory connectionFactory) {
+//        return new RedisUtils();
+//    }
 
 
     public String getHost() {

@@ -1,17 +1,17 @@
 package me.zuhr.demo.redis.utils;
 
-import me.zuhr.demo.utils.AnnotationUtils;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import me.zuhr.demo.redis.config.RedisConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
- * redis工具类,由{@link me.zuhr.demo.redis.config.RedisConfig} 中的@bean注解实例化,默认为单例模式
+ * redis工具类,由{@link RedisConfig} 中的@bean注解实例化,默认为单例模式
  * <p>
  * 约定下,所有的key都为string
  *
@@ -20,34 +20,69 @@ import java.util.Map;
  * @author zurun
  * @date 2018/2/10 00:37:06
  */
-public class RedisUtils<T extends RedisSerializer, V> {
+@Component
+public class RedisUtils<V> {
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
-    private final JdkSerializationRedisSerializer jdkSerializationRedisSerializer = new JdkSerializationRedisSerializer();
-    private final Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
-    private final RedisSerializer defaultRedisSerializer = jdkSerializationRedisSerializer;
 
+    /**
+     * 使用场景为key,val都是字符的情况下
+     */
+    @Qualifier("stringRedisTemplate")
+    private final RedisTemplate stringRedisTemplate;
+    /**
+     * 原生序列化
+     * 优点:高效,记录了对象与属性的类型,
+     * 缺点:序列化的结果字符串是最长,吃内存/硬盘,
+     *      序列化的对象必须实现Serializable接口
+     */
+    @Qualifier("jdkRedisTemplate")
+    private final RedisTemplate jdkRedisTemplate;
+    /**
+     * 对象存为json
+     * 优点: 序列化的结果清晰，容易阅读，而且存储字节少，速度快
+     *      序列化的对象不用实现Serializable接口
+     *
+     * 缺点:不记录对象与属性的类型,需要类型转换
+     *      value中如果同一个对象有多个,反序列化后是多个不同的对象(因为序列化的是值不是引用)
+     *
+     */
+    @Qualifier("jackson2RedisTemplate")
+    private final RedisTemplate jackson2RedisTemplate;
     /**
      * 默认序列化的实现方式
      */
-    private final Class<T> defaultRSClass = (Class<T>) defaultRedisSerializer.getClass();
-    private final Class<T> jdkRSClass = (Class<T>) jdkSerializationRedisSerializer.getClass();
-    private final Class<T> stringRSClass = (Class<T>) stringRedisSerializer.getClass();
-    private final Class<T> jsonRSClass = (Class<T>) jackson2JsonRedisSerializer.getClass();
+    private final RedisTemplate defaultRedisTemplate;
 
-    private JedisConnectionFactory connectionFactory;
-    private RedisTemplateUtil redisTemplateUtil;
+    /**
+     * 推荐对构造函数进行注解
+     * 因为Java类会先执行构造方法，然后再给注解了@Autowired 的user注入值
+     *
+     * @param stringRedisTemplate
+     * @param jdkRedisTemplate
+     * @param jackson2RedisTemplate
+     */
+    @Autowired
+    public RedisUtils(@Qualifier("stringRedisTemplate") RedisTemplate stringRedisTemplate,
+                      @Qualifier("jdkRedisTemplate") RedisTemplate jdkRedisTemplate,
+                      @Qualifier("jackson2RedisTemplate") RedisTemplate jackson2RedisTemplate) {
+        this.stringRedisTemplate = stringRedisTemplate;
+        this.jdkRedisTemplate = jdkRedisTemplate;
+        this.jackson2RedisTemplate = jackson2RedisTemplate;
+        this.defaultRedisTemplate = jackson2RedisTemplate;
 
-    public RedisUtils(JedisConnectionFactory connectionFactory) {
-        this.connectionFactory = connectionFactory;
-        RedisTemplate redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(connectionFactory);
-
-        redisTemplateUtil = new RedisTemplateUtil(redisTemplate);
+//        redisTemplateUtil =  RedisTemplateUtil.INSTANCE;
     }
 
     public V get(String key) {
         return getRedisTemplate().opsForValue().get(key);
+    }
+
+    public <T> T get(String key,Class<T> c) throws IOException {
+
+        V v= getStringRedisTemplate().opsForValue().get(key);
+
+        return objectMapper.readValue((String) v,c);
     }
 
     public void set(String key, V value) {
@@ -56,13 +91,12 @@ public class RedisUtils<T extends RedisSerializer, V> {
 
     @SuppressWarnings("unchecked")
     public String getValue(String key) {
-        return (String) getRedisTemplate(stringRSClass).opsForValue().get(key);
+        return (String) getStringRedisTemplate().opsForValue().get(key);
     }
 
     public void setValue(String key, String value) {
-        getRedisTemplate(stringRSClass).opsForValue().set(key, (V) value);
+        getStringRedisTemplate().opsForValue().set(key, (V) value);
     }
-
 
     public Map opsForHashMap(String key) {
         return getRedisTemplate().opsForHash().entries(key);
@@ -75,94 +109,39 @@ public class RedisUtils<T extends RedisSerializer, V> {
     }
 
 
-    private RedisTemplate<String, V> getRedisTemplate(Class<T> c) {
-        return redisTemplateUtil.getRedisTemplate(c);
-    }
 
     private RedisTemplate<String, V> getRedisTemplate() {
-        return redisTemplateUtil.getRedisTemplate();
+        return defaultRedisTemplate;
+    }
+    private RedisTemplate<String, V> getStringRedisTemplate() {
+        return stringRedisTemplate;
+    }
+    private RedisTemplate<String, V> getJdkRedisTemplate() {
+        return jdkRedisTemplate;
+    }
+    private RedisTemplate<String, V> getJackson2RedisTemplate() {
+        return jackson2RedisTemplate;
     }
 
 
-    private class RedisTemplateUtil {
+    private enum RedisTemplateUtil {
+        INSTANCE;
+
+        RedisTemplateUtil() {
+
+        }
+
+        /**
+         * 默认序列化实现方式
+         */
+//        private final RedisSerializer defaultRedisSerializer = jdkSerializationRedisSerializer;
 
 
-        private RedisTemplate<String, V> redisTemplate;
+//        private RedisTemplate<String, V> redisTemplate;
         /**
          * 正在使用的序列化方式
          */
-        private T redisSerializer;
-
-        public RedisTemplateUtil(RedisTemplate redisTemplate) {
-            // 设置key的序列化规则,约定为string
-            redisTemplate.setKeySerializer(stringRedisSerializer);
-            redisTemplate.setHashKeySerializer(stringRedisSerializer);
-
-            this.redisTemplate = redisTemplate;
-            this.redisSerializer = getDefaultBean();
-            // 赋值序列化方式
-            changeDefaultSerializer();
-        }
-
-
-        private T getDefaultBean() {
-            return getBean(defaultRSClass);
-        }
-
-        private T getBean(Class<T> c) {
-            try {
-                return c.newInstance();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            return (T) defaultRedisSerializer;
-        }
-
-        /**
-         * 指定序列化方式,并返回RedisTemplate
-         *
-         * @param c 序列化方式,为null表示直接返回当前的序列化方式
-         * @return
-         */
-        public RedisTemplate<String, V> getRedisTemplate(Class<T> c) {
-            // 为空或者序列化方式与现有序列化方式一样,直接返回RedisTemplate
-            if (c == null || c.equals(redisSerializer.getClass())) {
-                return redisTemplate;
-            }
-            redisSerializer = getBean(c);
-
-            return changeDefaultSerializer();
-        }
-
-
-        /**
-         * 默认Serializer实现序列化,并返回RedisTemplate
-         *
-         * @return
-         */
-        public RedisTemplate<String, V> getRedisTemplate() {
-            if (defaultRSClass.equals(redisSerializer.getClass())) {
-                return redisTemplate;
-            }
-            return getRedisTemplate(defaultRSClass);
-        }
-
-        /**
-         * 序列化方式更改
-         * RedisUtils中调用get方法和getValue方法都会导致序列化方式不一样
-         *
-         * @return
-         */
-        private RedisTemplate changeDefaultSerializer() {
-            redisTemplate.setDefaultSerializer(redisSerializer);
-            redisTemplate.setValueSerializer(redisSerializer);
-            // 需要执行下,否则默认序列化类型不生效
-            redisTemplate.afterPropertiesSet();
-
-            return redisTemplate;
-        }
+//        private T redisSerializer;
 
 
     }
