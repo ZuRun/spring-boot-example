@@ -37,7 +37,7 @@ public class RedisTest {
         map.put("xxxx", "xxxx1");
         map.put("yyyy", "yyyy1正在");
 
-        redisUtils.setValue(key, val);
+        redisUtils.setValue(key, 11);
         redisUtils.set(key2, map);
 
         long beginStr = System.currentTimeMillis();
@@ -55,6 +55,8 @@ public class RedisTest {
         System.out.println(str);
         System.out.println(resultMap);
         System.out.println("----------------");
+
+//        redisUtils.getJsonType().
 
     }
 

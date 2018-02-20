@@ -1,5 +1,6 @@
 package me.zuhr.demo.vo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -7,7 +8,7 @@ import java.util.*;
  * @author zurun
  * @date 2018/2/14 23:04:27
  */
-public class UserVo {
+public class UserVo implements Serializable{
     private String name;
     private Integer age;
     private Double weight;

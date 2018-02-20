@@ -1,10 +1,12 @@
 package me.zuhr.demo.vo;
 
+import java.io.Serializable;
+
 /**
  * @author zurun
  * @date 2018/2/15 00:13:15
  */
-public class ClassVo {
+public class ClassVo  implements Serializable {
     private String name;
     private Integer num;
 
