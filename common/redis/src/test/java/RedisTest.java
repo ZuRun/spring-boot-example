@@ -56,7 +56,6 @@ public class RedisTest {
         System.out.println(resultMap);
         System.out.println("----------------");
 
-//        redisUtils.getJsonType().
 
     }
 

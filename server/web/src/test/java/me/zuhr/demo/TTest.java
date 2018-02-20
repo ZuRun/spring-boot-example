@@ -1,15 +1,12 @@
 package me.zuhr.demo;
 
-import me.zuhr.demo.redis.config.RedisConfig;
 import me.zuhr.demo.redis.utils.RedisUtils;
 import me.zuhr.demo.vo.ClassVo;
 import me.zuhr.demo.vo.UserVo;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
@@ -48,6 +45,14 @@ public class TTest {
 
     @Test
     public void config() throws IOException {
+        System.out.println("-------setValue--------");
+        redisUtils.jackson2.set("string","-string");
+        redisUtils.jackson2.set("int",999);
+        redisUtils.jackson2.set("long",999999999999999L);
+        System.out.println(redisUtils.jackson2.get("string"));
+        System.out.println(redisUtils.jackson2.get("int"));
+        System.out.println(redisUtils.jackson2.get("long"));
+        System.out.println("---------------");
         String key="userVo";
         UserVo vo=new UserVo();
         vo.setAge(25);
@@ -64,7 +69,7 @@ public class TTest {
             map.put("name","name_"+i);
             map.put("xx","xx_"+i);
             vo.addList(map);
-            classVo.setNum(99);
+            classVo.setNum(11111111);
             vo.addClass(classVo);
         }
 
@@ -72,11 +77,31 @@ public class TTest {
         System.out.println(vo);
         System.out.println("---------------");
 
-
-        redisUtils.set(key,vo);
-        UserVo newVo= (UserVo) redisUtils.get(key,UserVo.class);
+        redisUtils.jackson2.hashSet(key,vo);
+        UserVo newVo= (UserVo) redisUtils.jackson2.entries(key,UserVo.class);
         newVo.getClassVo().setNum(1);
         System.out.println(newVo);
+
+        System.out.println("---------------");
+
+        int age= (int) redisUtils.jackson2.hashGet(key,"age");
+        System.out.println(age);
+
+        System.out.println("---------------");
+
+        String name= (String) redisUtils.jackson2.hashGet(key,"name");
+        System.out.println(name);
+
+        System.out.println("---------------");
+
+        ClassVo newClassVo= (ClassVo) redisUtils.jackson2.hashGet(key,"classVo",ClassVo.class);
+        System.out.println(newClassVo);
+
+//
+//        redisUtils.set(key,vo);
+//        UserVo newVo= (UserVo) redisUtils.get(key,UserVo.class);
+//        newVo.getClassVo().setNum(1);
+//        System.out.println(newVo);
 
     }
 }
