@@ -1,0 +1,4 @@
+- pom.xml中添加Shiro依赖；
+- 注入Shiro Factory和SecurityManager。
+- 身份认证
+- 权限控制

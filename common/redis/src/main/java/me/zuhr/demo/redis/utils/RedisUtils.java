@@ -15,7 +15,7 @@ import java.util.Map;
  * <p>
  * 约定下,所有的key都为string
  *
- * @param <T> 序列化的实现方式
+// * @param <T> 序列化的实现方式
  * @param <V> value
  * @author zurun
  * @date 2018/2/10 00:37:06
@@ -54,9 +54,11 @@ public class RedisUtils<V> {
      */
     private final RedisTemplate defaultRedisTemplate;
 
+    public final JsonType jsonType=new JsonType();
+
     /**
      * 推荐对构造函数进行注解
-     * 因为Java类会先执行构造方法，然后再给注解了@Autowired 的user注入值
+     * 因为Java类会先执行构造方法，然后再给注解了@Autowired 的对象注入值
      *
      * @param stringRedisTemplate
      * @param jdkRedisTemplate
@@ -69,7 +71,8 @@ public class RedisUtils<V> {
         this.stringRedisTemplate = stringRedisTemplate;
         this.jdkRedisTemplate = jdkRedisTemplate;
         this.jackson2RedisTemplate = jackson2RedisTemplate;
-        this.defaultRedisTemplate = jackson2RedisTemplate;
+        this.defaultRedisTemplate = jdkRedisTemplate;
+
 
 //        redisTemplateUtil =  RedisTemplateUtil.INSTANCE;
     }
@@ -78,11 +81,12 @@ public class RedisUtils<V> {
         return getRedisTemplate().opsForValue().get(key);
     }
 
-    public <T> T get(String key,Class<T> c) throws IOException {
+    public  V get(String key,Class<V> c) throws IOException {
+        return getRedisTemplate().opsForValue().get(key);
 
-        V v= getStringRedisTemplate().opsForValue().get(key);
-
-        return objectMapper.readValue((String) v,c);
+//        V v= getStringRedisTemplate().opsForValue().get(key);
+//
+//        return objectMapper.readValue((String) v,c);
     }
 
     public void set(String key, V value) {
@@ -94,21 +98,34 @@ public class RedisUtils<V> {
         return (String) getStringRedisTemplate().opsForValue().get(key);
     }
 
-    public void setValue(String key, String value) {
+    public void setValue(String key, Object value) {
         getStringRedisTemplate().opsForValue().set(key, (V) value);
     }
 
-    public Map opsForHashMap(String key) {
+    public void setHashMap(String key,Map map){
+        getRedisTemplate().opsForHash().putAll(key,map);
+    }
+    public void setHashMap(String key,V v){
+        getRedisTemplate().opsForHash().putAll(key, (Map<?, ?>) v);
+    }
+    public void setHashValue(String key,String hashKey,V v){
+        getRedisTemplate().opsForHash().put(key,hashKey,v);
+    }
+
+    public Map getHashMap(String key) {
         return getRedisTemplate().opsForHash().entries(key);
     }
 
     @SuppressWarnings("unchecked")
-    public V opsForHashValue(String key, Object hashKey) {
+    public V getHashValue(String key, String hashKey) {
         return (V) getRedisTemplate().opsForHash().get(key, hashKey);
 
     }
 
 
+    public JsonType getJsonType() {
+        return new JsonType();
+    }
 
     private RedisTemplate<String, V> getRedisTemplate() {
         return defaultRedisTemplate;
@@ -121,6 +138,27 @@ public class RedisUtils<V> {
     }
     private RedisTemplate<String, V> getJackson2RedisTemplate() {
         return jackson2RedisTemplate;
+    }
+
+
+    private class PrimitiveType{
+        private PrimitiveType(){}
+
+        private void set(String key,V v){
+            getRedisTemplate().opsForValue().set(key, v);
+        }
+    }
+    private class JsonType{
+        public JsonType(){}
+
+        public void set(String key,V v){
+            getJackson2RedisTemplate().opsForValue().set(key, v);
+        }
+        public V get(String key,Class<V> c) throws IOException {
+            V v= getStringRedisTemplate().opsForValue().get(key);
+//
+        return objectMapper.readValue((String) v,c);
+        }
     }
 
 
