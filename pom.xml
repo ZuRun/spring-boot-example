@@ -28,7 +28,14 @@
         <!-- spring版本号 -->
         <!--<springboot.version>1.5.10.RELEASE</springboot.version>-->
     </properties>
-
+    <!--使用阿里云maven镜像仓库-->
+    <repositories>
+        <repository>
+            <id>nexus-aliyun</id>
+            <name>nexus aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <!--spring-boot web支持-->
@@ -72,4 +79,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
