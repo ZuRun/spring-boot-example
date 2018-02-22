@@ -16,7 +16,7 @@ public class TestService {
 
     public String test(String key) {
 //        redisUtils.set(key, "xxxxxxxkk_" + System.currentTimeMillis());
-        String value = redisUtils.getValue(key);
+        String value = redisUtils.getString(key);
         System.out.println(value);
         return value;
     }
