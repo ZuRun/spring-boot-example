@@ -1,4 +1,6 @@
-package me.zuhr.demo.vo;
+package me.zuhr.demo.redis.vo;
+
+import me.zuhr.demo.redis.enuma.SexEnum;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -10,6 +12,7 @@ import java.util.*;
  */
 public class UserVo implements Serializable{
     private String name;
+    private SexEnum sexEnum;
     private Integer age;
     private Double weight;
     private Long amount;
@@ -18,10 +21,12 @@ public class UserVo implements Serializable{
     private List<ClassVo> classVos=new ArrayList<>();
     private List<Map> list=new ArrayList<>();
 
+
     @Override
     public String toString() {
         return "UserVo{" +
                 "name='" + name + '\'' +
+                ", sexEnum=" + sexEnum +
                 ", age=" + age +
                 ", weight=" + weight +
                 ", amount=" + amount +
@@ -38,6 +43,14 @@ public class UserVo implements Serializable{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public SexEnum getSexEnum() {
+        return sexEnum;
+    }
+
+    public void setSexEnum(SexEnum sexEnum) {
+        this.sexEnum = sexEnum;
     }
 
     public Integer getAge() {

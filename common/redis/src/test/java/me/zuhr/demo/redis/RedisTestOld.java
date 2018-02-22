@@ -1,4 +1,5 @@
-import me.zuhr.demo.redis.RedisApplicationTest;
+package me.zuhr.demo.redis;
+
 import me.zuhr.demo.redis.utils.RedisUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +21,7 @@ import java.util.Map;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = RedisApplicationTest.class)
-public class RedisTest {
+public class RedisTestOld {
     @Qualifier("jedisConnectionFactory")
     @Autowired
     JedisConnectionFactory factory;
@@ -30,14 +31,14 @@ public class RedisTest {
 
     @Test
     public void redisUtilTest() {
-        String key = "speedTest";
+        String key = "me/zuhr/demo/redis/speedTest";
         String key2 = "map";
         String val = "zuuu!!!!!!!!!!!!!!!!!!!!"+System.currentTimeMillis();
         Map map = new HashMap();
         map.put("xxxx", "xxxx1");
         map.put("yyyy", "yyyy1正在");
 
-        redisUtils.setValue(key, 11);
+        redisUtils.set(key, 11);
         redisUtils.set(key2, map);
 
         long beginStr = System.currentTimeMillis();
@@ -50,7 +51,7 @@ public class RedisTest {
 
         long timeStr = System.currentTimeMillis() - beginStr;
         System.out.println("StringRedisSerializer time:" + timeStr);
-        String str = redisUtils.getValue(key);
+        String str = redisUtils.getString(key);
         Map resultMap = (Map) redisUtils.get(key2);
         System.out.println(str);
         System.out.println(resultMap);
@@ -64,7 +65,7 @@ public class RedisTest {
         RedisTemplate redisTemplate = new RedisTemplate();
         redisTemplate.setConnectionFactory(factory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        String key = "speedTest";
+        String key = "me/zuhr/demo/redis/speedTest";
         String val = "zuuu!!!!!!!!!!!!!!!!!!!!";
 
         long beginStr = System.currentTimeMillis();

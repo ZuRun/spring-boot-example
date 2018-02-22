@@ -4,21 +4,30 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import me.zuhr.demo.redis.config.RedisConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
  * redis工具类,由{@link RedisConfig} 中的@bean注解实例化,默认为单例模式
  * <p>
- * 约定下,所有的key都为string
+ * 约定下,所有的key和hashKey都为string
  * <p>
- *
+ * 不同使用场景下使用不同方法:
+ * 1. 保存的是对象,且此对象的获取一般全部获取所有属性
+ * - 保存:set(String key, V value)方法
+ * 2. 保存的是对象,但是:
+ * a.此对象经常需要修改部分字段;
+ * b.此对象有多并发的使用场景
+ * - 保存:
  * @param <V>  value
- *             // * @param <T> 序列化的实现方式
  * @param <HM> hash的map
  * @param <HV> 哈希表中指定 key 的值
  * @author zurun
@@ -62,6 +71,7 @@ public class RedisUtils<V, HM, HV> {
      */
     public final Jackson2 jackson2;
     public final Jdk jdk;
+    public final PrimitiveType primitive;
 
     /**
      * 推荐对构造函数进行注解
@@ -82,7 +92,7 @@ public class RedisUtils<V, HM, HV> {
 
         jackson2 = new Jackson2();
         jdk = new Jdk();
-
+        primitive = new PrimitiveType();
 //        redisTemplateUtil =  RedisTemplateUtil.INSTANCE;
     }
 
@@ -90,7 +100,7 @@ public class RedisUtils<V, HM, HV> {
     /** ----------常用的操作----------- */
 
     /**
-     * key过期时间,默认为秒
+     * 为给定 key 设置过期时间,默认为秒
      *
      * @param key
      * @param second
@@ -100,10 +110,18 @@ public class RedisUtils<V, HM, HV> {
         return expire(key, second, TimeUnit.SECONDS);
     }
 
-    @SuppressWarnings("unchecked")
-    public Boolean expire(String key, Long second, TimeUnit timeUnit) {
-        return defaultRedisTemplate.expire(key, second, timeUnit);
+    /**
+     * 为给定 key 设置过期时间。
+     *
+     * @param key
+     * @param timeout
+     * @param timeUnit
+     * @return
+     */
+    public Boolean expire(String key, Long timeout, TimeUnit timeUnit) {
+        return jdk.expire(key, timeout, timeUnit);
     }
+
 
     /**
      * 删除指定key
@@ -112,94 +130,340 @@ public class RedisUtils<V, HM, HV> {
      */
     @SuppressWarnings("unchecked")
     public void delete(String key) {
-        defaultRedisTemplate.delete(key);
+        jdk.delete(key);
     }
-
-    public void del(String key) {
-        delete(key);
-    }
-
 
     /**
-     * 默认value为基本类型
+     * 检查给定 key 是否存在。
      *
      * @param key
      * @return
      */
-    @SuppressWarnings("unchecked")
-    public V get(String key) {
-        //TODO-zurun
-        return (V) defaultRedisTemplate.opsForValue().get(key);
+    public Boolean hasKey(String key) {
+        return jdk.hasKey(key);
+    }
+
+
+    /**
+     * 常规获取基本数据类型(int,string,long,double,boolean)
+     *
+     * @param key
+     * @return
+     */
+    public String getString(String key) {
+        return (String) primitive.get(key);
+    }
+
+    public Integer getInt(String key) {
+        return (Integer) jackson2.get(key);
+    }
+
+    public Long getLong(String key) {
+        return (Long) jackson2.get(key);
+    }
+
+    public Boolean getBoolean(String key) {
+        return (Boolean) jackson2.get(key);
+    }
+
+    public Double getDouble(String key) {
+        return (Double) jackson2.get(key);
     }
 
     /**
-     * value为对象
+     * 如果value是对象,此处返回的是map
+     * list返回list
+     * 基本类型则返回基本类型
+     *
+     * @param key
+     * @return
+     */
+    public V get(String key) {
+        return jackson2.get(key);
+    }
+
+    /**
+     * value为对象,且 返回指定类型的对象
      *
      * @param key
      * @param c   返回指定类型的对象
      * @return
      */
-    public HM get(String key, Class<HM> c) {
-        return jackson2.entries(key, c);
+    public HM get(String key, Class<HM> c) throws IOException {
+        return jackson2.get(key, c);
+    }
+
+
+    public void set(String key, V value) {
+        jackson2.set(key, value);
     }
 
     /**
-     * value为对象,返回map
+     * 将值 value 关联到 key ，并将 key 的过期时间设为 seconds (以秒为单位)。
+     * 貌似是SETEX key seconds value命令,不太确定
+     *
+     * @param key
+     * @param value
+     * @param second
+     */
+    public void set(String key, V value, Long second) {
+        jackson2.set(key, value, second);
+    }
+
+    /**
+     * 将值 value 关联到 key ，并设置 key 的过期时间
+     * 貌似是SETEX key seconds value命令,不太确定
+     *
+     * @param key
+     * @param value
+     * @param second
+     * @param timeUnit
+     */
+    public void set(String key, V value, Long second, TimeUnit timeUnit) {
+        jackson2.set(key, value, second, timeUnit);
+    }
+
+    public void set(String key, String value) {
+        primitive.set(key, (V) value);
+    }
+
+    public void set(String key, Integer value) {
+        jackson2.set(key, (V) value);
+    }
+
+    public void set(String key, Long value) {
+        jackson2.set(key, (V) value);
+    }
+
+    public void set(String key, Double value) {
+        jackson2.set(key, (V) value);
+    }
+
+    public void set(String key, Boolean value) {
+        jackson2.set(key, (V) value);
+    }
+
+    /**
+     * 将给定 key 的值设为 value ，并返回 key 的旧值(old value)。
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public String getAndSet(String key, String value) {
+        return (String) primitive.getAndSet(key, (V) value);
+    }
+
+    /**
+     * 将给定 key 的值设为 value ，并返回 key 的旧值(old value)。
+     *
+     * @param key
+     * @param v
+     * @return
+     */
+    public V getAndSet(String key, V v) {
+        return jackson2.getAndSet(key, v);
+    }
+
+    /**
+     * 只有在 key 不存在时设置 key 的值。
+     *
+     * @param key
+     * @param v
+     * @return
+     */
+    public Boolean setNx(String key, V v) {
+        return jackson2.setNx(key, v);
+    }
+
+    /**
+     * 只有在 key 不存在时设置 key 的值。
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public Boolean setNx(String key, String value) {
+        return primitive.setNx(key, (V) value);
+    }
+
+    /**      **   HASH 部分   **       **/
+
+    /**
+     * 将对象保存到redis中
+     *
+     * @param key
+     * @param v   对象
+     */
+    public void hashSet(String key, V v) {
+        jackson2.hashSet(key, v);
+    }
+
+    /**
+     * 将对象保存到redis中,并加入过期时间
+     *
+     * @param key
+     * @param v
+     * @param second
+     */
+    public void hashSet(String key, V v, Long second) {
+        jackson2.hashSet(key, v, second);
+    }
+
+    public void hashSet(String key, V v, Long timeout, TimeUnit timeUnit) {
+        jackson2.hashSet(key, v, timeout, timeUnit);
+    }
+
+    /**
+     * 将map保存到redis中
+     *
+     * @param key
+     * @param map
+     */
+    public void hashSet(String key, Map map) {
+        jackson2.hashSet(key, map);
+    }
+
+    /**
+     * 将map保存到redis中,并加入过期时间,默认过期时间单位为秒
+     *
+     * @param key
+     * @param map
+     * @param second
+     */
+    public void hashSet(String key, Map map, Long second) {
+        jackson2.hashSet(key, map, second, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 将map保存到redis中,并加入过期时间
+     *
+     * @param key
+     * @param map
+     * @param timeout
+     * @param timeUnit
+     */
+    public void hashSet(String key, Map map, Long timeout, TimeUnit timeUnit) {
+        jackson2.hashSet(key, map, timeout, timeUnit);
+    }
+
+    /**
+     * 将哈希表 key 中的字段 field 的值设为 value 。
+     * HSET key field value
+     *
+     * @param key
+     * @param hashKey
+     * @param obj
+     */
+    public void hashSet(String key, String hashKey, Object obj) {
+        jackson2.hashSet(key, hashKey, obj);
+    }
+
+    /**
+     * 只有在字段 field 不存在时，设置哈希表字段的值。
+     * HSETNX key field value
+     *
+     * @param key
+     * @param hashKey
+     * @param v       true表示是设置成功,之前没有这个hashKey
+     */
+    public Boolean hashSetNx(String key, String hashKey, V v) {
+        return jackson2.hashSetNx(key, hashKey, v);
+    }
+
+    /**
+     * 获取存储在哈希表中指定字段的值。
+     * HGET key field
+     *
+     * @param key
+     * @param hashKey
+     * @return
+     */
+    public V hashGet(String key, String hashKey) {
+        return jackson2.hashGet(key, hashKey);
+    }
+
+    /**
+     * 根据key获取map.
+     * 不是太建议使用.有这种使用场景的建议直接对象转为json存起来:jackson2.set(key,v)
      *
      * @param key
      * @return
      */
-    public Map getMap(String key) {
-        return jackson2.entries(key);
+    @Deprecated
+    public Map hashGet(String key) {
+        return jackson2.hashGet(key);
     }
 
-
-    @SuppressWarnings("unchecked")
-    public void set(String key, V value) {
-        defaultRedisTemplate.opsForValue().set(key, value);
+    /**
+     * 获取指定key的所有hashkey.  Get key set (fields) of hash at {@code key}.
+     * HKEYS key
+     *
+     * @param key
+     * @return
+     */
+    public Set hashKeys(String key) {
+        return jackson2.hashKeys(key);
     }
 
-    @SuppressWarnings("unchecked")
-    public String getValue(String key) {
-        return stringRedisTemplate.opsForValue().get(key);
+    /**
+     * 获取指定key的所有value的集合
+     * HVALS key
+     *
+     * @param key
+     * @return
+     */
+    public List hashValues(String key) {
+        return jackson2.hashValues(key);
     }
 
-    public void setValue(String key, Object value) {
-        defaultRedisTemplate.opsForValue().set(key, value);
+    /**
+     * 获取指定key的hash数量
+     * HLEN key
+     *
+     * @param key
+     * @return
+     */
+    public Long hashLength(String key) {
+        return jackson2.hashLength(key);
     }
 
-    public void setHashMap(String key, Map map) {
-        defaultRedisTemplate.opsForHash().putAll(key, map);
+    /**
+     * 删除一个或多个哈希表字段
+     * HDEL key field1 [field2]
+     *
+     * @param key
+     * @param hashKeys
+     * @return
+     */
+    public Long delete(String key, String... hashKeys) {
+        return jackson2.delete(key, hashKeys);
     }
 
-    public void setHashMap(String key, V v) {
-        defaultRedisTemplate.opsForHash().putAll(key, (Map<?, ?>) v);
+    /**
+     * 查看哈希表 key 中，指定的字段是否存在。
+     * HEXISTS key field
+     *
+     * @param key
+     * @param hashKey
+     */
+    public Boolean hasKey(String key, String hashKey) {
+        return jackson2.hasKey(key, hashKey);
     }
-
-    public void setHashValue(String key, String hashKey, V v) {
-        defaultRedisTemplate.opsForHash().put(key, hashKey, v);
-    }
-
-    public Map getHashMap(String key) {
-        return defaultRedisTemplate.opsForHash().entries(key);
-    }
-
-    @SuppressWarnings("unchecked")
-    public V getHashValue(String key, String hashKey) {
-        return (V) defaultRedisTemplate.opsForHash().get(key, hashKey);
-
-    }
-
 
     private abstract class AbstractTemplate<V> {
         RedisTemplate redisTemplate;
+        HashOperations hashOperations;
+        ValueOperations valueOperations;
 
         AbstractTemplate(RedisTemplate redisTemplate) {
             this.redisTemplate = redisTemplate;
+            hashOperations = redisTemplate.opsForHash();
+            valueOperations = redisTemplate.opsForValue();
         }
 
         /**
-         * key过期时间,默认为秒
+         * 为给定 key 设置过期时间,默认为秒
          *
          * @param key
          * @param second
@@ -210,23 +474,37 @@ public class RedisUtils<V, HM, HV> {
         }
 
         @SuppressWarnings("unchecked")
-        public Boolean expire(String key, Long second, TimeUnit timeUnit) {
-            return RedisUtils.this.expire(key, second, timeUnit);
+        public Boolean expire(String key, Long timeout, TimeUnit timeUnit) {
+            return redisTemplate.expire(key, timeout, timeUnit);
         }
 
 
         @SuppressWarnings("unchecked")
         public V get(String key) {
-            return (V) redisTemplate.opsForValue().get(key);
+            return (V) valueOperations.get(key);
         }
+
+        /**
+         * 检查给定 key 是否存在。ValueOperations中貌似没有直接提供这个方法
+         * EXISTS key
+         *
+         * @param key
+         * @return
+         */
+        public Boolean hasKey(String key) {
+            return valueOperations.get(key) == null;
+        }
+
 
         @SuppressWarnings("unchecked")
         public void set(String key, V v) {
-            redisTemplate.opsForValue().set(key, v);
+            valueOperations.set(key, v);
         }
 
         /**
          * 加入超时,默认为秒
+         * 貌似是SETEX key seconds value命令,不太确定
+         * 将值 value 关联到 key ，并将 key 的过期时间设为 seconds (以秒为单位)。
          *
          * @param key
          * @param v
@@ -238,123 +516,301 @@ public class RedisUtils<V, HM, HV> {
         }
 
         /**
+         * 将值 value 关联到 key ，并设置 key 的过期时间
+         * 貌似是SETEX key seconds value命令,不太确定
+         *
          * @param key
          * @param v
          * @param second
          */
         @SuppressWarnings("unchecked")
         public void set(String key, V v, Long second, TimeUnit timeUnit) {
-            redisTemplate.opsForValue().set(key, v, second, TimeUnit.SECONDS);
+            valueOperations.set(key, v, second, timeUnit);
+        }
+
+        /**
+         * 将给定 key 的值设为 value ，并返回 key 的旧值(old value)。
+         * GETSET key value
+         *
+         * @param key
+         * @param v
+         * @return
+         */
+        @SuppressWarnings("unchecked")
+        public V getAndSet(String key, V v) {
+            return (V) valueOperations.getAndSet(key, v);
+        }
+
+        /**
+         * 只有在 key 不存在时设置 key 的值。
+         * SETNX key value
+         *
+         * @param key
+         * @param v
+         * @return true表示设置成功, 之前没有这个key
+         */
+        @SuppressWarnings("unchecked")
+        public Boolean setNx(String key, V v) {
+            return valueOperations.setIfAbsent(key, v);
         }
 
         /**
          * 删除指定key
+         * DEL key
          *
          * @param key
          */
         @SuppressWarnings("unchecked")
         public void delete(String key) {
-            RedisUtils.this.delete(key);
-        }
-
-        public void del(String key) {
-            delete(key);
+            redisTemplate.delete(key);
         }
 
 
+        /**      **   HASH 部分   **       **/
+
+
+        /**
+         * 将对象保存到redis中
+         *
+         * @param key
+         * @param v   对象
+         */
         public void hashSet(String key, V v) {
             hashSet(key, objectMapper.convertValue(v, Map.class));
         }
 
+        /**
+         * 将对象保存到redis中,并加入过期时间
+         *
+         * @param key
+         * @param v
+         * @param second
+         */
+        public void hashSet(String key, V v, Long second) {
+            hashSet(key, v, second, TimeUnit.SECONDS);
+        }
+
+        public void hashSet(String key, V v, Long timeout, TimeUnit timeUnit) {
+            hashSet(key, objectMapper.convertValue(v, Map.class), timeout, timeUnit);
+        }
+
+        /**
+         * 将map保存到redis中
+         *
+         * @param key
+         * @param map
+         */
         @SuppressWarnings("unchecked")
         public void hashSet(String key, Map map) {
-            redisTemplate.opsForHash().putAll(key, map);
+            hashOperations.putAll(key, map);
         }
 
-        @SuppressWarnings("unchecked")
+        /**
+         * 将map保存到redis中,并加入过期时间,默认过期时间单位为秒
+         *
+         * @param key
+         * @param map
+         * @param second
+         */
         public void hashSet(String key, Map map, Long second) {
-            hashSet(key, map);
-            expire(key, second);
+            hashSet(key, map, second, TimeUnit.SECONDS);
         }
 
+        /**
+         * 将map保存到redis中,并加入过期时间
+         *
+         * @param key
+         * @param map
+         * @param timeout
+         * @param timeUnit
+         */
+        public void hashSet(String key, Map map, Long timeout, TimeUnit timeUnit) {
+            hashSet(key, map);
+            expire(key, timeout, timeUnit);
+        }
+
+        /**
+         * 将哈希表 key 中的字段 field 的值设为 value 。
+         * HSET key field value
+         *
+         * @param key
+         * @param hashKey
+         * @param obj
+         */
         @SuppressWarnings("unchecked")
         public void hashSet(String key, String hashKey, Object obj) {
-            redisTemplate.opsForHash().put(key, hashKey, obj);
+            hashOperations.put(key, hashKey, obj);
         }
 
+        /**
+         * 只有在字段 field 不存在时，设置哈希表字段的值。
+         * HSETNX key field value
+         *
+         * @param key
+         * @param hashKey
+         * @param v       true表示是设置成功,之前没有这个hashKey
+         */
         @SuppressWarnings("unchecked")
-        public Map entries(String key) {
-            return redisTemplate.opsForHash().entries(key);
+        public Boolean hashSetNx(String key, String hashKey, V v) {
+            return hashOperations.putIfAbsent(key, hashKey, v);
         }
 
-        public HM entries(String key, Class<HM> c) {
-            return objectMapper.convertValue(entries(key), c);
-        }
 
-        @SuppressWarnings("unchecked")
-        public HV hashGet(String key, String hashKey, Class<HV> c) {
-            return objectMapper.convertValue(redisTemplate.opsForHash().get(key, hashKey), c);
-        }
-
+        /**
+         * 获取存储在哈希表中指定字段的值。
+         * HGET key field
+         *
+         * @param key
+         * @param hashKey
+         * @return
+         */
         @SuppressWarnings("unchecked")
         public V hashGet(String key, String hashKey) {
-            return (V) redisTemplate.opsForHash().get(key, hashKey);
+            return (V) hashOperations.get(key, hashKey);
+        }
+
+        /**
+         * 根据key获取map.
+         * 不是太建议使用.有这种使用场景的建议直接对象转为json存起来:jackson2.set(key,v)
+         *
+         * @param key
+         * @return
+         */
+        @Deprecated
+        @SuppressWarnings("unchecked")
+        public Map hashGet(String key) {
+            return hashOperations.entries(key);
+        }
+
+        /**
+         * 获取指定key的所有hashkey.  Get key set (fields) of hash at {@code key}.
+         * HKEYS key
+         *
+         * @param key
+         * @return
+         */
+        @SuppressWarnings("unchecked")
+        public Set hashKeys(String key) {
+            return hashOperations.keys(key);
+        }
+
+        /**
+         * 获取指定key的所有value的集合
+         * HVALS key
+         *
+         * @param key
+         * @return
+         */
+        @SuppressWarnings("unchecked")
+        public List hashValues(String key) {
+            return hashOperations.values(key);
+        }
+
+        /**
+         * 获取指定key的hash数量
+         * HLEN key
+         *
+         * @param key
+         * @return
+         */
+        @SuppressWarnings("unchecked")
+        public Long hashLength(String key) {
+            return hashOperations.size(key);
+        }
+
+        /**
+         * 删除一个或多个哈希表字段
+         * HDEL key field1 [field2]
+         *
+         * @param key
+         * @param hashKeys
+         * @return
+         */
+        @SuppressWarnings("unchecked")
+        public Long delete(String key, String... hashKeys) {
+            return hashOperations.delete(key, hashKeys);
+        }
+
+        /**
+         * 查看哈希表 key 中，指定的字段是否存在。
+         * HEXISTS key field
+         *
+         * @param key
+         * @param hashKey
+         */
+        @SuppressWarnings("unchecked")
+        public Boolean hasKey(String key, String hashKey) {
+            return hashOperations.hasKey(key, hashKey);
         }
     }
 
+    /**
+     * 基本类型,还没想好这个地方怎么处理
+     */
+    @Deprecated
     public class PrimitiveType extends AbstractTemplate<V> {
-
-
-        PrimitiveType(RedisTemplate redisTemplate) {
-            super(redisTemplate);
-        }
-
-        @Override
-        public void set(String key, V v) {
-//            defaultRedisTemplate.opsForValue().set(key, v);
+        PrimitiveType() {
+            super(stringRedisTemplate);
         }
 
     }
 
+    /**
+     * jackson2序列化方式
+     */
     public class Jackson2 extends AbstractTemplate<V> {
         Jackson2() {
             super(jackson2RedisTemplate);
         }
 
+        /**
+         * 对象用jackson直接转json
+         *
+         * @param key
+         * @param c
+         * @return
+         * @throws IOException
+         */
         @SuppressWarnings("unchecked")
-        public V get(String key, Class<V> c) throws IOException {
-            V v = (V) jackson2RedisTemplate.opsForValue().get(key);
+        public HM get(String key, Class<HM> c) throws IOException {
+            V v = primitive.get(key);
             return objectMapper.readValue((String) v, c);
         }
 
+        /**
+         * 当value是一个对象的时候(非map),需要类型转换
+         *
+         * @param key
+         * @param hashKey
+         * @param c
+         * @return
+         */
+        @SuppressWarnings("unchecked")
+        public HV hashGet(String key, String hashKey, Class<HV> c) {
+            return objectMapper.convertValue(hashGet(key, hashKey), c);
+        }
+
+        /**
+         * 获取对象,返回指定类型的对象
+         * 不是太建议使用.有这种使用场景的建议直接对象转为json存起来:jackson2.set(key,v)
+         *
+         * @param key
+         * @param c
+         * @return
+         */
+        @Deprecated
+        public HM hashGet(String key, Class<HM> c) {
+            return objectMapper.convertValue(hashGet(key), c);
+        }
     }
 
+    /**
+     * jdk原生序列化
+     */
     public class Jdk extends AbstractTemplate<V> {
         Jdk() {
             super(jdkRedisTemplate);
         }
     }
 
-
-    private enum RedisTemplateUtil {
-        INSTANCE;
-
-        RedisTemplateUtil() {
-
-        }
-
-        /**
-         * 默认序列化实现方式
-         */
-//        private final RedisSerializer defaultRedisSerializer = jdkSerializationRedisSerializer;
-
-
-//        private RedisTemplate<String, V> redisTemplate;
-        /**
-         * 正在使用的序列化方式
-         */
-//        private T redisSerializer;
-
-
-    }
 }

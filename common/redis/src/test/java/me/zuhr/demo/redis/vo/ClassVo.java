@@ -1,4 +1,4 @@
-package me.zuhr.demo.vo;
+package me.zuhr.demo.redis.vo;
 
 import java.io.Serializable;
 
