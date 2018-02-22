@@ -19,7 +19,7 @@ import java.util.Map;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = RedisApplicationTest.class)
-public class RedisTTest {
+public class RedisTTestOld {
 
     @Autowired
     RedisUtils redisUtils;

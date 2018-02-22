@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
  * a.此对象经常需要修改部分字段;
  * b.此对象有多并发的使用场景
  * - 保存:
+ *
  * @param <V>  value
  * @param <HM> hash的map
  * @param <HV> 哈希表中指定 key 的值
@@ -39,7 +40,7 @@ public class RedisUtils<V, HM, HV> {
 
 
     /**
-     * 使用场景为key,val都是字符的情况下
+     * 使用场景为key,val都是字符串的情况下
      */
     @Qualifier("stringRedisTemplate")
     public final RedisTemplate<String, String> stringRedisTemplate;
@@ -189,7 +190,7 @@ public class RedisUtils<V, HM, HV> {
      * @param c   返回指定类型的对象
      * @return
      */
-    public HM get(String key, Class<HM> c) throws IOException {
+    public HM get(String key, Class<HM> c) {
         return jackson2.get(key, c);
     }
 
@@ -263,6 +264,33 @@ public class RedisUtils<V, HM, HV> {
      */
     public V getAndSet(String key, V v) {
         return jackson2.getAndSet(key, v);
+    }
+
+    /**
+     * 将给定 key 的值设为 value ，并返回 key 的旧值(old value)
+     * 此方法不具有原子性
+     *
+     * @param key
+     * @param v
+     * @param second
+     * @return
+     */
+    public V getAndSet(String key, V v, Long second) {
+        return jackson2.getAndSet(key, v, second);
+    }
+
+    /**
+     * 将给定 key 的值设为 value ，并返回 key 的旧值(old value)
+     * 此方法不具有原子性
+     *
+     * @param key
+     * @param v
+     * @param second
+     * @param timeUnit
+     * @return
+     */
+    public V getAndSet(String key, V v, Long second, TimeUnit timeUnit) {
+        return jackson2.getAndSet(key, v, second, timeUnit);
     }
 
     /**
@@ -383,6 +411,10 @@ public class RedisUtils<V, HM, HV> {
         return jackson2.hashGet(key, hashKey);
     }
 
+    public HV hashGet(String key, String hashKey, Class<HV> c) {
+        return jackson2.hashGet(key, hashKey, c);
+    }
+
     /**
      * 根据key获取map.
      * 不是太建议使用.有这种使用场景的建议直接对象转为json存起来:jackson2.set(key,v)
@@ -393,6 +425,19 @@ public class RedisUtils<V, HM, HV> {
     @Deprecated
     public Map hashGet(String key) {
         return jackson2.hashGet(key);
+    }
+
+    /**
+     * 获取对象,返回指定类型的对象
+     * 不是太建议使用.有这种使用场景的建议直接对象转为json存起来:jackson2.set(key,v)
+     *
+     * @param key
+     * @param c
+     * @return
+     */
+    @Deprecated
+    public HM hashGet(String key, Class<HM> c) {
+        return jackson2.hashGet(key, c);
     }
 
     /**
@@ -424,8 +469,8 @@ public class RedisUtils<V, HM, HV> {
      * @param key
      * @return
      */
-    public Long hashLength(String key) {
-        return jackson2.hashLength(key);
+    public Long hashSize(String key) {
+        return jackson2.hashSize(key);
     }
 
     /**
@@ -485,16 +530,15 @@ public class RedisUtils<V, HM, HV> {
         }
 
         /**
-         * 检查给定 key 是否存在。ValueOperations中貌似没有直接提供这个方法
+         * 检查给定 key 是否存在。
          * EXISTS key
          *
          * @param key
          * @return
          */
         public Boolean hasKey(String key) {
-            return valueOperations.get(key) == null;
+            return redisTemplate.hasKey(key);
         }
-
 
         @SuppressWarnings("unchecked")
         public void set(String key, V v) {
@@ -539,6 +583,36 @@ public class RedisUtils<V, HM, HV> {
         @SuppressWarnings("unchecked")
         public V getAndSet(String key, V v) {
             return (V) valueOperations.getAndSet(key, v);
+        }
+
+        /**
+         * 将给定 key 的值设为 value ，并返回 key 的旧值(old value)。
+         * 此方法不具有原子性
+         *
+         * @param key
+         * @param v
+         * @param second
+         * @return
+         */
+        public V getAndSet(String key, V v, Long second) {
+            return getAndSet(key, v, second, TimeUnit.SECONDS);
+        }
+
+        /**
+         * 将给定 key 的值设为 value ，并返回 key 的旧值(old value)。
+         * 此方法不具有原子性
+         *
+         * @param key
+         * @param v
+         * @param timeout
+         * @param timeUnit
+         * @return
+         */
+        @SuppressWarnings("unchecked")
+        public V getAndSet(String key, V v, Long timeout, TimeUnit timeUnit) {
+            Object obj = valueOperations.getAndSet(key, v);
+            expire(key, timeout, timeUnit);
+            return (V) obj;
         }
 
         /**
@@ -714,7 +788,7 @@ public class RedisUtils<V, HM, HV> {
          * @return
          */
         @SuppressWarnings("unchecked")
-        public Long hashLength(String key) {
+        public Long hashSize(String key) {
             return hashOperations.size(key);
         }
 
@@ -769,12 +843,16 @@ public class RedisUtils<V, HM, HV> {
          * @param key
          * @param c
          * @return
-         * @throws IOException
          */
         @SuppressWarnings("unchecked")
-        public HM get(String key, Class<HM> c) throws IOException {
+        public HM get(String key, Class<HM> c) {
             V v = primitive.get(key);
-            return objectMapper.readValue((String) v, c);
+            try {
+                return objectMapper.readValue((String) v, c);
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new IllegalArgumentException("转换失败:" + e.getMessage());
+            }
         }
 
         /**
