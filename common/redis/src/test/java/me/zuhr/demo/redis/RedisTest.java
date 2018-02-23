@@ -1,9 +1,9 @@
 package me.zuhr.demo.redis;
 
-import me.zuhr.demo.redis.enuma.SexEnum;
-import me.zuhr.demo.redis.utils.RedisUtils;
+import me.zuhr.demo.redis.enumration.SexEnum;
 import me.zuhr.demo.redis.vo.ClassVo;
 import me.zuhr.demo.redis.vo.UserVo;
+import me.zuhr.demo.redis.utils.RedisUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

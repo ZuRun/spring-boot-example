@@ -15,6 +15,7 @@
         <module>redis</module>
         <module>basis</module>
         <module>shiro</module>
+        <module>web</module>
     </modules>
 
 

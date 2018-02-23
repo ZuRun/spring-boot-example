@@ -1,6 +1,6 @@
 package me.zuhr.demo.redis.vo;
 
-import me.zuhr.demo.redis.enuma.SexEnum;
+import me.zuhr.demo.redis.enumration.SexEnum;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
