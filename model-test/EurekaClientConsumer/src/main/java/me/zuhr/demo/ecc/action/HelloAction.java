@@ -1,11 +1,10 @@
 package me.zuhr.demo.ecc.action;
 
-import me.zuhr.demo.basis.enumration.ServiceNameEnum;
+import me.zuhr.demo.ecc.service.HelloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * @author zurun
@@ -14,11 +13,11 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class HelloAction {
     @Autowired
-    private RestTemplate restTemplate;
+    HelloService helloService;
 
     @RequestMapping(value = "/hi", method = RequestMethod.GET)
     public String hello() {
-        return restTemplate.getForEntity("http://"+ ServiceNameEnum.ECS.getValue()+"/hello", String.class).getBody();
+        return helloService.test();
     }
 
 }

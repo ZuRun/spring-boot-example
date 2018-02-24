@@ -15,8 +15,9 @@ public class HelloAction {
     private int serverPort;
 
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    public String hello() {
-        return "Hello, Spring Cloud! My port is " + String.valueOf(serverPort);
+    public String hello() throws Exception {
+        throw new Exception("手动异常!");
+//        return "Hello, Spring Cloud! My port is " + String.valueOf(serverPort);
     }
 
 }
