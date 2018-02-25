@@ -20,6 +20,9 @@ public class HelloService {
     MyRestTemplate restTemplate;
 
     public String test() {
+        ResponseEntity<Map> rmap = restTemplate.getForEntity("http://" + ServiceNameEnum.ECS.getValue() + "/handle", Map.class);
+
+
         ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://" + ServiceNameEnum.ECS.getValue() + "/hello", String.class);
         String body = responseEntity.getBody();
         HttpStatus httpStatus = responseEntity.getStatusCode();

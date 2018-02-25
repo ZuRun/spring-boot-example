@@ -2,7 +2,7 @@
 
 ## 介绍
 
-### RESTful
+### RestTemplate
 
 - RestConfig 实例化MyRestTemplate
 - 自定义MyRestTemplate

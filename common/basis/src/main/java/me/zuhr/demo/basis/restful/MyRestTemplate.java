@@ -15,7 +15,8 @@ public class MyRestTemplate extends RestTemplate {
         this.setErrorHandler(new MyResponseErrorHandler());
     }
 
-    public <T> T post(String url) {
+    public <T> T post(String url,Class<T> responseType) {
+
 //        postForEntity();
         return null;
     }

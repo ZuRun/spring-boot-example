@@ -1,12 +1,12 @@
 package me.zuhr.demo.basis.restful;
 
+import me.zuhr.demo.basis.exception.MyRestClientResponseException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.client.ResponseErrorHandler;
-import org.springframework.web.client.UnknownHttpStatusCodeException;
+import org.springframework.web.client.*;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -17,7 +17,7 @@ import java.nio.charset.Charset;
  * 现在约定项目中微服务之间的通信,使用restful规范,对于非2开头的状态码统一处理
  * <p>
  * hasError()方法不变
- * handleError()中不做处理
+ * handleError()中自定义异常处理
  *
  * @author zurun
  * @date 2018/2/24 22:50:00
@@ -25,12 +25,12 @@ import java.nio.charset.Charset;
 public class MyResponseErrorHandler implements ResponseErrorHandler {
 
     /**
-     * 4开头和5开头的是请求错误的
+     * 4开头和5开头的是状态码代表有异常
      *
      * @param response
      * @return
      * @throws IOException
-     * @see org.springframework.web.client.DefaultResponseErrorHandler#hasError(ClientHttpResponse)
+     * @see DefaultResponseErrorHandler#hasError(ClientHttpResponse)
      */
     @Override
     public boolean hasError(ClientHttpResponse response) throws IOException {
@@ -42,9 +42,30 @@ public class MyResponseErrorHandler implements ResponseErrorHandler {
     }
 
 
+    /**
+     * 抛出自定义异常,主要为了能将responseBody中的内容作为异常的message
+     *
+     * @param response
+     * @throws IOException
+     * @see DefaultResponseErrorHandler#handleError(ClientHttpResponse)
+     */
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
-
+        HttpStatus statusCode = getHttpStatusCode(response);
+        switch (statusCode.series()) {
+            case CLIENT_ERROR: {
+                // 4开头的状态码
+                throw new MyRestClientResponseException(statusCode, response.getStatusText(),
+                        response.getHeaders(), getResponseBody(response), getCharset(response));
+            }
+            case SERVER_ERROR: {
+                // 5开头的状态码
+                throw new MyRestClientResponseException(statusCode, response.getStatusText(),
+                        response.getHeaders(), getResponseBody(response), getCharset(response));
+            }
+            default:
+                throw new RestClientException("Unknown status code [" + statusCode + "]");
+        }
     }
 
     /**

@@ -11,7 +11,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 @SpringBootApplication
 public class EurekaClientConsumerApplication {
-//
+//    放在basis模块中实例化
 //    @Bean
 //    @LoadBalanced
 //    MyRestTemplate restTemplate() {
