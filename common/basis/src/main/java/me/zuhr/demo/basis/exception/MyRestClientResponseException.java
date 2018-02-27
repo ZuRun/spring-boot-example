@@ -44,6 +44,16 @@ public class MyRestClientResponseException extends RuntimeException {
     }
 
     /**
+     * 减少开销
+     *
+     * @return
+     */
+    @Override
+    public Throwable fillInStackTrace() {
+        return this;
+    }
+
+    /**
      * ResponseBody中的内容返回字符串
      *
      * @return

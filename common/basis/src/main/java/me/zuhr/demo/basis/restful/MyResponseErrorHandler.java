@@ -52,6 +52,10 @@ public class MyResponseErrorHandler implements ResponseErrorHandler {
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
         HttpStatus statusCode = getHttpStatusCode(response);
+        if (statusCode == HttpStatus.ZDY) {
+            System.out.println("自定义状态码");
+            return;
+        }
         switch (statusCode.series()) {
             case CLIENT_ERROR: {
                 // 4开头的状态码

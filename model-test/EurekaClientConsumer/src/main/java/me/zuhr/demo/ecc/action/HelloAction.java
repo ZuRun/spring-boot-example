@@ -1,6 +1,7 @@
 package me.zuhr.demo.ecc.action;
 
 import me.zuhr.demo.basis.enumration.ServiceNameEnum;
+import me.zuhr.demo.basis.model.Json;
 import me.zuhr.demo.basis.restful.MyRestTemplate;
 import me.zuhr.demo.ecc.service.HelloService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,12 @@ public class HelloAction {
         return helloService.test();
     }
 
+    @RequestMapping(value = "/zdy", method = RequestMethod.GET)
+    public String zdy() {
+        return restTemplate.getForObject("http://" + ServiceNameEnum.ECS.getValue() + "/zdy", String.class);
+    }
+
+
     @RequestMapping(value = "/handle", method = RequestMethod.GET)
     public Map handle() {
         try {
@@ -58,6 +65,11 @@ public class HelloAction {
             System.out.println(e.getResponseBodyAsString());
         }
         return null;
+    }
+
+    @RequestMapping(value = "/getJson", method = RequestMethod.GET)
+    public Json getJson() {
+        return helloService.getJson();
     }
 
 }

@@ -1,7 +1,9 @@
 package me.zuhr.demo.ecc.service;
 
 import me.zuhr.demo.basis.enumration.ServiceNameEnum;
+import me.zuhr.demo.basis.model.Json;
 import me.zuhr.demo.basis.restful.MyRestTemplate;
+import me.zuhr.demo.ecc.UserVo2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,5 +32,13 @@ public class HelloService {
         HttpHeaders httpHeaders = responseEntity.getHeaders();
         Map<String, String> map = responseEntity.getHeaders().toSingleValueMap();
         return body;
+    }
+
+    public Json getJson() {
+        String url = "http://" + ServiceNameEnum.ECS.getValue() + "/getJson";
+        Json json = restTemplate.post(url, null, UserVo2.class);
+        UserVo2 uVo = (UserVo2) json.getObj();
+        System.out.println(uVo);
+        return json;
     }
 }
