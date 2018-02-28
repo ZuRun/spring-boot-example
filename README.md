@@ -5,6 +5,7 @@
 - common : 被依赖的模块,非单独启动的服务
     - basis
     - redis
+    - rocketmq
     - shiro
     - web
 - server
