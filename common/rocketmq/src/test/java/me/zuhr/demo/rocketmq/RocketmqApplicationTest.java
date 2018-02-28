@@ -11,11 +11,10 @@ import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
@@ -23,45 +22,19 @@ import java.util.List;
  * @date 2018/2/28 00:49:08
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = RocketmqApplicationTest.class)
+@SpringBootTest(classes = RocketmqApplication.class)
 public class RocketmqApplicationTest {
-    /**
-     * 生产者的组名
-     */
-    @Value("${apache.rocketmq.producer.producerGroup}")
-    private String producerGroup;
 
-    /**
-     * 消费者的组名
-     */
-    @Value("${apache.rocketmq.consumer.PushConsumer}")
-    private String consumerGroup;
+    @Autowired
+    DefaultMQProducer producer;
 
-    /**
-     * NameServer 地址
-     */
-    @Value("${apache.rocketmq.namesrvAddr}")
-    private String namesrvAddr;
-
+    @Autowired
+    DefaultMQPushConsumer consumer;
 
     @Test
-    @PostConstruct
+//    @PostConstruct
     public void defaultMQProducer() {
-
-        //生产者的组名
-        DefaultMQProducer producer = new DefaultMQProducer(producerGroup);
-        // //TODO-zurun 临时加上,10909端口没开
-        producer.setVipChannelEnabled(false);
-        //指定NameServer地址，多个地址以 ; 隔开
-        producer.setNamesrvAddr(namesrvAddr);
-
         try {
-
-            /**
-             * Producer对象在使用之前必须要调用start初始化，初始化一次即可
-             * 注意：切记不可以在每次发送消息时，都调用start方法
-             */
-            producer.start();
 
             for (int i = 0; i < 100; i++) {
 
@@ -82,20 +55,16 @@ public class RocketmqApplicationTest {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            producer.shutdown();
+//            producer.shutdown();
         }
 
     }
 
     @Test
-    @PostConstruct
+//    @PostConstruct
     public void defaultMQPushConsumer() {
 
-        //消费者的组名
-        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(consumerGroup);
 
-        //指定NameServer地址，多个地址以 ; 隔开
-        consumer.setNamesrvAddr(namesrvAddr);
         try {
             //订阅PushTopic下Tag为push的消息
             consumer.subscribe("PushTopic", "push");
