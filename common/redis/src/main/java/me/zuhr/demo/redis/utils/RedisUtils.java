@@ -123,6 +123,27 @@ public class RedisUtils<V, HM, HV> {
         return jdk.expire(key, timeout, timeUnit);
     }
 
+    /**
+     * 获取过期时间,单位为秒
+     *
+     * @param key
+     * @return
+     */
+    public Long getExpireTime(String key) {
+        return jdk.getExpireTime(key);
+    }
+
+    /**
+     * 获取过期时间,单位为秒
+     *
+     * @param key
+     * @param timeUnit
+     * @return
+     */
+    public Long getExpireTime(String key, TimeUnit timeUnit) {
+        return jdk.getExpireTime(key, timeUnit);
+    }
+
 
     /**
      * 删除指定key
@@ -194,11 +215,6 @@ public class RedisUtils<V, HM, HV> {
         return jackson2.get(key, c);
     }
 
-
-    public void set(String key, V value) {
-        jackson2.set(key, value);
-    }
-
     /**
      * 将值 value 关联到 key ，并将 key 的过期时间设为 seconds (以秒为单位)。
      * 貌似是SETEX key seconds value命令,不太确定
@@ -207,7 +223,7 @@ public class RedisUtils<V, HM, HV> {
      * @param value
      * @param second
      */
-    public void set(String key, V value, Long second) {
+    public void set(String key, V value, Long... second) {
         jackson2.set(key, value, second);
     }
 
@@ -223,23 +239,23 @@ public class RedisUtils<V, HM, HV> {
     public void set(String key, V value, Long second, TimeUnit timeUnit) {
         jackson2.set(key, value, second, timeUnit);
     }
-
+    @SuppressWarnings("unchecked")
     public void set(String key, String value) {
         primitive.set(key, (V) value);
     }
-
+    @SuppressWarnings("unchecked")
     public void set(String key, Integer value) {
         jackson2.set(key, (V) value);
     }
-
+    @SuppressWarnings("unchecked")
     public void set(String key, Long value) {
         jackson2.set(key, (V) value);
     }
-
+    @SuppressWarnings("unchecked")
     public void set(String key, Double value) {
         jackson2.set(key, (V) value);
     }
-
+    @SuppressWarnings("unchecked")
     public void set(String key, Boolean value) {
         jackson2.set(key, (V) value);
     }
@@ -251,6 +267,7 @@ public class RedisUtils<V, HM, HV> {
      * @param value
      * @return
      */
+    @SuppressWarnings("unchecked")
     public String getAndSet(String key, String value) {
         return (String) primitive.getAndSet(key, (V) value);
     }
@@ -311,6 +328,7 @@ public class RedisUtils<V, HM, HV> {
      * @param value
      * @return
      */
+    @SuppressWarnings("unchecked")
     public Boolean setNx(String key, String value) {
         return primitive.setNx(key, (V) value);
     }
@@ -524,6 +542,27 @@ public class RedisUtils<V, HM, HV> {
             return redisTemplate.expire(key, timeout, timeUnit);
         }
 
+        /**
+         * 获取过期时间,默认为秒
+         *
+         * @param key
+         * @return
+         */
+        public Long getExpireTime(String key) {
+            return getExpireTime(key, TimeUnit.SECONDS);
+        }
+
+        /**
+         * 获取过期时间
+         *
+         * @param key
+         * @param timeUnit
+         * @return
+         */
+        @SuppressWarnings("unchecked")
+        public Long getExpireTime(String key, TimeUnit timeUnit) {
+            return redisTemplate.getExpire(key, timeUnit);
+        }
 
         @SuppressWarnings("unchecked")
         public V get(String key) {
@@ -537,6 +576,7 @@ public class RedisUtils<V, HM, HV> {
          * @param key
          * @return
          */
+        @SuppressWarnings("unchecked")
         public Boolean hasKey(String key) {
             return redisTemplate.hasKey(key);
         }
@@ -547,8 +587,7 @@ public class RedisUtils<V, HM, HV> {
         }
 
         /**
-         * 加入超时,默认为秒
-         * 貌似是SETEX key seconds value命令,不太确定
+         * 超时选填,默认为秒
          * 将值 value 关联到 key ，并将 key 的过期时间设为 seconds (以秒为单位)。
          *
          * @param key
@@ -556,8 +595,12 @@ public class RedisUtils<V, HM, HV> {
          * @param second
          */
         @SuppressWarnings("unchecked")
-        public void set(String key, V v, Long second) {
-            set(key, v, second, TimeUnit.SECONDS);
+        public void set(String key, V v, Long... second) {
+            if (second.length == 0) {
+                valueOperations.set(key, v);
+            } else {
+                set(key, v, second[0], TimeUnit.SECONDS);
+            }
         }
 
         /**

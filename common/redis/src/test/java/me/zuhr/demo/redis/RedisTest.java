@@ -1,15 +1,17 @@
 package me.zuhr.demo.redis;
 
 import me.zuhr.demo.redis.enumration.SexEnum;
+import me.zuhr.demo.redis.utils.RedisUtils;
 import me.zuhr.demo.redis.vo.ClassVo;
 import me.zuhr.demo.redis.vo.UserVo;
-import me.zuhr.demo.redis.utils.RedisUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
@@ -33,7 +35,7 @@ public class RedisTest {
      * @throws IOException
      */
     @Test
-    public void getSetTest() {
+    public void getSetTest() throws InterruptedException {
         String key = "userVo";
         UserVo userVo = createUserVo();
         go("get一个没有的key", () -> redisUtils.get("------===!!"));
@@ -42,6 +44,9 @@ public class RedisTest {
 
         // 写入缓存
         redisUtils.set(key, userVo, TIMEOUT_SECOND);
+
+
+        go("获取剩余过期时间", () -> redisUtils.getExpireTime(key));
 
         // 通过get方法获取对象
         go("get", () -> {
@@ -69,9 +74,10 @@ public class RedisTest {
             return redisUtils.getAndSet(key, userVo, TIMEOUT_SECOND);
         });
 
-        // 检查getAndSet是否生效
-        go("getString", () -> redisUtils.get(key));
+        go("检查getAndSet是否生效", () -> redisUtils.get(key));
 
+        Thread.sleep(1000L);
+        go("获取剩余过期时间", () -> redisUtils.getExpireTime(key));
     }
 
     /**
@@ -90,8 +96,8 @@ public class RedisTest {
         go("获取map对象", () -> redisUtils.hashGet(key));
         go("hashKey数量", () -> redisUtils.hashSize(key));
         go("是否有某个Key", () -> redisUtils.hasKey(key));
-        go("是否有某个hashKey", () -> redisUtils.hasKey(key,"age"));
-        go("是否有某个hashKey", () -> redisUtils.hasKey(key,"age2"));
+        go("是否有某个hashKey", () -> redisUtils.hasKey(key, "age"));
+        go("是否有某个hashKey", () -> redisUtils.hasKey(key, "age2"));
         go("hashKey集合", () -> redisUtils.hashKeys(key));
         go("hash value集合", () -> redisUtils.hashValues(key));
     }
