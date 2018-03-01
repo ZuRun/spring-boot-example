@@ -1,10 +1,10 @@
 package me.zuhr.demo.rocketmq;
 
+import me.zuhr.demo.rocketmq.common.MyDefaultMQProducer;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
-import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.apache.rocketmq.common.message.Message;
@@ -26,7 +26,7 @@ import java.util.List;
 public class RocketmqApplicationTest {
 
     @Autowired
-    DefaultMQProducer producer;
+    MyDefaultMQProducer producer;
 
     @Autowired
     DefaultMQPushConsumer consumer;

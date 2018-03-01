@@ -1,5 +1,6 @@
 package me.zuhr.demo.rocketmq.config;
 
+import me.zuhr.demo.rocketmq.common.MyDefaultMQProducer;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -8,13 +9,12 @@ import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.apache.rocketmq.common.message.MessageExt;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-import javax.annotation.PreDestroy;
 import java.util.List;
 
 /**
@@ -56,6 +56,8 @@ public class RocketmqConfig {
         DefaultMQProducer producer = new DefaultMQProducer(producerGroup);
         //指定NameServer地址，多个地址以 ; 隔开
         producer.setNamesrvAddr(namesrvAddr);
+        //TODO-zurun 其他参数
+
         /**
          * Producer对象在使用之前必须要调用start初始化，初始化一次即可
          * 注意：切记不可以在每次发送消息时，都调用start方法
@@ -68,6 +70,12 @@ public class RocketmqConfig {
          */
 //        producer.shutdown();
         return producer;
+    }
+
+    @Bean
+    public MyDefaultMQProducer myProducer(@Qualifier("mqProducer") DefaultMQProducer mqProducer) {
+        MyDefaultMQProducer myProducer = new MyDefaultMQProducer(mqProducer);
+        return myProducer;
     }
 
     @Bean
@@ -117,16 +125,16 @@ public class RocketmqConfig {
         return consumer;
     }
 
-
-    @Autowired
-    DefaultMQProducer defaultMQProducer;
-
-
-    @PreDestroy
-    public void rocketMqDestory() {
-        System.out.println(defaultMQProducer);
-        System.out.println("我被销毁了、、、、、我是用的@PreDestory的方式、、、、、、");
-        defaultMQProducer.shutdown();
-    }
+//
+//    @Autowired
+//    DefaultMQProducer defaultMQProducer;
+//
+//
+//    @PreDestroy
+//    public void rocketMqDestory() {
+//        System.out.println(defaultMQProducer);
+//        System.out.println("我被销毁了、、、、、我是用的@PreDestory的方式、、、、、、");
+//        defaultMQProducer.shutdown();
+//    }
 
 }
