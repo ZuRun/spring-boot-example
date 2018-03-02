@@ -22,11 +22,14 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * 不同使用场景下使用不同方法:
  * 1. 保存的是对象,且此对象的获取一般全部获取所有属性
- * - 保存:set(String key, V value)方法
+ *      - 保存:set(String key, V value)方法
  * 2. 保存的是对象,但是:
- * a.此对象经常需要修改部分字段;
- * b.此对象有多并发的使用场景
- * - 保存:
+ *      a.此对象经常需要修改部分字段;
+ *      b.此对象有多并发的使用场景
+ *  - 保存:
+ *      a.{@link RedisUtils#hashSet(String key,String hashKey,V v)}
+ *      b.{@link RedisUtils#hashSet(String key,V v)}
+ *
  *
  * @param <V>  value
  * @param <HM> hash的map
