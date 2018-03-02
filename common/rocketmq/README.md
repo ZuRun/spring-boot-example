@@ -13,6 +13,14 @@
 - 进入docker
 `docker exec -ti centos /bin/bash`
 
+### **依赖**
+- wget 
+ `yum install wget`
+- maven依赖
+```
+wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+yum install apache-maven -y
+```
 ### **[更改yum源为阿里云](http://blog.csdn.net/inslow/article/details/54177191)**
 
 - 首先备份系统自带yum源配置文件/etc/yum.repos.d/CentOS-Base.repo
@@ -24,15 +32,10 @@
 - `yum -y update`
 
 ### **安装依赖**
-- wget 
- `yum install wget`
+
 - vim 
  `yum install vim`
-- maven依赖
-```
-wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
-yum install apache-maven -y
-```
+
 - 安装git
 `yum install git -y`
 
@@ -60,7 +63,7 @@ JAVA_OPT_1="-server -Xms256m -Xmx256m -Xmn128m -XX:PermSize=64m -XX:MaxPermSize=
 ```
 
 ### **环境变量**
-- 设置环境变量：NAMESRV_ADDR
+- 设置环境变量：NAMESRV_ADDR  ,机器的ip,非容器ip
 `export NAMESRV_ADDR=127.0.0.1:9876`
 
 ### **重点:修改RocketMQ的 broker 的地址**
@@ -99,7 +102,7 @@ sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer
 `sh bin/mqshutdown broker`
 `sh bin/mqshutdown namesrv`
 
-## **如果想生成docker镜像的话**
+## **docker镜像**
 - 提交一个运行中的容器为镜像
 `docker commit centos rocketmq`
 - 运行

@@ -106,11 +106,11 @@ public class RedisTest {
      * 输出的内容
      *
      * @param name
-     * @param todo
+     * @param myTodo
      */
-    private void go(String name, MyTodo todo) {
+    private void go(String name, MyTodo myTodo) {
         System.out.println("\r\n" + name.toUpperCase() + " :");
-        System.out.println(todo.execute());
+        System.out.println(myTodo.execute());
     }
 
     private interface MyTodo {
