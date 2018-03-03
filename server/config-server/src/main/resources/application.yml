@@ -7,11 +7,24 @@ eureka:
     service-url:
       defaultZone: http://localhost:18001/eureka
 
+# 使用git
+spring:
+  application:
+    name: std-config-server #@project.artifactId@
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/ZuRun/SpringBootTest.git
+          searchPaths: server/config-repo
+  #        username: username
+  #        password: password
 
-## 使用本地配置
+#
+#### 使用本地配置
 #spring:
 #  application:
-#    name: @project.artifactId@
+#    name: std-config-server #@project.artifactId@
 #  profiles:
 #    # 本地配置
 #    active: native
@@ -20,33 +33,5 @@ eureka:
 #      server:
 #        # 属性文件地址，只要指定文件夹的路径
 #        native:
-#          searchLocations: classpath:/config/
-
-## 使用git
-#spring:
-#  application:
-#    name: @project.artifactId@
-#  cloud:
-#    config:
-#    server:
-#      git:
-#        uri: https://github.com/ZuRun/SpringBootTest.git
-#        searchPaths: server/config-repo
-##        username: username
-##        password: password
-
-
-## 使用本地配置
-spring:
-  application:
-    name: @project.artifactId@
-  profiles:
-    # 本地配置
-    active: native
-  cloud:
-    config:
-      server:
-        # 属性文件地址，只要指定文件夹的路径
-        native:
-          searchLocations: /Users/zurun/zu/javacode/SpringBootTest/server/config-repo/
-#          searchLocations: classpath:/config/
+#          searchLocations: /Users/zurun/zu/javacode/SpringBootTest/server/config-repo/
+##          searchLocations: classpath:/config/

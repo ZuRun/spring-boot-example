@@ -1,16 +1,16 @@
 server:
-  port: 19021
+  port: 19011
 spring:
   application:
     # spring.application.name必须要设置，服务消费者将通过该名称调用所提供的服务。
-    name: eureka-client-service
+    name: eureka-client-consumer
   cloud:
     # 使用配置中心
     config:
       # 配置了name,则配置文件名为:name-profile.yml/properties
-      name: ecs
+      name: ecc
       # 开发环境
-      profile: ${spring.profiles.active:dev}
+      profile: dev
       # 分支
       label: rocketmq
       discovery:
