@@ -1,0 +1,52 @@
+server:
+  port: 18031
+
+#向Eureka服务器进行服务注册，这里可以声明多个Eureka服务器
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:18001/eureka
+
+
+## 使用本地配置
+#spring:
+#  application:
+#    name: @project.artifactId@
+#  profiles:
+#    # 本地配置
+#    active: native
+#  cloud:
+#    config:
+#      server:
+#        # 属性文件地址，只要指定文件夹的路径
+#        native:
+#          searchLocations: classpath:/config/
+
+## 使用git
+#spring:
+#  application:
+#    name: @project.artifactId@
+#  cloud:
+#    config:
+#    server:
+#      git:
+#        uri: https://github.com/ZuRun/SpringBootTest.git
+#        searchPaths: server/config-repo
+##        username: username
+##        password: password
+
+
+## 使用本地配置
+spring:
+  application:
+    name: @project.artifactId@
+  profiles:
+    # 本地配置
+    active: native
+  cloud:
+    config:
+      server:
+        # 属性文件地址，只要指定文件夹的路径
+        native:
+          searchLocations: /Users/zurun/zu/javacode/SpringBootTest/server/config-repo/
+#          searchLocations: classpath:/config/

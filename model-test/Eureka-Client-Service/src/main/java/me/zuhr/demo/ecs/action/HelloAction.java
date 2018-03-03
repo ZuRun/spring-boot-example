@@ -21,6 +21,14 @@ import java.util.Map;
 public class HelloAction {
     @Value("${server.port}")
     private int serverPort;
+    @Value("${configServerTest}")
+    private String configTest;
+
+
+    @RequestMapping(value = "/configTest", method = RequestMethod.GET)
+    public String configTest() {
+        return "configTest:"+configTest;
+    }
 
     @RequestMapping(value = "/hi", method = RequestMethod.GET)
     public String hi() {
