@@ -14,12 +14,12 @@ import java.util.Objects;
  * @author zurun
  * @date 2018/3/2 00:20:52
  */
-public class MyDefaultMQProducer {
+public class MyMQProducer {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private DefaultMQProducer producer;
 
-    public MyDefaultMQProducer(DefaultMQProducer producer) {
+    public MyMQProducer(DefaultMQProducer producer) {
         this.producer = producer;
     }
 
@@ -52,13 +52,13 @@ public class MyDefaultMQProducer {
     }
 
     /**
-     * send delay msg.
+     * 发送延迟消息.
      *
      * @param msg        content
      * @param delayLevel 1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h
      * @return send result
      */
-    public boolean sendDelayMsg(String topic, String tag, Message msg, int delayLevel) {
+    public boolean sendDelayMsg( Message msg, int delayLevel) {
         msg.setDelayTimeLevel(delayLevel);
         SendResult sendResult = null;
         try {

@@ -1,6 +1,6 @@
 package me.zuhr.demo.rocketmq.config;
 
-import me.zuhr.demo.rocketmq.common.MyDefaultMQProducer;
+import me.zuhr.demo.rocketmq.common.MyMQProducer;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -73,8 +73,8 @@ public class RocketmqConfig {
     }
 
     @Bean
-    public MyDefaultMQProducer myProducer(@Qualifier("mqProducer") DefaultMQProducer mqProducer) {
-        MyDefaultMQProducer myProducer = new MyDefaultMQProducer(mqProducer);
+    public MyMQProducer myProducer(@Qualifier("mqProducer") DefaultMQProducer mqProducer) {
+        MyMQProducer myProducer = new MyMQProducer(mqProducer);
         return myProducer;
     }
 

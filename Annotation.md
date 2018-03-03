@@ -3,7 +3,8 @@
 
 - @Bean(destroyMethod = "destroy")
 
-
+## 在构造函数之后，init()方法之前运行。
+- 方法前加@PostConstruct 
 
 
 ## Condition - 满足指定条件才生效
