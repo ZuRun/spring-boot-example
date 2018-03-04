@@ -9,9 +9,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
@@ -24,6 +25,8 @@ import java.math.BigDecimal;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = RedisApplicationTest.class)
 public class RedisTest {
+
+
     @Autowired
     RedisUtils redisUtils;
 

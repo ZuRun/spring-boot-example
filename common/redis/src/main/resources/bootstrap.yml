@@ -1,16 +1,16 @@
 # 更改server.port,application.name,cloud.config.name 即可
 
 server:
-  port: 19011
+  port: 19926
 spring:
   application:
-    # spring.application.name必须要设置，服务消费者将通过该名称调用所提供的服务。
-    name: eureka-client-consumer
+      # spring.application.name必须要设置，服务消费者将通过该名称调用所提供的服务。
+      name: std-redis
   cloud:
     # 使用配置中心
     config:
       # 配置了name,则配置文件名为:name-profile.yml/properties
-      name: ecc,redis
+      name: redis
       # 开发环境
       profile: ${spring.profiles.active:dev}
       # 分支

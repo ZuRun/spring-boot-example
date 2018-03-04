@@ -2,10 +2,8 @@ package me.zuhr.demo.redis.config;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -17,9 +15,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  * @author zurun
  * @date 2018/2/9 17:51:33
  */
-@EnableConfigurationProperties
+//@EnableConfigurationProperties
 @Configuration
-@PropertySource(value = "classpath:/config/redis.properties")
+//@PropertySource(value = "classpath:/config/redis.properties")
 //@ConfigurationProperties(prefix = "spring.redis")
 public class RedisConfig {
     @Value("${spring.redis.host}")

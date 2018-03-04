@@ -1,12 +1,15 @@
-package me.zuhr.demo.basis.restful;
+package me.zuhr.demo.server.restful;
 
-import me.zuhr.demo.basis.exception.MyRestClientResponseException;
+import me.zuhr.demo.server.exception.MyRestClientResponseException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.client.*;
+import org.springframework.web.client.DefaultResponseErrorHandler;
+import org.springframework.web.client.ResponseErrorHandler;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.UnknownHttpStatusCodeException;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

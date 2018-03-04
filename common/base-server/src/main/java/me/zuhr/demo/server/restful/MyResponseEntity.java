@@ -1,4 +1,4 @@
-package me.zuhr.demo.basis.restful;
+package me.zuhr.demo.server.restful;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

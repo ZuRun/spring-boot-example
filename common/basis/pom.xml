@@ -11,17 +11,6 @@
 
     <artifactId>basis</artifactId>
 
-    <dependencies>
-        <!--配合eureka 实现负载均衡的-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-ribbon</artifactId>
-        </dependency>
-        <!--从配置中心获取配置文件-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-config</artifactId>
-        </dependency>
-    </dependencies>
+
 
 </project>

@@ -1,4 +1,4 @@
-package me.zuhr.demo.basis.exception;
+package me.zuhr.demo.server.exception;
 
 /**
  * 此异常去掉异常栈构造,减少开销

@@ -1,6 +1,6 @@
-package me.zuhr.demo.basis.global;
+package me.zuhr.demo.server.global;
 
-import me.zuhr.demo.basis.exception.MyRestServerException;
+import me.zuhr.demo.server.exception.MyRestServerException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

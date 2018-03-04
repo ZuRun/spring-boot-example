@@ -17,6 +17,7 @@
         <module>shiro</module>
         <module>web</module>
         <module>rocketmq</module>
+        <module>base-server</module>
     </modules>
 
 

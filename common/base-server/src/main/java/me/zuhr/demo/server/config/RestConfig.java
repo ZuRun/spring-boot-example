@@ -1,6 +1,6 @@
-package me.zuhr.demo.basis.config;
+package me.zuhr.demo.server.config;
 
-import me.zuhr.demo.basis.restful.MyRestTemplate;
+import me.zuhr.demo.server.restful.MyRestTemplate;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

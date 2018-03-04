@@ -1,3 +1,4 @@
+# 更改server.port,application.name,cloud.config.name 即可
 server:
   port: 19021
 spring:

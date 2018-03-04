@@ -2,7 +2,7 @@ package me.zuhr.demo.ecc.service;
 
 import me.zuhr.demo.basis.enumration.ServiceNameEnum;
 import me.zuhr.demo.basis.model.Json;
-import me.zuhr.demo.basis.restful.MyRestTemplate;
+import me.zuhr.demo.server.restful.MyRestTemplate;
 import me.zuhr.demo.ecc.UserVo2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

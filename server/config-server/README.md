@@ -1,3 +1,8 @@
+# Spring Cloud Config Server,配置管理中心
+
+## bootstrap.yml模板
+
+```yaml
 # 更改server.port,application.name,cloud.config.name 即可
 
 server:
@@ -32,3 +37,4 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:18001/eureka
+```

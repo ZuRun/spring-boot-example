@@ -1,4 +1,4 @@
-package me.zuhr.demo.basis.restful;
+package me.zuhr.demo.server.restful;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.zuhr.demo.basis.model.Json;

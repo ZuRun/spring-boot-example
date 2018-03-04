@@ -1,4 +1,4 @@
-package me.zuhr.demo.basis.exception;
+package me.zuhr.demo.server.exception;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
