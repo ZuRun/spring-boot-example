@@ -7,6 +7,7 @@
 
 - 启动类
     - 注解 @EnableDiscoveryClient，声明这是一个Eureka Client。
+    - @EnableDiscoveryClient 等同于bootstrap.yml中的spring.cloud.config.discoveryenabled: true
     
 - 配置文件
     
