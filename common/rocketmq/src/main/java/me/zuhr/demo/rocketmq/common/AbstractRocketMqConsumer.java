@@ -82,6 +82,7 @@ public abstract class AbstractRocketMqConsumer {
     @PostConstruct
     public void init() throws MQClientException {
         Assert.isTrue(!isStarted, "container already started.");
+        this.isStarted = true;
 
         // 并行方式处理消息
         mqPushConsumer.setMessageListener(new DefaultMessageListenerConcurrently());
@@ -115,7 +116,6 @@ public abstract class AbstractRocketMqConsumer {
         Assert.notNull(consumerGroup, "未指定ConsumerGroup!");
 
         mqPushConsumer.start();
-        this.isStarted = true;
 
 
     }

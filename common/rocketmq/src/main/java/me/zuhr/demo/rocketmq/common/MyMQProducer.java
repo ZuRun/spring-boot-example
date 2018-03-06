@@ -26,9 +26,10 @@ public class MyMQProducer {
     //TODO-zurun 这个地方的异常需要处理下,可以考虑将message存到redis中,或者抛异常,分情况考虑吧
     public SendResult send(Message message) {
         try {
+
             return producer.send(message);
         } catch (Exception e) {
-            logger.error("send msg error : ", e.getMessage());
+            logger.error("send msg error : {}", e.getMessage());
             return null;
         }
     }

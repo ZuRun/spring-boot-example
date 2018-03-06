@@ -4,7 +4,7 @@
 
 - **common** : 被依赖的模块,非单独启动的服务
     - **[base-server](common/base-server/README.md)**   : 一般的微服务都需要依赖此模块
-    - **[basis](common/basis/README.md)**   : 默认所有模块都会依赖
+    - **[basis](common/basis/README.md)**   : 
     - **redis**
     - **rocketmq**
     - **shiro**
@@ -20,6 +20,10 @@
 
 ## 约定
 - **模块的默认配置文件为application.yml** 
+
+## 打包+Docker部署
+### [打包](http://blog.csdn.net/Ser_Bad/article/details/78433340)
+### [Docker部署](http://blog.csdn.net/u011699931/article/details/70226504)
 
 ## 总结
 - [注解](Annotation.md)
