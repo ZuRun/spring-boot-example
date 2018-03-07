@@ -1,6 +1,6 @@
 FROM frolvlad/alpine-oraclejdk8:slim
 VOLUME /tmp
-ADD discovery-microservice-1.0-SNAPSHOT.jar app.jar
+ADD Eureka-Client-Service-1.0-SNAPSHOT.jar app.jar
 RUN sh -c 'touch /app.jar'
 ENV JAVA_OPTS=""
 # 指定环境为test

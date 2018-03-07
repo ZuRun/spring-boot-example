@@ -20,6 +20,11 @@
 
 ## 约定
 - **模块的默认配置文件为application.yml** 
+- hosts文件增加:
+    ```
+    127.0.0.1 std-eureka-server
+    127.0.0.1 std-config-server
+    ```
 
 ## 打包+Docker部署
 ### [打包](http://blog.csdn.net/Ser_Bad/article/details/78433340)

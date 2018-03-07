@@ -22,7 +22,7 @@ spring:
       # 开发环境
       profile: ${spring.profiles.active:dev}
       # 分支
-      label: rocketmq
+      label: master
       discovery:
         enabled: true
         serviceId: std-config-server
