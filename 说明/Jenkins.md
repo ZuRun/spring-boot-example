@@ -42,7 +42,33 @@ netstat -tnlp |grep 5555
 `tcp://127.0.0.1:5555`
 ### 建立任务
 #### Build
-- Goals and options maven
-    命令要写:`mvn clean package docker:build`
+```
 
-### 构建
+# 第1个参数: 模块名
+# 第2个参数: 服务名
+# 第3个参数: docker内部ip
+# 第4个参数: docker外部ip
+sbDockerBuild(){
+	#删除同名docker容器
+	# content=$(docker ps | grep "$2" | awk '{print $1}')
+	docker stop $2
+	docker rm $2
+	docker rmi $2
+
+	# 到jar路径,并拷贝Dockerfile到当前目录
+	cd /var/lib/jenkins/workspace/SpringBoot-example/$1/target
+	\cp -f ../src/main/docker/Dockerfile .
+
+	#构建docker 镜像
+	docker build -t $2 .
+
+	#启动docker 容器 (host网络模式)
+	docker run -t -i --net=host --hostname $2 --name $2 -p $4:$3 -d $2 /bin/bash
+}
+
+sbDockerBuild server/discovery-microservice discovery-microservice 18001 18001  
+sbDockerBuild server/config-server config-server 18031 18031 
+sbDockerBuild model-test/Eureka-Client-Service ecs 19021 19021 
+sbDockerBuild model-test/EurekaClientConsumer ecc 19011 19011 
+
+```
