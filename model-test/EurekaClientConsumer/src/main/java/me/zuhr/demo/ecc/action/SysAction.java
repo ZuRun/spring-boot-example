@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2018/3/9 01:31:37
  */
 @RestController
-public class SystemAction {
+public class SysAction {
     @Autowired
     MyRestTemplate restTemplate;
 
