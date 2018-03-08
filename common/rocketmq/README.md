@@ -6,8 +6,7 @@
 - 查看镜像
 `docker images`
 - 启动centos 镜像
-`docker run -t -i --hostname centos --name centos -p 9876:9876 -p 10911:10911 -p 10909:10909 -d centos /bin/bash
-`
+`docker run -t -i --hostname centos --name centos -p 9876:9876 -p 10911:10911 -p 10909:10909 -d centos /bin/bash`
 - 查看是否启动成功
 `docker ps -a`
 - 进入docker
@@ -20,6 +19,16 @@
 ```
 wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
 yum install apache-maven -y
+```
+- maven 阿里镜像
+修改 settings.xml,`<mirrors>`标签中增加以下内容
+```
+<mirror>
+  <id>alimaven</id>
+  <mirrorOf>central</mirrorOf>
+  <name>aliyun maven</name>
+  <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+</mirror>
 ```
 ### **[更改yum源为阿里云](http://blog.csdn.net/inslow/article/details/54177191)**
 
