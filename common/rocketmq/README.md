@@ -33,11 +33,17 @@ yum install apache-maven -y
 ### **[更改yum源为阿里云](http://blog.csdn.net/inslow/article/details/54177191)**
 
 - 首先备份系统自带yum源配置文件/etc/yum.repos.d/CentOS-Base.repo
+
     `mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup`
+
 - 下载ailiyun的yum源配置文件到/etc/yum.repos.d/
+
 `wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo`
+
 - 运行yum makecache生成缓存
+
 `yum makecache`
+
 - `yum -y update`
 
 ### **安装依赖**
@@ -52,7 +58,7 @@ yum install apache-maven -y
 ```
 cd /opt
 # 比较慢
-git clone -b develop https://github.com/apache/rocketmq.git
+git clone https://github.com/apache/rocketmq.git
 cd rocketmq
 # 打包过程可能会比较久
 mvn -Prelease-all -DskipTests clean install -U
@@ -73,9 +79,11 @@ JAVA_OPT_1="-server -Xms256m -Xmx256m -Xmn128m -XX:PermSize=64m -XX:MaxPermSize=
 
 ### **环境变量**
 - 设置环境变量：NAMESRV_ADDR  ,机器的ip,非容器ip
+
 `export NAMESRV_ADDR=127.0.0.1:9876`
 
 ### **重点:修改RocketMQ的 broker 的地址**
+
 `echo "brokerIP1=127.0.0.1" > broker.properties`
 
 ## **启动**
