@@ -6,7 +6,7 @@
 - 查看镜像
 `docker images`
 - 启动centos 镜像
-`docker run -t -i --hostname centos --name centos -p 9876:9876 -p 10911:10911 -p 10909:10909 -d centos /bin/bash`
+`docker run -t -i --net=host --hostname centos --name centos -p 9876:9876 -p 10911:10911 -p 10909:10909 -d centos /bin/bash`
 - 查看是否启动成功
 `docker ps -a`
 - 进入docker
@@ -88,23 +88,29 @@ JAVA_OPT_1="-server -Xms256m -Xmx256m -Xmn128m -XX:PermSize=64m -XX:MaxPermSize=
 
 ## **启动**
 - cd
+
 `cd /opt/rocketmq/distribution/target/apache-rocketmq`
 ### **启动服务mqnamesrv**
+
 - 启动
 `nohup sh bin/mqnamesrv &`
 - 查看日志
+
 `tail -f ~/logs/rocketmqlogs/namesrv.log`
 
 ### **启动服务Broker**
 
 - 查看hosts解析
+
 ```
 cat /etc/hosts
 # 127.0.0.1   localhost localhost.localdomain 
 ```
 - 启动
+
 `nohup sh bin/mqbroker -n localhost:9876 -c broker.properties &`
 - 查看日志
+
 `tail -f ~/logs/rocketmqlogs/broker.log`
 
 ### **测试发送与接收**
@@ -116,14 +122,16 @@ sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer
 # 输出:ConsumeMessageThread_%d Receive New Messages: [MessageExt...
 ```
 ### **停止服务**
+
 `sh bin/mqshutdown broker`
+
 `sh bin/mqshutdown namesrv`
 
 ## **docker镜像**
 - 提交一个运行中的容器为镜像
 `docker commit centos rocketmq`
 - 运行
-`docker run -t -i --hostname rocketmq --name rocketmq -p 9876:9876 -p 10911:10911 -p 10909:10909 -d rocketmq /bin/bash 
+`docker run -t -i --net=host --hostname rocketmq --name rocketmq -p 9876:9876 -p 10911:10911 -p 10909:10909 -d rocketmq /bin/bash 
 `
 
 ## 参考

@@ -48,7 +48,7 @@
             defaultZone: http://localhost:18001/eureka
     ```
   
-- **ribbon**  微服务默认使用ribbon负载均衡,在base-server模块pom中已经引入
+- **ribbon**  微服务默认使用ribbon负载均衡,在base-server模块pom中已经引入依赖,并在RestConfig中加入@LoadBalanced注解
 - **[config](common/base-server/README.md)**  在base-server模块pom中已经引入
 
 ## springBoot版本升级注意事项:

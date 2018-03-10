@@ -1,5 +1,8 @@
 package me.zuhr.demo.basis.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -11,6 +14,7 @@ import java.util.Properties;
  * @date 2018/3/9 00:54:14
  */
 public class SystemInfo {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     // 当前实例
     private static SystemInfo currentSystem = null;
     private InetAddress localHost = null;
@@ -19,7 +23,7 @@ public class SystemInfo {
         try {
             localHost = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
-            // TODO Auto-generated catch block
+            logger.error("请检查hosts文件,应该是没有加上主机名!");
             e.printStackTrace();
         }
     }
@@ -30,8 +34,9 @@ public class SystemInfo {
      * @return
      */
     public static SystemInfo getInstance() {
-        if (currentSystem == null)
+        if (currentSystem == null) {
             currentSystem = new SystemInfo();
+        }
         return currentSystem;
     }
 

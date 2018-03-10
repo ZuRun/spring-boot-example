@@ -1,3 +1,6 @@
+## SpringBootApplication
+## SpringCloudApplication 整合了@SpringBootApplication、@EnableDiscoveryClient、@EnableCircuitBreaker
+
 ## 销毁
 - 方法前加@PreDestroy
 

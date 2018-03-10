@@ -12,6 +12,7 @@
         <module>common</module>
         <module>server</module>
         <module>model-test</module>
+        <module>api-gateway</module>
     </modules>
 
     <properties>

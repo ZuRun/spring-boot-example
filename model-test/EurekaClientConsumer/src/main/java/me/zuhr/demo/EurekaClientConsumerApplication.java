@@ -1,15 +1,13 @@
 package me.zuhr.demo;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.SpringCloudApplication;
 
 /**
  * @author zurun
  * @date 2018/2/24 00:05:09
  */
-@EnableDiscoveryClient
-@SpringBootApplication
+@SpringCloudApplication
 public class EurekaClientConsumerApplication {
 //    放在base-server模块中实例化
 //    @Bean
