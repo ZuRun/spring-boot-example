@@ -70,5 +70,6 @@ sbDockerBuild server/discovery-microservice discovery-microservice 18001 18001
 sbDockerBuild server/config-server config-server 18031 18031 
 sbDockerBuild model-test/eureka-client-provider ecp 19021 19021
 sbDockerBuild model-test/eureka-client-consumer ecc 19011 19011
+sbDockerBuild api-gateway api-gateway 31001 31001
 
 ```
