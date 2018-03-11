@@ -1,19 +1,22 @@
 package me.zuhr.demo.server.restful;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.zuhr.demo.basis.model.Json;
+import me.zuhr.demo.basis.enumration.ServiceNameEnum;
+import me.zuhr.demo.basis.model.Result;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
 import java.util.Map;
 
 /**
  * RESTful 设计规范下,根据实际情况对RestTemplate的封装
  *
+ * @param <T>
  * @author zurun
  * @date 2018/2/24 17:42:56
  */
-public class MyRestTemplate extends RestTemplate {
+public class MyRestTemplate<T> extends RestTemplate {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public MyRestTemplate() {
@@ -22,25 +25,36 @@ public class MyRestTemplate extends RestTemplate {
 
     }
 
-    public <T> Json post(String url, Object request, Class<T> responseType, Object... uriVariables) {
-        Json json = postForObject(url, request, Json.class, uriVariables);
-        Object obj = json.getObj();
-        T t = objectMapper.convertValue(obj, responseType);
-
-        json.setObj(t);
-        return json;
+    public Result<T> postForObject(ServiceNameEnum serviceNameEnum, String uri, Object requestBody, Class<T> c, Object... uriVariables) {
+        Result<T> result = super.postForObject(createUrl(serviceNameEnum, uri), requestBody, Result.class, uriVariables);
+        result.setResult(objectMapper.convertValue(result.getResult(), c));
+        return result;
     }
 
-    public <T> Json post(String url, Object request, Class<T> responseType, Map<String, ?> uriVariables) {
-        Json json = postForObject(url, request, Json.class, uriVariables);
-        json.setObj(objectMapper.convertValue(json.getObj(), responseType));
-        return json;
+    public Result<T> postForObject(ServiceNameEnum serviceNameEnum, String uri, Object requestBody, Class<T> c, Map<String, ?> map) {
+        Result<T> result = super.postForObject(createUrl(serviceNameEnum, uri), requestBody, Result.class, map);
+        result.setResult(objectMapper.convertValue(result.getResult(), c));
+        return result;
     }
 
-    public <T> Json post(URI url, Object request, Class<T> responseType) {
-        Json json = postForObject(url, request, Json.class);
-        json.setObj(objectMapper.convertValue(json.getObj(), responseType));
-        return json;
+    public Result<T> getForObject(ServiceNameEnum serviceNameEnum, String uri, Class<T> c, Object... uriVariables) {
+        Result<T> result = super.getForObject(createUrl(serviceNameEnum, uri), Result.class, uriVariables);
+        result.setResult(objectMapper.convertValue(result.getResult(), c));
+        return result;
+    }
+
+    public Result<T> getForObject(ServiceNameEnum serviceNameEnum, String uri, Class<T> c, Map<String, ?> map) {
+        Result<T> result = super.getForObject(createUrl(serviceNameEnum, uri), Result.class, map);
+        result.setResult(objectMapper.convertValue(result.getResult(), c));
+        return result;
+    }
+
+    protected String createUrl(ServiceNameEnum serviceNameEnum, String uri) {
+        Assert.notNull(serviceNameEnum.getValue(), "ServiceName不能为null");
+        if (StringUtils.isNotBlank(uri) && !uri.startsWith("/")) {
+            uri = "/" + uri;
+        }
+        return "http://" + serviceNameEnum.getValue() + uri;
     }
 
 }

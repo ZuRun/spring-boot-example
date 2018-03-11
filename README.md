@@ -2,6 +2,8 @@
 
 ## 目录
 
+- **api-gateway** API网关
+
 - **common** : 被依赖的模块,非单独启动的服务
     - **[base-server](common/base-server/README.md)**   : 一般的微服务都需要依赖此模块
     - **[basis](common/basis/README.md)**   : 
@@ -12,11 +14,11 @@
 - **server**
     - **config-repo** : 配置文件
     - **[config-server](server/config-server/README.md)** : 配置服务,微服务从此服务中获取配置
-    - **discovery** : 服务治理(Eureka) 
+    - **discovery** : 服务治理(eureka-server) 
     - **web-service** : 没用上,测试的
 - **model-test** : 用来练习和测试的模块
-    - **ECS** : 模拟被请求的服务
-    - **ECC** : 模拟发送请求的服务
+    - **eureka-client-provider** : 模拟 服务提供方
+    - **eureka-client-consumer** : 模拟 服务消费者
 
 ## 约定
 - **模块的默认配置文件为application.yml** 

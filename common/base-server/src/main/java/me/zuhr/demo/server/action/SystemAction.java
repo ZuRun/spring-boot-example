@@ -16,7 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 public class SystemAction {
     @Value("${spring.application.name}")
     private String applicationName;
-    @RequestMapping("sysInfo")
+
+    @RequestMapping("info")
     public JSONObject info(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("HostName", SystemInfo.getInstance().getHostName());

@@ -5,9 +5,10 @@ package me.zuhr.demo.basis.enumration;
  * @date 2018/2/24 00:15:24
  */
 public enum ServiceNameEnum {
-
-    ECS("eureka-client-service"),
-    ECC("eureka-client-consumer");
+    // eureka-client-service
+    ECP("ecp"),
+    // eureka-client-consumer
+    ECC("ecc");
 
     private String value;
 
