@@ -519,7 +519,7 @@ public class RedisUtils<V, HM, HV> {
     }
 
     private abstract class AbstractTemplate<V> {
-        RedisTemplate redisTemplate;
+        public RedisTemplate redisTemplate;
         HashOperations hashOperations;
         ValueOperations valueOperations;
 

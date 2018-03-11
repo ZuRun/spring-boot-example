@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2018/3/11 12:21:25
  */
 @RestController
-@RequestMapping("ecc/hystrix")
+@RequestMapping("hystrix")
 public class HystrixAction extends BaseService {
 
     @GetMapping("/test1")

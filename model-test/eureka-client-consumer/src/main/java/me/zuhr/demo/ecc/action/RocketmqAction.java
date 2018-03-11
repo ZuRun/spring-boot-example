@@ -1,6 +1,9 @@
 package me.zuhr.demo.ecc.action;
 
+import me.zuhr.demo.basis.model.Result;
+import me.zuhr.demo.redis.utils.RedisUtils;
 import me.zuhr.demo.rocketmq.common.MyMQProducer;
+import me.zuhr.demo.std.BaseService;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.SendResult;
@@ -19,14 +22,24 @@ import java.util.UUID;
  * @date 2018/3/1 15:24:05
  */
 @RestController
-public class RocketmqAction {
+@RequestMapping("mq")
+public class RocketmqAction extends BaseService {
 
     @Autowired
     MyMQProducer producer;
 
-    @RequestMapping(value = "/mq", method = RequestMethod.GET)
+    @Autowired
+    RedisUtils redisUtils;
+
+    @RequestMapping(value = "/getNextMessage")
+    public Result getNextMessage() {
+        String message = (String) redisUtils.jackson2RedisTemplate.opsForList().leftPop("PushTopic");
+        return Result.ok("ok").addResult(message);
+    }
+
+    @RequestMapping(value = "/send", method = RequestMethod.GET)
     public String mq() throws UnsupportedEncodingException, InterruptedException, RemotingException, MQClientException, MQBrokerException {
-        String messageBody = "发了消息"+ UUID.randomUUID().toString();
+        String messageBody = "发了消息:" + UUID.randomUUID().toString();
         String message = new String(messageBody.getBytes(), "utf-8");
 
         //构建消息
@@ -39,7 +52,8 @@ public class RocketmqAction {
         System.out.println(resultStr);
         System.out.println("-----------------------");
 
-        producer.sendDelayMsg(msg,3);
+        // 发送延迟消息
+//        producer.sendDelayMsg(msg, 3);
 
         return resultStr;
     }
