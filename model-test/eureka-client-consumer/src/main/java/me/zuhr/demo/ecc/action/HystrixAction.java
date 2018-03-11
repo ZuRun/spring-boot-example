@@ -21,7 +21,7 @@ public class HystrixAction extends BaseService {
     @GetMapping("/test1")
     @HystrixCommand(fallbackMethod = "fallback")
     public Result<String> consumer() {
-        return restTemplate.getForObject(ServiceNameEnum.ECP, "ecp/hystrix/test1", String.class);
+        return restTemplate.getForObject(ServiceNameEnum.ECP, "hystrix/test1", String.class);
     }
 
     public Result<String> fallback() {

@@ -1,6 +1,5 @@
 package me.zuhr.demo.ecp.config;
 
-import me.zuhr.demo.basis.utils.SystemInfo;
 import me.zuhr.demo.redis.utils.RedisUtils;
 import me.zuhr.demo.rocketmq.common.AbstractRocketMqConsumer;
 import org.apache.rocketmq.client.exception.MQClientException;
@@ -58,7 +57,7 @@ public class RocketMqConfig {
             public boolean consumeMsg(MessageExt messageExt) {
                 String message = new String(messageExt.getBody());
                 logger.info(message);
-                redisUtils.jackson2RedisTemplate.opsForList().rightPush("PushTopic", message.concat(";Mac:").concat(SystemInfo.getInstance().getMac()));
+                redisUtils.jackson2RedisTemplate.opsForList().rightPush("PushTopic", message);
                 return true;
             }
         };
