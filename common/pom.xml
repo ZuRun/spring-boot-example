@@ -19,6 +19,7 @@
         <module>web</module>
         <module>rocketmq</module>
         <module>base-server</module>
+        <module>jpa</module>
     </modules>
 
 </project>
