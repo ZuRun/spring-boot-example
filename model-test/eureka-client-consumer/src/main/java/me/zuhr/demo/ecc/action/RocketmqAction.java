@@ -9,6 +9,8 @@ import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.exception.RemotingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +26,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("mq")
 public class RocketmqAction extends BaseService {
-
+private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     MyMQProducer producer;
 

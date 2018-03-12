@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import java.util.List;
 
 /**
  * @author zurun
@@ -27,6 +30,16 @@ public class RedisConfig {
     @Value("${spring.redis.password}")
     private String password;
 
+    /**
+     * 是否启用集群
+     */
+    @Value("${spring.redis.iscluster}")
+    private Boolean isluster;
+    /**
+     * Redis 集群的节点
+     */
+    @Value("${spring.redis.cluster.nodes}")
+    private List<String> nodes;
 
     /**
      * 连接redis的工厂类
@@ -35,7 +48,12 @@ public class RedisConfig {
      */
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
-        JedisConnectionFactory factory = new JedisConnectionFactory();
+        JedisConnectionFactory factory;
+        if (isluster) {
+            factory = new JedisConnectionFactory(new RedisClusterConfiguration(this.getNodes()));
+        } else {
+            factory = new JedisConnectionFactory();
+        }
         factory.setHostName(host);
         factory.setPort(port);
 //        factory.setTimeout(timeout);
@@ -173,4 +191,19 @@ public class RedisConfig {
         this.password = password;
     }
 
+    public List<String> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(List<String> nodes) {
+        this.nodes = nodes;
+    }
+
+    public Boolean getIsluster() {
+        return isluster;
+    }
+
+    public void setIsluster(Boolean isluster) {
+        this.isluster = isluster;
+    }
 }
