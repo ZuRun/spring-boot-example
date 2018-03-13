@@ -1,29 +1,15 @@
-# Spring Cloud Config Server,配置管理中心
-
-## 启用加密
-- [Oracle官网下载JCE](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html)
-- 将两个jar文件放到%JRE_HOME%\lib\security文件目录下
-> 如果安装了jdk，也将两个jar文件放到%JDK_HOME%\jre\lib\security文件目录下。(jdk8环境)
-> mac路径:`/Library/Java/JavaVirtualMachines/jdk1.8.0_151.jdk/Contents/Home/jre/lib/security
-- 暂时不用这个
-## 模块中使用
-- 添加依赖 base-server(依赖添加在此模块中了)
-
-## 客户端中bootstrap.yml模板
-```yaml
 # 更改server.port,application.name,cloud.config.name 即可
-
 server:
-  port: 19011
+  port: 19051
 spring:
   application:
     # spring.application.name必须要设置，服务消费者将通过该名称调用所提供的服务。
-    name: eureka-client-consumer
+    name: web-test
   cloud:
     # 使用配置中心
     config:
       # 配置了name,则配置文件名为:name-profile.yml/properties
-      name: ecc,redis
+      name: web-test
       # 开发环境
       profile: ${spring.profiles.active:dev}
       # 分支
@@ -44,5 +30,6 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:18001/eureka
-```
+      defaultZone: http://std-eureka-server:18001/eureka
+    #主动获取其他服务注册状态 的时间,默认60s
+    registry-fetch-interval-seconds: 5

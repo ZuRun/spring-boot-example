@@ -27,7 +27,6 @@
 - hosts文件增加:
     ```
     127.0.0.1 std-eureka-server
-    127.0.0.1 std-config-server
     ```
 
 ## 打包+Docker部署
@@ -45,7 +44,7 @@
     2. @EnableDiscoveryClient 等同于bootstrap.yml中的spring.cloud.config.discoveryenabled: true
 - **向Eureka服务器进行服务注册**
     ```yaml
-    #向Eureka服务器进行服务注册，这里可以声明多个Eureka服务器
+    #向Eureka服务器进行服务注册，这里可以声明多个Eureka服务器,用逗号隔开
     eureka:
         client:
           service-url:

@@ -23,6 +23,6 @@ public class MainAction {
 
     @RequestMapping("/main")
     public String main() {
-        return "test.html";
+        return "test";
     }
 }

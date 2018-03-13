@@ -30,7 +30,7 @@ public class TestAction {
     public String redis() {
         long beginStr = System.currentTimeMillis();
 //        for(int i=0;i<10;i++) {
-            String k1 = testService.test("k1");
+//            String k1 = testService.test("k1");
 //            String k2 = testService.test("k2");
 //            String k3 = testService.test("k3");
 //        }
