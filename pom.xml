@@ -13,6 +13,7 @@
         <module>server</module>
         <module>model-test</module>
         <module>api-gateway</module>
+        <module>basis-service</module>
     </modules>
 
     <properties>
@@ -21,6 +22,9 @@
         <java.version>1.8</java.version>
         <spring.boot.version>1.5.10.RELEASE</spring.boot.version>
         <druid-version>1.1.9</druid-version>
+        <email-version>1.5.1.RELEASE</email-version>
+        <fastjson-version>1.2.35</fastjson-version>
+        <jedis-version>2.9.0</jedis-version>
 
     </properties>
 

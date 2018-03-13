@@ -1,9 +1,11 @@
 # Spring Cloud Config Server,配置管理中心
 
 ## 启用加密
-- bootstrap.properties中
-
-    `encrypt.key=sang`
+- (Oracle官网下载JCE)[http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html]
+- 将两个jar文件放到%JRE_HOME%\lib\security文件目录下
+> 如果安装了jdk，也将两个jar文件放到%JDK_HOME%\jre\lib\security文件目录下。(jdk8环境)
+> mac路径:`/Library/Java/JavaVirtualMachines/jdk1.8.0_151.jdk/Contents/Home/jre/lib/security
+- 暂时不用这个
 ## 模块中使用
 - 添加依赖 base-server(依赖添加在此模块中了)
 

@@ -7,8 +7,10 @@
 - **common** : 被依赖的模块,非单独启动的服务
     - **[base-server](common/base-server/README.md)**   : 一般的微服务都需要依赖此模块
     - **[basis](common/basis/README.md)**   : 
+    - **email** : 发送邮件服务,建议需要发送邮件的都通过消息队列,由指定的服务统一发送邮件
+    - **[jpa](common/jpa/README.md)** : hibernate,使用了druid连接池
     - **redis**
-    - **rocketmq**
+    - **[rocketmq](common/rocketmq/README.md)** : 阿里的消息队列
     - **shiro**
     - **web**
 - **server**

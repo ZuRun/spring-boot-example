@@ -20,6 +20,7 @@
         <module>rocketmq</module>
         <module>base-server</module>
         <module>jpa</module>
+        <module>email</module>
     </modules>
 
 </project>

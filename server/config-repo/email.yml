@@ -1,0 +1,13 @@
+spring:
+    mail:
+       host: smtp.ym.163.com
+       username:  service@zuhr.me
+       password:
+       properties:
+          mail:
+            smtp:
+              #这样才能通过验证
+              auth: true
+              starttls:
+                  enable: true
+                  required: true
