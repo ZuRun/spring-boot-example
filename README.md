@@ -3,7 +3,7 @@
 ## 目录
 
 - **api-gateway** API网关
-
+- **[basis-service](basis-service/README.md)** : 打杂的服务
 - **common** : 被依赖的模块,非单独启动的服务
     - **[base-server](common/base-server/README.md)**   : 一般的微服务都需要依赖此模块
     - **[basis](common/basis/README.md)**   : 

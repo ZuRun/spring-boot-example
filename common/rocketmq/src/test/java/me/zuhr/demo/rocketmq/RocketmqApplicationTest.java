@@ -41,6 +41,7 @@ public class RocketmqApplicationTest {
     public void demoMqConsumer() throws MQClientException {
         DemoMqConsumer demoMqConsumer = new DemoMqConsumer(consumerGroup);
         demoMqConsumer.setNamesrvAddr(namesrvAddr);
+        // 单元测试执行此方法,正常情况不要执行,会重复执行
         demoMqConsumer.init();
 //        demoMqConsumer.start();
     }
