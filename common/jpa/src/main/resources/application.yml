@@ -94,14 +94,44 @@
 ###spring.datasource.xa.properties指定传递给XA data source的属性
 ###spring.datasource.url=jdbc:mysql://localhost:3306/test?user=root&password=root&useUnicode=true&characterEncoding=UTF8
 ##########################################
-spring.datasource.url=jdbc:mysql://5883133e3da2d.gz.cdb.myqcloud.com:14387/spring?useUnicode=true&characterEncoding=utf8
-spring.datasource.username=root
-spring.datasource.password=
-spring.datasource.driverClassName=com.mysql.jdbc.Driver
-spring.datasource.max-active=20
-spring.datasource.max-idle=8
-spring.datasource.min-idle=8
-spring.datasource.initial-size=10
+spring:
+  datasource:
+#    url=jdbc:
+#    username:
+#    password:
+#    driverClassName: com.mysql.jdbc.Driver
+#    max-active: 20
+#    max-idle: 8
+#    min-idle: 8
+#    initial-size: 10
+
+    ####### druid
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://5883133e3da2d.gz.cdb.myqcloud.com:14387/spring?useUnicode=true&characterEncoding=utf8
+    username: spring
+    password: zr123456
+    #最大活跃数
+    maxActive: 20
+    #初始化数量
+    initialSize: 1
+    #最大连接等待超时时间
+    maxWait: 60000
+    #打开PSCache，并且指定每个连接PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    #通过connectionProperties属性来打开mergeSql功能；慢SQL记录
+    #connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 1 from dual
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    #配置监控统计拦截的filters，去掉后监控界面sql将无法统计,'wall'用于防火墙
+    filters: stat, wall, log4j
+
 ##########################################
 ##SPring JPA配置信息
 ###spring.jpa.database指定目标数据库.
@@ -117,9 +147,15 @@ spring.datasource.initial-size=10
 ###spring.jpa.properties添加额外的属性到JPA provider.
 ###spring.jpa.show-sql是否开启sql的log，默认为: false
 ##########################################
-spring.jpa.database = MYSQL
-spring.jpa.show-sql = true
-spring.jpa.hibernate.ddl-auto = update
-spring.jpa.hibernate.naming-strategy = org.hibernate.cfg.ImprovedNamingStrategy
-spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5Dialect
-spring.freemarker.charset=UTF-8
+  jpa:
+    database: MYSQL
+    show-sql: true
+# 第一次创建表,后期更改实体不更新表
+    hibernate:
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+  freemarker:
+    charset:  UTF-8

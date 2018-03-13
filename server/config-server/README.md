@@ -1,10 +1,13 @@
 # Spring Cloud Config Server,配置管理中心
 
+## 启用加密
+- bootstrap.properties中
+
+    `encrypt.key=sang`
 ## 模块中使用
 - 添加依赖 base-server(依赖添加在此模块中了)
 
-## bootstrap.yml模板
-
+## 客户端中bootstrap.yml模板
 ```yaml
 # 更改server.port,application.name,cloud.config.name 即可
 

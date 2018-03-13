@@ -1,4 +1,4 @@
-package me.zuhr.demo.jpa.catTest;
+package me.zuhr.demo.jpa.cattest;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

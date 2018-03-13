@@ -1,4 +1,4 @@
-package me.zuhr.demo.jpa.catTest;
+package me.zuhr.demo.jpa.cattest;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

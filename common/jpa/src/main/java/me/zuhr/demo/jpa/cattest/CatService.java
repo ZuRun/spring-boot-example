@@ -1,9 +1,9 @@
-package me.zuhr.demo.jpa.catTest;
+package me.zuhr.demo.jpa.cattest;
+
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
-
-import org.springframework.stereotype.Service;
 
 @Service
 public class CatService {
