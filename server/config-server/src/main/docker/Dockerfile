@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-oraclejdk8:slim
+FROM registry.cn-hangzhou.aliyuncs.com/zurun/jdk-jce
 VOLUME /tmp
 ADD config-server-1.0-SNAPSHOT.jar app.jar
 RUN sh -c 'touch /app.jar'

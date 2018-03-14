@@ -1,6 +1,9 @@
 server:
   port: 18031
 
+encrypt:
+    key: xx
+
 #向Eureka服务器进行服务注册，这里可以声明多个Eureka服务器
 eureka:
   client:

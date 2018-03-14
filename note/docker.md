@@ -1,5 +1,8 @@
-## run
-- [修改hosts](http://blog.realjf.com/archives/62)
-`--add-host std-eureka-server:127.0.0.1 `
-- link 链接2个容器
+## 创建镜像 环境为jdk8+jce
+- 用途
+  启用加密功能,此镜像用于config-server
+### 步骤
+- 准备工作,准备文件,见docker文件夹
 
+- 创建镜像
+`docker build -t jdk-jce:latest .`
