@@ -2,7 +2,7 @@ spring:
     mail:
        host: smtp.ym.163.com
        username:  service@zuhr.me
-       password:
+       password: '{cipher}68cc6337acc3e95d2eb6abcef0cbddff9900e4c8cc3330e71ab7e13acc5ae3e0'
        properties:
           mail:
             smtp:

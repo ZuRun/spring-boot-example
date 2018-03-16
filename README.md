@@ -22,6 +22,19 @@
     - **eureka-client-provider** : 模拟 服务提供方
     - **eureka-client-consumer** : 模拟 服务消费者
 
+## 开始使用
+### 配置文件
+- 项目使用了配置中心,路径为:server/config-repo文件夹
+
+>  一般开发环境使用本地配置 , 生产或测试环境使用git/svn仓库,配置见application.yml(application-test.yml)
+
+- [配置加密](server/config-server/README.md)
+
+> 处于安全考虑,配置文件中密码等重要信息需要加密,配置中心的密钥也不建议直接放在配置文件中
+> 本项目密钥留空,项目启动的时候以启动参数的形式将密钥赋值
+>    生产环境可以使用脚本
+>    开发环境可以在dashboard中指定参数
+
 ## 约定
 - **模块的默认配置文件为application.yml** 
 - hosts文件增加:

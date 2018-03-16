@@ -110,7 +110,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://5883133e3da2d.gz.cdb.myqcloud.com:14387/spring?useUnicode=true&characterEncoding=utf8
     username: spring
-    password: zr123456
+    password: '{cipher}410c910d99d527c47f3deaa3ed1046922ff02340ba39f3b834d083205ecb1db2'
     #最大活跃数
     maxActive: 20
     #初始化数量

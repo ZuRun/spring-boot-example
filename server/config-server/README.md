@@ -9,10 +9,11 @@
 - 密钥需要配置在bootstrap中,application中无效
 `encrypt.key=密钥`
 - 访问 ip:port/encrypt/status,查看是否搭建成功
-- 配置文件的值如果是以{cipher}开头，表示该值是一个加密字符
+- 配置文件的值如果是以{cipher}开头，表示该值是一个加密字符.
+- 注意,加密字符在yml中需要加单引号,properties没有单引号
 - 获取加密字符或者解密
 
-访问/encrypt和/decrypt接口,使用post方法
+访问/encrypt 和/decrypt接口,使用post方法
 
 ## 模块中使用
 - 添加依赖 base-server(依赖添加在此模块中了)
