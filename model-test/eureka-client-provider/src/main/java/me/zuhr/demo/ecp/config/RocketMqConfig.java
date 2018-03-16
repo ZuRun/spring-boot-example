@@ -43,7 +43,7 @@ public class RocketMqConfig {
      */
     @Bean
     public AbstractRocketMqConsumer MqConsumer() throws MQClientException {
-        AbstractRocketMqConsumer rocketMqConsumer = new AbstractRocketMqConsumer(consumerGroup) {
+        AbstractRocketMqConsumer rocketMqConsumer = new AbstractRocketMqConsumer() {
             @Override
             public Map<String, Set<String>> subscribeTopicTags() {
                 Map<String, Set<String>> map = new HashMap<>();
@@ -61,7 +61,7 @@ public class RocketMqConfig {
                 return true;
             }
         };
-        rocketMqConsumer.setNamesrvAddr(namesrvAddr);
+//        rocketMqConsumer.setNamesrvAddr(namesrvAddr);
         return rocketMqConsumer;
     }
 }

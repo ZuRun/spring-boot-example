@@ -1,7 +1,8 @@
-package me.zuhr.demo.rocketmq;
+package me.zuhr.demo.basisserver.rocketmq;
 
 import me.zuhr.demo.rocketmq.common.AbstractRocketMqConsumer;
 import org.apache.rocketmq.common.message.MessageExt;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,29 +11,24 @@ import java.util.Set;
 
 /**
  * @author zurun
- * @date 2018/3/4 21:16:05
+ * @date 2018/3/17 00:58:50
  */
-public class DemoMqConsumer extends AbstractRocketMqConsumer {
+@Component
+public class LoggerRocketMqConsumer extends AbstractRocketMqConsumer{
 
-
-    /**
-     * Map<topic,Set<Tags>>
-     *
-     * @return
-     */
     @Override
     public Map<String, Set<String>> subscribeTopicTags() {
         Map<String, Set<String>> map = new HashMap<>();
         Set<String> tags = new HashSet<>();
-        tags.add("push");
-        map.put("PushTopic", tags);
+        tags.add("request");
+        map.put("log", tags);
         return map;
     }
 
     @Override
     public boolean consumeMsg(MessageExt messageExt) {
         byte[] bytes = messageExt.getBody();
-        System.out.println("--------------consumeMsg:");
+        System.out.println("--------------message:");
         System.out.println(new String(bytes));
         return true;
     }

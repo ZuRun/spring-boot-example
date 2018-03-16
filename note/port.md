@@ -6,6 +6,8 @@
 - email: 19929
 - api-gateway: 31001
 
+- basis-service: 18051
+
 
 
 

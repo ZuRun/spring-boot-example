@@ -10,6 +10,8 @@ import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
@@ -24,15 +26,20 @@ import java.util.Set;
  * @author zurun
  * @date 2018/3/2 15:42:40
  */
+@Configuration
 public abstract class AbstractRocketMqConsumer {
+
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     private DefaultMQPushConsumer mqPushConsumer;
 
-    public AbstractRocketMqConsumer(String consumerGroup) {
-        this.consumerGroup = consumerGroup;
-        mqPushConsumer = new DefaultMQPushConsumer(consumerGroup);
+    public AbstractRocketMqConsumer() {
     }
+
+//    public AbstractRocketMqConsumer(String consumerGroup) {
+//        this.consumerGroup = consumerGroup;
+////        mqPushConsumer = new DefaultMQPushConsumer(consumerGroup);
+//    }
 
 
     /**
@@ -55,10 +62,12 @@ public abstract class AbstractRocketMqConsumer {
     /**
      * 消费者的组名
      */
+    @Value("${apache.rocketmq.consumer.PushConsumer}")
     private String consumerGroup;
     /**
      * NameServer 地址
      */
+    @Value("${apache.rocketmq.namesrvAddr}")
     private String namesrvAddr;
     /**
      * 设置Consumer第一次启动是从队列头部开始消费还是队列尾部开始消费
@@ -81,6 +90,8 @@ public abstract class AbstractRocketMqConsumer {
 
     @PostConstruct
     public void init() throws MQClientException {
+        mqPushConsumer = new DefaultMQPushConsumer(consumerGroup);
+
         Assert.isTrue(!isStarted, "container already started.");
         this.isStarted = true;
 

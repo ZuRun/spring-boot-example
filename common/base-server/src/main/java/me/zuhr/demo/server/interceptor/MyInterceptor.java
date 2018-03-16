@@ -1,4 +1,4 @@
-package me.zuhr.demo.basis.interceptor;
+package me.zuhr.demo.server.interceptor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class MyInterceptor implements HandlerInterceptor {
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(MyInterceptor.class);
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
@@ -30,6 +30,7 @@ public class MyInterceptor implements HandlerInterceptor {
 
         return true;
     }
+
 
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
