@@ -1,8 +1,8 @@
 package me.zuhr.demo.ecp.config;
 
+import me.zuhr.demo.basis.enumration.ConsumerTag;
 import me.zuhr.demo.redis.utils.RedisUtils;
 import me.zuhr.demo.rocketmq.common.AbstractRocketMqConsumer;
-import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -42,15 +39,12 @@ public class RocketMqConfig {
      * 消费者
      */
     @Bean
-    public AbstractRocketMqConsumer MqConsumer() throws MQClientException {
-        AbstractRocketMqConsumer rocketMqConsumer = new AbstractRocketMqConsumer() {
+    public AbstractRocketMqConsumer MqConsumer() {
+        AbstractRocketMqConsumer rocketMqConsumer = new AbstractRocketMqConsumer(consumerGroup,namesrvAddr) {
+
             @Override
-            public Map<String, Set<String>> subscribeTopicTags() {
-                Map<String, Set<String>> map = new HashMap<>();
-                Set<String> tags = new HashSet<>();
-                tags.add("push");
-                map.put("PushTopic", tags);
-                return map;
+            public void subscribeTopicTags(Set<ConsumerTag> set) {
+                set.add(ConsumerTag.PUSH);
             }
 
             @Override
@@ -61,7 +55,6 @@ public class RocketMqConfig {
                 return true;
             }
         };
-//        rocketMqConsumer.setNamesrvAddr(namesrvAddr);
         return rocketMqConsumer;
     }
 }

@@ -1,6 +1,6 @@
 package me.zuhr.demo.rocketmq.config;
 
-import me.zuhr.demo.rocketmq.common.MyMQProducer;
+import me.zuhr.demo.rocketmq.common.RocketMqProducer;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -61,8 +61,8 @@ public class RocketmqConfig {
     }
 
     @Bean
-    public MyMQProducer myProducer(@Qualifier("mqProducer") DefaultMQProducer mqProducer) {
-        MyMQProducer myProducer = new MyMQProducer(mqProducer);
+    public RocketMqProducer myProducer(@Qualifier("mqProducer") DefaultMQProducer mqProducer) {
+        RocketMqProducer myProducer = new RocketMqProducer(mqProducer);
         return myProducer;
     }
 

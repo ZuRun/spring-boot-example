@@ -1,6 +1,7 @@
 package me.zuhr.demo.rocketmq.common;
 
-import org.apache.commons.lang3.StringUtils;
+import me.zuhr.demo.basis.enumration.ConsumerTag;
+import me.zuhr.demo.basis.mq.AbstractMqConsumer;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -10,15 +11,13 @@ import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.awt.*;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -26,49 +25,20 @@ import java.util.Set;
  * @author zurun
  * @date 2018/3/2 15:42:40
  */
-@Configuration
-public abstract class AbstractRocketMqConsumer {
+public abstract class AbstractRocketMqConsumer implements AbstractMqConsumer {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     private DefaultMQPushConsumer mqPushConsumer;
 
-    public AbstractRocketMqConsumer() {
-    }
-
-//    public AbstractRocketMqConsumer(String consumerGroup) {
-//        this.consumerGroup = consumerGroup;
-////        mqPushConsumer = new DefaultMQPushConsumer(consumerGroup);
-//    }
-
-
-    /**
-     * 需要订阅的 主题+标签
-     * <p>
-     * Map<topic,Set<Tags>>  PushTopic下指定Tag的消息
-     *
-     * @return
-     */
-    public abstract Map<String, Set<String>> subscribeTopicTags();
-
-    /**
-     * 收到的信息进行处理(消费)
-     *
-     * @param messageExt
-     * @return true表示成功, 否则失败
-     */
-    public abstract boolean consumeMsg(MessageExt messageExt);
-
     /**
      * 消费者的组名
      */
-    @Value("${apache.rocketmq.consumer.PushConsumer}")
-    private String consumerGroup;
+    protected String consumerGroup;
     /**
      * NameServer 地址
      */
-    @Value("${apache.rocketmq.namesrvAddr}")
-    private String namesrvAddr;
+    protected String namesrvAddr;
     /**
      * 设置Consumer第一次启动是从队列头部开始消费还是队列尾部开始消费
      * 如果非第一次启动，那么按照上次消费的位置继续消费
@@ -88,9 +58,41 @@ public abstract class AbstractRocketMqConsumer {
     private int delayLevelWhenNextConsume = 0;
 
 
+    public AbstractRocketMqConsumer() {
+    }
+
+    public AbstractRocketMqConsumer(String consumerGroup) {
+        this.consumerGroup = consumerGroup;
+    }
+
+    public AbstractRocketMqConsumer(String consumerGroup, String namesrvAddr) {
+        this.namesrvAddr = namesrvAddr;
+        this.consumerGroup = consumerGroup;
+    }
+
+
+    /**
+     * 需要订阅的 标签
+     * <p>
+     *
+     * @param set Set<Tags>  PushTopic下指定Tag的消息
+     * @return
+     */
+    @Override
+    public abstract void subscribeTopicTags(Set<ConsumerTag> set);
+
+    /**
+     * 收到的信息进行处理(消费)
+     *
+     * @param messageExt
+     * @return true表示成功, 否则失败
+     */
+    public abstract boolean consumeMsg(MessageExt messageExt);
+
     @PostConstruct
     public void init() throws MQClientException {
-        mqPushConsumer = new DefaultMQPushConsumer(consumerGroup);
+        Assert.notNull(consumerGroup, "未指定ConsumerGroup!");
+        mqPushConsumer = new DefaultMQPushConsumer(this.consumerGroup);
 
         Assert.isTrue(!isStarted, "container already started.");
         this.isStarted = true;
@@ -101,14 +103,16 @@ public abstract class AbstractRocketMqConsumer {
          * 解析需要订阅的主题标签
          *
          */
-        subscribeTopicTags().entrySet().forEach(e -> {
+        Set<ConsumerTag> set = new HashSet();
+        subscribeTopicTags(set);
+        set.forEach(e -> {
             try {
-                String rocketMqTopic = e.getKey();
-                Set<String> rocketMqTags = e.getValue();
-                Assert.notNull(rocketMqTags, "标签不为空,如需全部订阅,请使用*");
-                String tags = StringUtils.join(rocketMqTags, " || ");
-                mqPushConsumer.subscribe(rocketMqTopic, tags);
-                logger.info("subscribe, topic:{}, tags:{}", rocketMqTopic, tags);
+                String rocketMqTopic = e.getConsumerTopic().getTopic();
+                String rocketMqTag = e.getTag();
+                Assert.notNull(rocketMqTag, "标签不为空,如需全部订阅,请使用*");
+//                String tags = StringUtils.join(rocketMqTags, " || ");
+                mqPushConsumer.subscribe(rocketMqTopic, rocketMqTag);
+                logger.info("subscribe, topic:{}, tag:{}", rocketMqTopic, rocketMqTag);
             } catch (MQClientException ex) {
                 logger.error("consumer subscribe error", ex);
                 throw new IllegalComponentStateException("consumer subscribe error," + ex.getMessage());
@@ -124,7 +128,6 @@ public abstract class AbstractRocketMqConsumer {
 
         // 检查
         Assert.notNull(namesrvAddr, "未指定NameServer地址!");
-        Assert.notNull(consumerGroup, "未指定ConsumerGroup!");
 
         mqPushConsumer.start();
 
@@ -209,6 +212,7 @@ public abstract class AbstractRocketMqConsumer {
     }
 
     // get
+
     public String getConsumerGroup() {
         return consumerGroup;
     }

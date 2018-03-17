@@ -2,7 +2,7 @@ package me.zuhr.demo.ecc.action;
 
 import me.zuhr.demo.basis.model.Result;
 import me.zuhr.demo.redis.utils.RedisUtils;
-import me.zuhr.demo.rocketmq.common.MyMQProducer;
+import me.zuhr.demo.rocketmq.common.RocketMqProducer;
 import me.zuhr.demo.std.BaseService;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
@@ -28,7 +28,7 @@ import java.util.UUID;
 public class RocketmqAction extends BaseService {
 private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    MyMQProducer producer;
+    RocketMqProducer producer;
 
     @Autowired
     RedisUtils redisUtils;

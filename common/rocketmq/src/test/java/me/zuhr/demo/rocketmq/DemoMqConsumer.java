@@ -1,11 +1,9 @@
 package me.zuhr.demo.rocketmq;
 
+import me.zuhr.demo.basis.enumration.ConsumerTag;
 import me.zuhr.demo.rocketmq.common.AbstractRocketMqConsumer;
 import org.apache.rocketmq.common.message.MessageExt;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -15,19 +13,15 @@ import java.util.Set;
 public class DemoMqConsumer extends AbstractRocketMqConsumer {
 
 
-    /**
-     * Map<topic,Set<Tags>>
-     *
-     * @return
-     */
-    @Override
-    public Map<String, Set<String>> subscribeTopicTags() {
-        Map<String, Set<String>> map = new HashMap<>();
-        Set<String> tags = new HashSet<>();
-        tags.add("push");
-        map.put("PushTopic", tags);
-        return map;
+    public DemoMqConsumer(String consumerGroup) {
+        super(consumerGroup);
     }
+
+    @Override
+    public void subscribeTopicTags(Set<ConsumerTag> set) {
+        set.add(ConsumerTag.PUSH);
+    }
+
 
     @Override
     public boolean consumeMsg(MessageExt messageExt) {

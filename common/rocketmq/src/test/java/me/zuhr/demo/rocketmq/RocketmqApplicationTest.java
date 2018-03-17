@@ -1,6 +1,6 @@
 package me.zuhr.demo.rocketmq;
 
-import me.zuhr.demo.rocketmq.common.MyMQProducer;
+import me.zuhr.demo.rocketmq.common.RocketMqProducer;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
@@ -32,14 +32,14 @@ public class RocketmqApplicationTest {
     private String namesrvAddr;
 
     @Autowired
-    MyMQProducer producer;
+    RocketMqProducer producer;
 
     /**
      * 消费者
      */
     @Test
     public void demoMqConsumer() throws MQClientException {
-        DemoMqConsumer demoMqConsumer = new DemoMqConsumer();
+        DemoMqConsumer demoMqConsumer = new DemoMqConsumer(consumerGroup);
         demoMqConsumer.setNamesrvAddr(namesrvAddr);
         // 单元测试执行此方法,正常情况不要执行,会重复执行
         demoMqConsumer.init();

@@ -1,7 +1,7 @@
 package me.zuhr.demo.ecp.action;
 
 import me.zuhr.demo.redis.utils.RedisUtils;
-import me.zuhr.demo.rocketmq.common.MyMQProducer;
+import me.zuhr.demo.rocketmq.common.RocketMqProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,7 +14,7 @@ public class RocketmqAction {
     @Autowired
     RedisUtils redisUtils;
     @Autowired
-    MyMQProducer producer;
+    RocketMqProducer producer;
 
 
 }

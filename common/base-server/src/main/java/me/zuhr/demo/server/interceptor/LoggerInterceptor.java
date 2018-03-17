@@ -3,7 +3,7 @@ package me.zuhr.demo.server.interceptor;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import me.zuhr.demo.rocketmq.common.MyMQProducer;
+import me.zuhr.demo.rocketmq.common.RocketMqProducer;
 import me.zuhr.demo.server.entity.LoggerEntity;
 import me.zuhr.demo.server.util.LoggerUtils;
 import org.apache.rocketmq.common.message.Message;
@@ -28,7 +28,7 @@ public class LoggerInterceptor implements HandlerInterceptor {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    MyMQProducer producer;
+    RocketMqProducer producer;
 
     /**
      * 请求日志实体标识
@@ -102,6 +102,7 @@ public class LoggerInterceptor implements HandlerInterceptor {
 //                SerializerFeature.WriteMapNullValue));
         logger.warn(loggerEntity.toString());
 
-        producer.sendOneWayMsg(new Message("log","request",loggerEntity.getSessionId(), JSONObject.toJSONBytes(loggerEntity)));
+        // 此处keys不设置,因为请求日志没有唯一值, 设置的话会导致哈希冲突
+        logger.warn(producer.send(new Message("log","request", JSONObject.toJSONBytes(loggerEntity))).toString());
     }
 }

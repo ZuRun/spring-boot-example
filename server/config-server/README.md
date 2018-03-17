@@ -15,6 +15,10 @@
 
 访问/encrypt 和/decrypt接口,使用post方法
 
+## 优先级
+- 以redis说明
+
+redis.properties中配置为默认值,如果redis-dev.properties中也存在,则以redis-dev中为准
 ## 模块中使用
 - 添加依赖 base-server(依赖添加在此模块中了)
 

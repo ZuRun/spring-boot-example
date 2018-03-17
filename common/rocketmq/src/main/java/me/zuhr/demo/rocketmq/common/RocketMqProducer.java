@@ -1,5 +1,6 @@
 package me.zuhr.demo.rocketmq.common;
 
+import me.zuhr.demo.basis.mq.MqProducer;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
@@ -14,12 +15,12 @@ import java.util.Objects;
  * @author zurun
  * @date 2018/3/2 00:20:52
  */
-public class MyMQProducer {
+public class RocketMqProducer implements MqProducer{
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private DefaultMQProducer producer;
 
-    public MyMQProducer(DefaultMQProducer producer) {
+    public RocketMqProducer(DefaultMQProducer producer) {
         this.producer = producer;
     }
 
