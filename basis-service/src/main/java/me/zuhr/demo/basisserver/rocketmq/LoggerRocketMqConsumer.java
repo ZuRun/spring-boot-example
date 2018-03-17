@@ -1,10 +1,14 @@
 package me.zuhr.demo.basisserver.rocketmq;
 
+import com.alibaba.fastjson.JSONObject;
 import me.zuhr.demo.basis.enumration.ConsumerGroup;
 import me.zuhr.demo.basis.enumration.ConsumerTag;
+import me.zuhr.demo.basisserver.entity.RequestLogger;
+import me.zuhr.demo.basisserver.service.LoggerService;
 import me.zuhr.demo.rocketmq.common.AbstractRocketMqConsumer;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.message.MessageExt;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +23,8 @@ import java.util.Set;
  */
 @Component
 public class LoggerRocketMqConsumer extends AbstractRocketMqConsumer {
+    @Autowired
+    LoggerService loggerService;
 
     /**
      * NameServer 地址
@@ -30,7 +36,7 @@ public class LoggerRocketMqConsumer extends AbstractRocketMqConsumer {
     @Override
     @PostConstruct
     public void init() throws MQClientException {
-        super.namesrvAddr=this.namesrvAddr;
+        super.namesrvAddr = this.namesrvAddr;
         super.consumerGroup = ConsumerGroup.BasisServer.name();
         super.init();
     }
@@ -44,7 +50,10 @@ public class LoggerRocketMqConsumer extends AbstractRocketMqConsumer {
     public boolean consumeMsg(MessageExt messageExt) {
         byte[] bytes = messageExt.getBody();
         System.out.println("--------------message:");
-        System.out.println(new String(bytes));
+        String message = new String(bytes);
+        System.out.println(message);
+        RequestLogger requestLogger = JSONObject.parseObject(message, RequestLogger.class);
+        loggerService.saveRequestLogger(requestLogger);
         return true;
     }
 }

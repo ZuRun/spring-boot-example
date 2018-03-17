@@ -2,15 +2,9 @@ package me.zuhr.demo.server.entity;
 
 import java.io.Serializable;
 
+
 /**
- * 项目名称：HengYuLogger
- * 项目版本：V1.0
- * 包名称：com.hengyu.logger.entity
- * 创建人：yuqy
- * 创建时间：2017/3/28 15:57
- * 修改人：yuqy
- * 修改时间：2017/3/28 15:57
- * 修改备注：
+ * @author zurun
  */
 public class LoggerEntity implements Serializable {
     /**

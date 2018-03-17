@@ -10,7 +10,7 @@ spring:
     # 使用配置中心
     config:
       # 配置了name,则配置文件名为:name-profile.yml/properties
-      name: rocketmq
+      name: rocketmq,basis-service
       # 开发环境
       profile: ${spring.profiles.active:dev}
       # 分支
