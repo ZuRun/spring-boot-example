@@ -25,6 +25,8 @@
         <email-version>1.5.1.RELEASE</email-version>
         <fastjson-version>1.2.35</fastjson-version>
         <jedis-version>2.9.0</jedis-version>
+        <!--集成Lombok,让代码更简洁-->
+        <lombok-version>1.16.18</lombok-version>
 
     </properties>
 
@@ -70,6 +72,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>lombok-version</version>
+            <scope>provided</scope>
+        </dependency>
+
 
         <!-- 支持 @ConfigurationProperties 注解 -->
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-configuration-processor -->

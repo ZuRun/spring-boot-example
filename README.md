@@ -23,6 +23,10 @@
     - **eureka-client-consumer** : 模拟 服务消费者
 
 ## 开始使用
+### 本项目集成了[lombok](https://segmentfault.com/a/1190000011433462),让代码更简洁
+- ide需自行安装lombok插件
+- 常见使用场景:实体中使用@Data注解在类上,不需要getter、setter、toString方法了
+
 ### 配置文件
 - 项目使用了配置中心,路径为:server/config-repo文件夹
 
