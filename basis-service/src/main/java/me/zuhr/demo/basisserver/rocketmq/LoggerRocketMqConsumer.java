@@ -46,7 +46,7 @@ public class LoggerRocketMqConsumer extends AbstractRocketMqConsumer {
 
     @Override
     public void subscribeTopicTags(Set<ConsumerTag> set) {
-//        set.add(REQUEST);
+        set.add(REQUEST);
         set.add(EXCEPTION);
     }
 

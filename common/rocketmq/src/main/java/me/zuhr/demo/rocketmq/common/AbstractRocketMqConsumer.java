@@ -2,6 +2,7 @@ package me.zuhr.demo.rocketmq.common;
 
 import me.zuhr.demo.basis.enumration.ConsumerTag;
 import me.zuhr.demo.basis.mq.AbstractMqConsumer;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -16,10 +17,8 @@ import org.springframework.util.Assert;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.awt.*;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 /**
  * @author zurun
@@ -101,18 +100,43 @@ public abstract class AbstractRocketMqConsumer implements AbstractMqConsumer {
         mqPushConsumer.setMessageListener(new DefaultMessageListenerConcurrently());
         /**
          * 解析需要订阅的主题标签
-         *
+         *  直接用set是为了实现方法中写起来简单,虽然解析起来比较麻烦
          */
         Set<ConsumerTag> set = new HashSet();
         subscribeTopicTags(set);
+
+        /**
+         * mq订阅需要的格式为 tag1 || tag2 || tag3
+         * 先遍历set 将有相同的rocketMqTopic的rocketMqTag放在同一个set中
+         * Map<rocketMqTopic,Set<rocketMqTag>>
+         */
+        Map<String, Set<String>> map = new HashMap<>();
         set.forEach(e -> {
+
+            String rocketMqTopic = e.getConsumerTopic().getTopic();
+            String rocketMqTag = e.getTag();
+            Assert.notNull(rocketMqTag, "标签不为空,如需全部订阅,请使用*");
+            if (map.containsKey(rocketMqTopic)) {
+                map.get(rocketMqTopic).add(rocketMqTag);
+            } else {
+                HashSet<String> tags = new HashSet<String>();
+                tags.add(rocketMqTag);
+                map.put(rocketMqTopic, tags);
+            }
+//
+
+        });
+
+        /**
+         * 格式化为需要的subscription expression
+         */
+        map.entrySet().forEach(e -> {
             try {
-                String rocketMqTopic = e.getConsumerTopic().getTopic();
-                String rocketMqTag = e.getTag();
-                Assert.notNull(rocketMqTag, "标签不为空,如需全部订阅,请使用*");
-//                String tags = StringUtils.join(rocketMqTags, " || ");
-                mqPushConsumer.subscribe(rocketMqTopic, rocketMqTag);
-                logger.info("subscribe, topic:{}, tag:{}", rocketMqTopic, rocketMqTag);
+                String rocketMqTopic = e.getKey();
+                Set tagsSet = e.getValue();
+                String rocketMqTags = StringUtils.join(tagsSet, " || ");
+                mqPushConsumer.subscribe(rocketMqTopic, rocketMqTags);
+                logger.info("subscribe, topic:{}, tag:{}", rocketMqTopic, rocketMqTags);
             } catch (MQClientException ex) {
                 logger.error("consumer subscribe error", ex);
                 throw new IllegalComponentStateException("consumer subscribe error," + ex.getMessage());
