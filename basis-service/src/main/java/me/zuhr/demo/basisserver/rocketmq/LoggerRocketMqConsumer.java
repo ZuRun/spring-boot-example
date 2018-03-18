@@ -3,8 +3,9 @@ package me.zuhr.demo.basisserver.rocketmq;
 import com.alibaba.fastjson.JSONObject;
 import me.zuhr.demo.basis.enumration.ConsumerGroup;
 import me.zuhr.demo.basis.enumration.ConsumerTag;
+import me.zuhr.demo.basisserver.entity.ExceptionLogger;
 import me.zuhr.demo.basisserver.entity.RequestLogger;
-import me.zuhr.demo.basisserver.service.LoggerService;
+import me.zuhr.demo.basisserver.service.BasisLoggerService;
 import me.zuhr.demo.rocketmq.common.AbstractRocketMqConsumer;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.message.MessageExt;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.Set;
 
+import static me.zuhr.demo.basis.enumration.ConsumerTag.*;
+
 /**
  * 记录日志
  *
@@ -24,7 +27,7 @@ import java.util.Set;
 @Component
 public class LoggerRocketMqConsumer extends AbstractRocketMqConsumer {
     @Autowired
-    LoggerService loggerService;
+    BasisLoggerService loggerService;
 
     /**
      * NameServer 地址
@@ -43,17 +46,30 @@ public class LoggerRocketMqConsumer extends AbstractRocketMqConsumer {
 
     @Override
     public void subscribeTopicTags(Set<ConsumerTag> set) {
-        set.add(ConsumerTag.REQUEST);
+//        set.add(REQUEST);
+        set.add(EXCEPTION);
     }
 
     @Override
     public boolean consumeMsg(MessageExt messageExt) {
         byte[] bytes = messageExt.getBody();
-        System.out.println("--------------message:");
         String message = new String(bytes);
+        System.out.println("--------------message:");
         System.out.println(message);
-        RequestLogger requestLogger = JSONObject.parseObject(message, RequestLogger.class);
-        loggerService.saveRequestLogger(requestLogger);
+
+
+        // 异常信息记录
+        if (messageExt.getTags().equals(EXCEPTION.getTag())) {
+            ExceptionLogger exceptionLogger = JSONObject.parseObject(message, ExceptionLogger.class);
+            loggerService.saveExceptionLogger(exceptionLogger);
+        }
+        // 请求日志记录
+        else if (messageExt.getTags().equals(REQUEST.getTag())) {
+            RequestLogger requestLogger = JSONObject.parseObject(message, RequestLogger.class);
+            loggerService.saveRequestLogger(requestLogger);
+        }
+
+
         return true;
     }
 }

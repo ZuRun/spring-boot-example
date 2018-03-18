@@ -25,7 +25,7 @@ public class HelloAction {
 
     @RequestMapping(value = "/configTest", method = RequestMethod.GET)
     public String configTest() {
-        return "configTest:"+configTest;
+        return "configTest:" + configTest;
     }
 
     @RequestMapping(value = "/hi", method = RequestMethod.GET)
@@ -40,7 +40,7 @@ public class HelloAction {
 
     @RequestMapping(value = "/zdy", method = RequestMethod.GET)
     public String zdy() {
-        throw new MyRestServerException("");
+        throw new MyRestServerException("zdy异常");
     }
 
     @RequestMapping("/handle")

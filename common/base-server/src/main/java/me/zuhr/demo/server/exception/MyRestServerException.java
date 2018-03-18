@@ -15,5 +15,9 @@ public class MyRestServerException extends ServiceException {
         super(message);
     }
 
+    public MyRestServerException(int errCode,String message) {
+        super(errCode,message);
+    }
+
 
 }
