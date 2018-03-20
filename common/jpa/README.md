@@ -5,3 +5,10 @@
 ## 连接池
 ### druid
 访问地址: `/druid`
+
+## [自动生成时间和修改者](https://www.jianshu.com/p/14cb69646195)
+### 使用
+- 首先申明实体类，需要在类上加上注解@EntityListeners(AuditingEntityListener.class)，
+- 其次在application启动类中加上注解EnableJpaAuditing
+- 同时在需要的字段上加上@CreatedDate、@CreatedBy、@LastModifiedDate、@LastModifiedBy等注解。
+- CreatedBy和LastModifiedBy另外处理,见blog
