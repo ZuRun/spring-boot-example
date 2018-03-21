@@ -1,9 +1,9 @@
 package me.zuhr.demo.server.global;
 
 import com.alibaba.fastjson.JSONObject;
-import me.zuhr.demo.basis.exception.ServiceException;
+import me.zuhr.demo.basis.exception.BusinessException;
 import me.zuhr.demo.basis.model.Result;
-import me.zuhr.demo.server.exception.MyRestServerException;
+import me.zuhr.demo.server.exception.RestBusinessException;
 import me.zuhr.demo.server.service.LoggerService;
 import me.zuhr.demo.server.util.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +26,19 @@ public class GlobalExceptionHandler {
 
 
     /**
-     * 自定义异常
+     * rest请求接收到的业务异常
      *
      * @param e
      * @return 用于springBoot框架返回response的body
      * @ResponseStatus 返回的 HTTP 状态码为 HttpStatus.ZDY(自定义状态码 590)
      */
     @ResponseStatus(HttpStatus.ZDY)
-    @ExceptionHandler(MyRestServerException.class)
-    public Result handlerException(MyRestServerException e) {
+    @ExceptionHandler(RestBusinessException.class)
+    public String handlerException(RestBusinessException e) {
         sendLog(e);
-        return Result.fail(9, e.getMessage());
+        return e.getMessage();
     }
+
 
     /**
      * 自定义异常
@@ -47,8 +48,8 @@ public class GlobalExceptionHandler {
      * @ResponseStatus 返回的 HTTP 状态码为 HttpStatus.ZDY(自定义状态码 590)
      */
     @ResponseStatus(HttpStatus.ZDY)
-    @ExceptionHandler(ServiceException.class)
-    public Result handlerException(ServiceException e) {
+    @ExceptionHandler(BusinessException.class)
+    public Result handlerException(BusinessException e) {
         sendLog(e);
         return Result.fail(e.getErrCode(), e.getMessage());
     }
@@ -68,12 +69,12 @@ public class GlobalExceptionHandler {
     }
 
 
-    private void sendLog(ServiceException e) {
+    private void sendLog(BusinessException e) {
         e.printStackTrace();
         JSONObject json = new JSONObject();
         json.put("errCode", e.getErrCode());
         json.put("errMsg", e.getMessage());
-        json.put("exceptionName", e.getClass().getName());
+        json.put("exceptionName", e.getClass().getSimpleName());
         byte[] body = json.toJSONString().getBytes();
         loggerService.sendExceptionLog(body);
     }
@@ -83,7 +84,7 @@ public class GlobalExceptionHandler {
         JSONObject json = new JSONObject();
         json.put("errCode", 1);
         json.put("errMsg", e.getMessage());
-        json.put("exceptionName", e.getClass().getName());
+        json.put("exceptionName", e.getClass().getSimpleName());
         json.put("stackTrace", ExceptionUtil.getExceptionDetail(e));
         json.put("causeBy", ExceptionUtil.getCauseBy(e));
         byte[] body = json.toJSONString().getBytes();

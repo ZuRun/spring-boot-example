@@ -1,6 +1,8 @@
 package me.zuhr.demo.server.restful;
 
-import me.zuhr.demo.server.exception.MyRestClientResponseException;
+import me.zuhr.demo.server.exception.RestBusinessException;
+import me.zuhr.demo.server.exception.RestHttpClientException;
+import me.zuhr.demo.server.exception.RestHttpServerException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -55,19 +57,19 @@ public class MyResponseErrorHandler implements ResponseErrorHandler {
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
         HttpStatus statusCode = getHttpStatusCode(response);
+        // 自定义的业务异常
         if (statusCode == HttpStatus.ZDY) {
-            System.out.println("自定义状态码");
-            return;
+            throw new RestBusinessException(new String(getResponseBody(response), getCharset(response)));
         }
         switch (statusCode.series()) {
             case CLIENT_ERROR: {
-                // 4开头的状态码
-                throw new MyRestClientResponseException(statusCode, response.getStatusText(),
+                // 4开头的状态码HttpClientErrorException HttpServerErrorException
+                throw new RestHttpClientException(statusCode, response.getStatusText(),
                         response.getHeaders(), getResponseBody(response), getCharset(response));
             }
             case SERVER_ERROR: {
                 // 5开头的状态码
-                throw new MyRestClientResponseException(statusCode, response.getStatusText(),
+                throw new RestHttpServerException(statusCode, response.getStatusText(),
                         response.getHeaders(), getResponseBody(response), getCharset(response));
             }
             default:
