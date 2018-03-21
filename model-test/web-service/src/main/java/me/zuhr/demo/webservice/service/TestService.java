@@ -1,4 +1,4 @@
-package me.zuhr.demo.service;
+package me.zuhr.demo.webservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -46,6 +46,8 @@
     127.0.0.1 std-eureka-server
     ```
   因为注册比较慢,开发环境可以将所有serviceName都加到hosts中
+- Assert
+    项目中的断言使用org.springframework.util.Assert,原生的在生产环境会默认忽略
 
 ## 打包+Docker部署
 ### [打包](http://blog.csdn.net/Ser_Bad/article/details/78433340)

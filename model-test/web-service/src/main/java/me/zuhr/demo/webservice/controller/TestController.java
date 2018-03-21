@@ -1,6 +1,6 @@
-package me.zuhr.demo.action;
+package me.zuhr.demo.webservice.controller;
 
-import me.zuhr.demo.service.TestService;
+import me.zuhr.demo.webservice.service.TestService;
 import me.zuhr.demo.basis.utils.ByteUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/test")
-public class TestAction {
+public class TestController {
     @Autowired
     TestService testService;
 

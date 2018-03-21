@@ -1,4 +1,4 @@
-package me.zuhr.demo.ecp.action;
+package me.zuhr.demo.ecp.controller;
 
 import me.zuhr.demo.basis.exception.BusinessException;
 import me.zuhr.demo.server.exception.RestBusinessException;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2018/3/21 01:51:34
  */
 @RestController
-public class ExceptionAction {
+public class ExceptionController {
 
     @RequestMapping("/exception")
     public String exception() throws Exception {

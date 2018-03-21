@@ -1,4 +1,4 @@
-package me.zuhr.demo.ecc.action;
+package me.zuhr.demo.ecc.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import me.zuhr.demo.basis.enumration.ServiceNameEnum;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2018/3/9 01:31:37
  */
 @RestController
-public class SysAction {
+public class SysController {
     @Autowired
     MyRestTemplate restTemplate;
 

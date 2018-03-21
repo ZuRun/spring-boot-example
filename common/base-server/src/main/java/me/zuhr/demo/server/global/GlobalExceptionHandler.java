@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
 
 
     /**
-     * rest请求接收到的业务异常
+     * rest请求接收到的业务异常,直接继续向调用方抛出
      *
      * @param e
      * @return 用于springBoot框架返回response的body
@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
 
 
     /**
-     * 自定义异常
+     * 自定义业务异常
      *
      * @param e
      * @return 用于springBoot框架返回response的body
@@ -59,7 +59,7 @@ public class GlobalExceptionHandler {
      *
      * @param e
      * @return 用于springBoot框架返回response的body
-     * @ResponseStatus 返回的 HTTP 状态码为 HttpStatus.ZDY(自定义状态码 590)
+     * @ResponseStatus 返回的 HTTP 状态码为 500
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)

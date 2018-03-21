@@ -1,4 +1,4 @@
-package me.zuhr.demo.ecp.action;
+package me.zuhr.demo.ecp.controller;
 
 import me.zuhr.demo.server.exception.RestBusinessException;
 import me.zuhr.demo.server.restful.MyResponseEntity;
@@ -16,7 +16,7 @@ import java.util.Map;
  * @date 2018/2/23 23:50:54
  */
 @RestController
-public class HelloAction {
+public class HelloController {
     @Value("${server.port}")
     private int serverPort;
     @Value("${configServerTest}")

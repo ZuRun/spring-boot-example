@@ -1,4 +1,4 @@
-package me.zuhr.demo.ecc.action;
+package me.zuhr.demo.ecc.controller;
 
 import me.zuhr.demo.basis.enumration.ServiceNameEnum;
 import me.zuhr.demo.server.restful.MyRestTemplate;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2018/3/21 01:51:34
  */
 @RestController
-public class ExceptionAction {
+public class ExceptionController {
     @Autowired
     MyRestTemplate restTemplate;
 

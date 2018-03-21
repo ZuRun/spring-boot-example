@@ -1,6 +1,7 @@
 package me.zuhr.demo.action;
 
 import me.zuhr.demo.DemoApplication;
+import me.zuhr.demo.webservice.controller.TestController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class TestActionTest {
 
     @Autowired
-    TestAction testAction;
+    TestController testAction;
 
     @Test
     public void test(){

@@ -1,4 +1,4 @@
-package me.zuhr.demo.wxapp.action;
+package me.zuhr.demo.wxapp.controller;
 
 import me.zuhr.demo.wxapp.service.LoginService;
 import org.slf4j.Logger;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2018/3/19 12:26:54
  */
 @RestController
-public class Login {
+public class LoginController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     LoginService loginService;

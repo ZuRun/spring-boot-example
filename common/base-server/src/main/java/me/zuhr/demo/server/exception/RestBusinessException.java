@@ -11,7 +11,6 @@ import me.zuhr.demo.basis.exception.BusinessException;
  * @date 2018/2/25 13:19:15
  */
 public class RestBusinessException extends BusinessException {
-    private static final long serialVersionUID = -19999999999802L;
 
     public RestBusinessException(String message) {
         super(message);

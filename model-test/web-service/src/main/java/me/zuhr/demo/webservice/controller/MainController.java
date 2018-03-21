@@ -1,4 +1,4 @@
-package me.zuhr.demo.action;
+package me.zuhr.demo.webservice.controller;
 
 import me.zuhr.demo.basis.config.ConfigBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @date 2018/2/11 10:34:37
  */
 @Controller
-public class MainAction {
+public class MainController {
     @Autowired
     ConfigBean configBean;
 

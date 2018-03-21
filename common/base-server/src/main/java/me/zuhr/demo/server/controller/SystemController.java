@@ -1,4 +1,4 @@
-package me.zuhr.demo.server.action;
+package me.zuhr.demo.server.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import me.zuhr.demo.basis.utils.SystemInfo;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2018/3/9 00:59:04
  */
 @RestController
-public class SystemAction {
+public class SystemController {
     @Value("${spring.application.name}")
     private String applicationName;
 

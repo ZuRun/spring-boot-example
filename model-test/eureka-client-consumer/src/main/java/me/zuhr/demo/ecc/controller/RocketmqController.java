@@ -1,4 +1,4 @@
-package me.zuhr.demo.ecc.action;
+package me.zuhr.demo.ecc.controller;
 
 import me.zuhr.demo.basis.model.Result;
 import me.zuhr.demo.redis.utils.RedisUtils;
@@ -25,7 +25,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("mq")
-public class RocketmqAction extends BaseService {
+public class RocketmqController extends BaseService {
 private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     RocketMqProducer producer;

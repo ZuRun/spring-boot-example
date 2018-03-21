@@ -1,7 +1,5 @@
-package me.zuhr.demo.ecc.action;
+package me.zuhr.demo.ecp.controller;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import me.zuhr.demo.basis.enumration.ServiceNameEnum;
 import me.zuhr.demo.basis.model.Result;
 import me.zuhr.demo.std.BaseService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,15 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("hystrix")
-public class HystrixAction extends BaseService {
+public class HystrixController extends BaseService {
 
     @GetMapping("/test1")
-    @HystrixCommand(fallbackMethod = "fallback")
     public Result<String> consumer() {
-        return restTemplate.getForObject(ServiceNameEnum.ECP, "hystrix/test1", String.class);
+        return Result.ok("调用成功!").addResult("哈哈哈");
     }
 
-    public Result<String> fallback() {
-        return Result.fail("fallback");
-    }
 }

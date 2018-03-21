@@ -1,4 +1,4 @@
-package me.zuhr.demo.ecc.action;
+package me.zuhr.demo.ecc.controller;
 
 import me.zuhr.demo.basis.enumration.ServiceNameEnum;
 import me.zuhr.demo.server.restful.MyRestTemplate;
@@ -17,7 +17,7 @@ import java.util.Map;
  * @date 2018/2/24 00:09:39
  */
 @RestController
-public class HelloAction {
+public class HelloController {
     @Autowired
     HelloService helloService;
 
