@@ -58,6 +58,7 @@ public class MyResponseErrorHandler implements ResponseErrorHandler {
     public void handleError(ClientHttpResponse response) throws IOException {
         HttpStatus statusCode = getHttpStatusCode(response);
         // 自定义的业务异常
+//        response.getHeaders().getFirst(HttpHeader.ExceptionType.)
         if (statusCode == HttpStatus.ZDY) {
             throw new RestBusinessException(new String(getResponseBody(response), getCharset(response)));
         }

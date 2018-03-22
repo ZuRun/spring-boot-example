@@ -33,4 +33,4 @@ eureka:
     service-url:
       defaultZone: http://std-eureka-server:18001/eureka
     #主动获取其他服务注册状态 的时间,默认60s
-    registry-fetch-interval-seconds: 5
+    registryFetchIntervalSeconds: 5
