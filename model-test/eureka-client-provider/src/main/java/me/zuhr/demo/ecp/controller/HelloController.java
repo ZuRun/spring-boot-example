@@ -1,6 +1,6 @@
 package me.zuhr.demo.ecp.controller;
 
-import me.zuhr.demo.server.exception.RestBusinessException;
+import me.zuhr.demo.basis.exception.BusinessException;
 import me.zuhr.demo.server.restful.MyResponseEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +40,7 @@ public class HelloController {
 
     @RequestMapping(value = "/zdy", method = RequestMethod.GET)
     public String zdy() {
-        throw new RestBusinessException("zdy异常");
+        throw new BusinessException("zdy异常");
     }
 
     @RequestMapping("/handle")

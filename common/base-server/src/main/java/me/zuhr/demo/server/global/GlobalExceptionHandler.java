@@ -1,10 +1,10 @@
 package me.zuhr.demo.server.global;
 
 import com.alibaba.fastjson.JSONObject;
-import me.zuhr.demo.basis.constants.MyHttpHeader;
-import me.zuhr.demo.basis.enumration.HttpHeader;
 import me.zuhr.demo.basis.exception.BusinessException;
 import me.zuhr.demo.basis.model.Result;
+import me.zuhr.demo.server.constants.MyHttpHeader;
+import me.zuhr.demo.server.enumration.HttpHeader;
 import me.zuhr.demo.server.exception.RestBusinessException;
 import me.zuhr.demo.server.service.LoggerService;
 import me.zuhr.demo.server.util.ExceptionUtil;
@@ -17,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
@@ -49,11 +48,11 @@ public class GlobalExceptionHandler extends AbstractErrorController {
      * @ResponseStatus 返回的 HTTP 状态码为 HttpStatus.ZDY(自定义状态码 590)
      */
     @ExceptionHandler(RestBusinessException.class)
-    public ResponseEntity<Result> handlerException(RestBusinessException e) {
+    public ResponseEntity<String> handlerException(RestBusinessException e) {
         sendLog(e);
 
-        HttpHeaders headers = getHeaders(HttpHeader.ExceptionType.BUSINESS);
-        return new ResponseEntity(Result.fail(e.getMessage()), headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        HttpHeaders headers = getHeaders(e.getExceptionType());
+        return new ResponseEntity(e.getMessage(), headers, HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 
@@ -65,7 +64,6 @@ public class GlobalExceptionHandler extends AbstractErrorController {
      * @return 用于springBoot框架返回response的body
      * @ResponseStatus 返回的 HTTP 状态码为 HttpStatus.ZDY(自定义状态码 590)
      */
-    @ResponseStatus(HttpStatus.ZDY)
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Result> handlerException(BusinessException e) {
         sendLog(e);

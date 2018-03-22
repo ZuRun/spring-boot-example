@@ -75,4 +75,3 @@
 - **[config](common/base-server/README.md)**  在base-server模块pom中已经引入
 
 ## springBoot版本升级注意事项:
-- common/basis模块下的org.springframework.http.HttpStatus文件检查下是否需要更新

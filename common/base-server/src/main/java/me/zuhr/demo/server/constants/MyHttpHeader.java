@@ -1,4 +1,7 @@
-package me.zuhr.demo.basis.constants;
+package me.zuhr.demo.server.constants;
+
+import me.zuhr.demo.server.restful.MyResponseErrorHandler;
+import org.springframework.http.client.ClientHttpResponse;
 
 /**
  * @author zurun
@@ -18,5 +21,6 @@ public interface MyHttpHeader {
      * @return
      */
     String getHeaderValue();
+
 
 }

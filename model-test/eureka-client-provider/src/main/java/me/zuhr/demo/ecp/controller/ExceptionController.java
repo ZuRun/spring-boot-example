@@ -1,7 +1,6 @@
 package me.zuhr.demo.ecp.controller;
 
 import me.zuhr.demo.basis.exception.BusinessException;
-import me.zuhr.demo.server.exception.RestBusinessException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +28,7 @@ public class ExceptionController {
 
     @RequestMapping("/restBusinessException")
     public String restBusinessException() {
-        throw new RestBusinessException("rest接受业务异常!RestBusinessException");
+        return "restBusinessException";
+//        throw new RestBusinessException("rest接受业务异常!RestBusinessException");
     }
 }
