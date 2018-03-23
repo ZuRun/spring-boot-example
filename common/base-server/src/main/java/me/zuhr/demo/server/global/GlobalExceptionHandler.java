@@ -5,6 +5,7 @@ import me.zuhr.demo.basis.exception.BusinessException;
 import me.zuhr.demo.basis.model.Result;
 import me.zuhr.demo.server.constants.MyHttpHeader;
 import me.zuhr.demo.server.enumration.HttpHeader;
+import me.zuhr.demo.server.exception.AbstractRestHttpException;
 import me.zuhr.demo.server.exception.RestException;
 import me.zuhr.demo.server.service.LoggerService;
 import me.zuhr.demo.server.util.ExceptionUtil;
@@ -56,6 +57,18 @@ public class GlobalExceptionHandler extends AbstractErrorController {
 
     }
 
+    /**
+     * 接受的respone没有Exception-Type请求头
+     *
+     * @param e
+     * @return
+     */
+    public ResponseEntity<AbstractRestHttpException> handlerException(AbstractRestHttpException e){
+        sendLog(e);
+        HttpHeaders headers = createHeaders(HttpHeader.ExceptionType.UNKNOWN);
+        return new ResponseEntity(e.getMessage(), headers, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
     /**
      * 自定义业务异常
@@ -83,7 +96,7 @@ public class GlobalExceptionHandler extends AbstractErrorController {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Result> handlerException(Exception e) {
         sendLog(e);
-        HttpHeaders headers = createHeaders(HttpHeader.ExceptionType.BUSINESS);
+        HttpHeaders headers = createHeaders(HttpHeader.ExceptionType.Exception);
         return new ResponseEntity(Result.fail(e.getMessage()), headers, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

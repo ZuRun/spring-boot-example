@@ -1,6 +1,9 @@
 package me.zuhr.demo.ecp.controller;
 
+import me.zuhr.demo.basis.enumration.ServiceNameEnum;
 import me.zuhr.demo.basis.exception.BusinessException;
+import me.zuhr.demo.server.restful.MyRestTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class ExceptionController {
+    @Autowired
+    MyRestTemplate restTemplate;
 
     @RequestMapping("/exception")
     public String exception() throws Exception {
@@ -28,7 +33,7 @@ public class ExceptionController {
 
     @RequestMapping("/restBusinessException")
     public String restBusinessException() {
-        return "restBusinessException";
+        return restTemplate.getForObject("http://" + ServiceNameEnum.ECC.getValue() + "/businessException", String.class);
 //        throw new RestBusinessException("rest接受业务异常!RestBusinessException");
     }
 }

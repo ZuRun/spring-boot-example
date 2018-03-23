@@ -47,19 +47,19 @@ public interface HttpHeader {
                 throw new RestException(this, msg);
             }
         },
-        RestBusiness {
+        Exception {
             @Override
             public boolean handleError(String msg) {
                 throw new RestException(this, msg);
             }
         },
         /**
-         * 未知异常
+         * 未知异常,一般是第三方接口？
          */
         UNKNOWN {
             @Override
             public boolean handleError(String msg) {
-                return false;
+                throw new RestException(this, msg);
             }
         };
 
