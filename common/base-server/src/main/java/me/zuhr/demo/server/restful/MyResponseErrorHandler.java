@@ -59,9 +59,6 @@ public class MyResponseErrorHandler implements ResponseErrorHandler {
         HttpStatus statusCode = getHttpStatusCode(response);
         byte[] responseBodyBytes = getResponseBody(response);
         Charset charset = getCharset(response);
-        if (charset == null) {
-            charset = Charset.defaultCharset();
-        }
         // body转为String
         String body = responseBodyBytes.length == 0 ? null : new String(responseBodyBytes, charset);
 
@@ -79,12 +76,12 @@ public class MyResponseErrorHandler implements ResponseErrorHandler {
             case CLIENT_ERROR: {
                 // 4开头的状态码HttpClientErrorException HttpServerErrorException
                 throw new RestHttpClientException(statusCode, response.getStatusText(),
-                        response.getHeaders(), getResponseBody(response), getCharset(response));
+                        response.getHeaders(), responseBodyBytes, charset);
             }
             case SERVER_ERROR: {
                 // 5开头的状态码
                 throw new RestHttpServerException(statusCode, response.getStatusText(),
-                        response.getHeaders(), getResponseBody(response), getCharset(response));
+                        response.getHeaders(), responseBodyBytes, charset);
             }
             default:
                 throw new RestClientException("Unknown status code [" + statusCode + "]");
@@ -128,6 +125,7 @@ public class MyResponseErrorHandler implements ResponseErrorHandler {
     protected Charset getCharset(ClientHttpResponse response) {
         HttpHeaders headers = response.getHeaders();
         MediaType contentType = headers.getContentType();
-        return (contentType != null ? contentType.getCharset() : null);
+        // 没有使用默认charset,不要返回null
+        return (contentType != null ? contentType.getCharset() : Charset.defaultCharset());
     }
 }

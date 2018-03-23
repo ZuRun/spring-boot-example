@@ -11,7 +11,7 @@ import java.nio.charset.Charset;
  * @author zurun
  * @date 2018/3/21 00:44:08
  */
-public class RestHttpClientException extends AbstractRestException {
+public class RestHttpClientException extends AbstractRestHttpException {
 
 
     public RestHttpClientException(HttpStatus statusCode, String statusText,

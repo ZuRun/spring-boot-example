@@ -1,6 +1,5 @@
 package me.zuhr.demo.server.exception;
 
-import me.zuhr.demo.basis.exception.BusinessException;
 import me.zuhr.demo.server.enumration.HttpHeader;
 
 /**
@@ -11,10 +10,10 @@ import me.zuhr.demo.server.enumration.HttpHeader;
  * @author zurun
  * @date 2018/2/25 13:19:15
  */
-public class RestBusinessException extends BusinessException {
+public class RestException extends AbstractRestException {
     private HttpHeader.ExceptionType exceptionType;
 
-    public RestBusinessException(HttpHeader.ExceptionType exceptionType, String message) {
+    public RestException(HttpHeader.ExceptionType exceptionType, String message) {
         super(message);
         this.exceptionType = exceptionType;
     }

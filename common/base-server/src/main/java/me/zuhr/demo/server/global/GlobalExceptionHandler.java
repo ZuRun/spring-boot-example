@@ -5,7 +5,7 @@ import me.zuhr.demo.basis.exception.BusinessException;
 import me.zuhr.demo.basis.model.Result;
 import me.zuhr.demo.server.constants.MyHttpHeader;
 import me.zuhr.demo.server.enumration.HttpHeader;
-import me.zuhr.demo.server.exception.RestBusinessException;
+import me.zuhr.demo.server.exception.RestException;
 import me.zuhr.demo.server.service.LoggerService;
 import me.zuhr.demo.server.util.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,11 +47,11 @@ public class GlobalExceptionHandler extends AbstractErrorController {
      * @return 用于springBoot框架返回response的body
      * @ResponseStatus 返回的 HTTP 状态码为 HttpStatus.ZDY(自定义状态码 590)
      */
-    @ExceptionHandler(RestBusinessException.class)
-    public ResponseEntity<String> handlerException(RestBusinessException e) {
+    @ExceptionHandler(RestException.class)
+    public ResponseEntity<String> handlerException(RestException e) {
         sendLog(e);
 
-        HttpHeaders headers = getHeaders(e.getExceptionType());
+        HttpHeaders headers = createHeaders(e.getExceptionType());
         return new ResponseEntity(e.getMessage(), headers, HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
@@ -67,7 +67,7 @@ public class GlobalExceptionHandler extends AbstractErrorController {
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Result> handlerException(BusinessException e) {
         sendLog(e);
-        HttpHeaders headers = getHeaders(HttpHeader.ExceptionType.BUSINESS);
+        HttpHeaders headers = createHeaders(HttpHeader.ExceptionType.BUSINESS);
 
         return new ResponseEntity(Result.fail(e.getErrCode(), e.getMessage()), headers, HttpStatus.INTERNAL_SERVER_ERROR);
 
@@ -83,7 +83,7 @@ public class GlobalExceptionHandler extends AbstractErrorController {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Result> handlerException(Exception e) {
         sendLog(e);
-        HttpHeaders headers = getHeaders(HttpHeader.ExceptionType.BUSINESS);
+        HttpHeaders headers = createHeaders(HttpHeader.ExceptionType.BUSINESS);
         return new ResponseEntity(Result.fail(e.getMessage()), headers, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -93,7 +93,7 @@ public class GlobalExceptionHandler extends AbstractErrorController {
      * @param httpHeader
      * @return
      */
-    private HttpHeaders getHeaders(MyHttpHeader httpHeader) {
+    private HttpHeaders createHeaders(MyHttpHeader httpHeader) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         headers.add(httpHeader.getHeaderName(), httpHeader.getHeaderValue());

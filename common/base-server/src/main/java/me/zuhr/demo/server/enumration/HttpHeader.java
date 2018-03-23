@@ -2,7 +2,7 @@ package me.zuhr.demo.server.enumration;
 
 
 import me.zuhr.demo.server.constants.HttpHeaderException;
-import me.zuhr.demo.server.exception.RestBusinessException;
+import me.zuhr.demo.server.exception.RestException;
 
 /**
  * 当response返回http状态码为400或500的时候
@@ -44,13 +44,13 @@ public interface HttpHeader {
              */
             @Override
             public boolean handleError(String msg) {
-                throw new RestBusinessException(this, msg);
+                throw new RestException(this, msg);
             }
         },
         RestBusiness {
             @Override
             public boolean handleError(String msg) {
-                throw new RestBusinessException(this, msg);
+                throw new RestException(this, msg);
             }
         },
         /**
