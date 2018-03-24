@@ -2,7 +2,9 @@ package me.zuhr.demo.server.enumration;
 
 
 import me.zuhr.demo.server.constants.HttpHeaderException;
-import me.zuhr.demo.server.exception.RestException;
+import me.zuhr.demo.server.exception.RestBusinessException;
+import me.zuhr.demo.server.exception.RestUnhandledException;
+import org.springframework.util.StringUtils;
 
 /**
  * 当response返回http状态码为400或500的时候
@@ -11,28 +13,27 @@ import me.zuhr.demo.server.exception.RestException;
  * @author zurun
  * @date 2018/3/22 23:17:28
  */
-public interface HttpHeader {
+public enum HttpHeader {
     /**
      * 自定义的HttpHeader的属性名
      */
-    enum HeaderName {
-        ExceptionType("Exception-Type");
+    EXCEPTION_TYPE_HEADER("Exception-Type");
+    private String value;
 
-        private String value;
+    HttpHeader(String value) {
+        this.value = value;
+    }
 
-        HeaderName(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
+    public String getValue() {
+        return value;
     }
 
     /**
-     * 头名为:Exception-Type,记录异常类型
+     * response请求头名为:EXCEPTION-Type,记录异常类型
+     *
+     * @author zurun
      */
-    enum ExceptionType implements HttpHeaderException {
+    public enum ExceptionType implements HttpHeaderException {
         /**
          * 业务异常
          */
@@ -44,28 +45,32 @@ public interface HttpHeader {
              */
             @Override
             public boolean handleError(String msg) {
-                throw new RestException(this, msg);
+                throw new RestBusinessException(this, msg);
             }
         },
-        Exception {
+        /**
+         * 一般在exception中接的异常,也就是未单独处理的异常
+         */
+        UNHANDLED {
             @Override
             public boolean handleError(String msg) {
-                throw new RestException(this, msg);
+                throw new RestUnhandledException(this, msg);
             }
         },
         /**
          * 未知异常,一般是第三方接口？
+         * response中没有Exception-Type请求头
          */
         UNKNOWN {
             @Override
             public boolean handleError(String msg) {
-                throw new RestException(this, msg);
+                throw new RestUnhandledException(this, msg);
             }
         };
 
         @Override
         public String getHeaderName() {
-            return HeaderName.ExceptionType.value;
+            return EXCEPTION_TYPE_HEADER.getValue();
         }
 
         @Override
@@ -73,7 +78,30 @@ public interface HttpHeader {
             return this.name();
         }
 
+        /**
+         * 根据name获取枚举常量
+         * 不要用valueOf方法,valueOf方法中如果没找到会抛异常
+         *
+         * @param name
+         * @return
+         */
+        public static ExceptionType getByName(String name) {
+            if (StringUtils.isEmpty(name)) {
+                return null;
+            }
+            for (ExceptionType exceptionType : values()) {
+                if (exceptionType.getHeaderValue().equals(name)) {
+                    return exceptionType;
+                }
+            }
+            return null;
+        }
+
     }
 
+    public static void main(String[] args) {
+        System.out.println(ExceptionType.valueOf("ss"));
+        System.out.println(ExceptionType.valueOf("UNKNOWN"));
+    }
 
 }

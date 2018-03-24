@@ -40,7 +40,6 @@
 >    开发环境可以在dashboard中指定参数
 
 ## 约定
-- **模块的默认配置文件为application.yml** 
 - hosts文件增加:
     ```
     127.0.0.1 std-eureka-server
@@ -48,7 +47,17 @@
   因为注册比较慢,开发环境可以将所有serviceName都加到hosts中
 - Assert
     项目中的断言使用org.springframework.util.Assert,原生的在生产环境会默认忽略
+    
+- **微服务通信**
+   约定微服务之间通信,成功则返回需要的数据,异常则直接抛业务异常,框架会返回[Result](common/basis/src/main/java/me/zuhr/demo/basis/model/Result.java)实体
 
+- **[异常处理](note/Exception.md)**
+  - [项目异常继承关系](https://www.processon.com/view/link/5ab60ee8e4b027675e3854b9),密码boot
+  - 项目默认业务异常为BusinessException,自定义业务异常需要继承此异常
+  - 通过control的请求,抛的异常都将在GlobalExceptionHandler中被处理,所以业务中尽量不要加try.catch 
+  - 被调用的微服务抛的异常,框架调用方在[MyResponseErrorHandler](common/base-server/src/main/java/me/zuhr/demo/server/restful/MyResponseErrorHandler.java)中根据相应策略进行处理
+  - rest请求返回400和500可能会抛RestException和AbstractRestHttpException异常,调用方可根据实际情况捕获
+  
 ## 打包+Docker部署
 ### [打包](http://blog.csdn.net/Ser_Bad/article/details/78433340)
 ### [Docker部署](http://blog.csdn.net/u011699931/article/details/70226504)

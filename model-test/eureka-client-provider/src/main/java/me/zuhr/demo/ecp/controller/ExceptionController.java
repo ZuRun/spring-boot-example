@@ -2,6 +2,7 @@ package me.zuhr.demo.ecp.controller;
 
 import me.zuhr.demo.basis.enumration.ServiceNameEnum;
 import me.zuhr.demo.basis.exception.BusinessException;
+import me.zuhr.demo.ecp.constants.ErrorCode;
 import me.zuhr.demo.server.restful.MyRestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,8 @@ public class ExceptionController {
 
     @RequestMapping("/runtimeException")
     public String runtimeException() {
-        throw new RuntimeException("运行异常!runtimeException");
+        throw new BusinessException(ErrorCode.ecp.ECP_DEF_ERROR);
+//        throw new RuntimeException("运行异常!runtimeException");
     }
 
     @RequestMapping("/businessException")

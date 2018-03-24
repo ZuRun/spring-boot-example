@@ -62,9 +62,9 @@ public class MyResponseErrorHandler implements ResponseErrorHandler {
         // body转为String
         String body = responseBodyBytes.length == 0 ? null : new String(responseBodyBytes, charset);
 
-        // 自定义的 业务异常类型 请求头
-        String exceptionTypeValue = response.getHeaders().getFirst(HttpHeader.HeaderName.ExceptionType.getValue());
-        HttpHeader.ExceptionType exceptionType = HttpHeader.ExceptionType.valueOf(exceptionTypeValue);
+        // 自定义的 异常类型 请求头
+        String exceptionTypeValue = response.getHeaders().getFirst(HttpHeader.EXCEPTION_TYPE_HEADER.getValue());
+        HttpHeader.ExceptionType exceptionType = HttpHeader.ExceptionType.getByName(exceptionTypeValue);
         if (exceptionType != null) {
             // 如果是项目中定义的异常类型,执行相应的策略,如果返回true,不在执行后续检查
             if (exceptionType.handleError(body)) {
