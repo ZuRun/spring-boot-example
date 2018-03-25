@@ -49,11 +49,11 @@ public class LoggerEntity implements Serializable {
     /**
      * 请求时间
      */
-    private Long createTime;
+    private Long requestCreateTime;
     /**
      * 接口返回时间
      */
-    private Long returnTime;
+    private Long responseReturnTime;
 
     /**
      * 请求时httpStatusCode代码，如：200,400,404等

@@ -6,7 +6,9 @@ import me.zuhr.demo.jpa.base.AbstractHibernateEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * @author zurun
@@ -64,13 +66,13 @@ public class RequestLogger extends AbstractHibernateEntity {
     /**
      * 请求时间
      */
-    @Column(name = "create_time", insertable = false)
-    private Timestamp createTime;
+    @Column(name = "request_create_time", insertable = true)
+    private Timestamp requestCreateTime;
     /**
      * 接口返回时间
      */
-    @Column(name = "return_time")
-    private String returnTime;
+    @Column(name = "response_return_time")
+    private Timestamp responseReturnTime;
 
     /**
      * 请求时httpStatusCode代码，如：200,400,404等
@@ -83,4 +85,9 @@ public class RequestLogger extends AbstractHibernateEntity {
     @Column(name = "time_consuming")
     private int timeConsuming;
 
+    /**
+     * 忽略修改时间
+     */
+    @Transient
+    private Date lastModifiedTime;
 }

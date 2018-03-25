@@ -62,7 +62,7 @@ public class LoggerInterceptor implements HandlerInterceptor {
         //设置sessionId
         logger.setSessionId(sessionId);
         //设置请求开始时间
-        logger.setCreateTime(System.currentTimeMillis());
+        logger.setRequestCreateTime(System.currentTimeMillis());
         //设置请求实体到request内，方面afterCompletion方法调用
         request.setAttribute(LOGGER_ENTITY, logger);
         return true;
@@ -92,9 +92,9 @@ public class LoggerInterceptor implements HandlerInterceptor {
         //获取本次请求日志实体
         LoggerEntity loggerEntity = (LoggerEntity) request.getAttribute(LOGGER_ENTITY);
         //设置请求时间差
-        loggerEntity.setTimeConsuming(currentTime - loggerEntity.getCreateTime());
+        loggerEntity.setTimeConsuming(currentTime - loggerEntity.getRequestCreateTime());
         //设置返回时间
-        loggerEntity.setReturnTime(currentTime);
+        loggerEntity.setResponseReturnTime(currentTime);
         //设置返回错误码
         loggerEntity.setHttpStatusCode(status + "");
         //服务端地址,用来区分机器
