@@ -3,6 +3,7 @@ package me.zuhr.demo.server.service;
 import com.alibaba.fastjson.JSONObject;
 import me.zuhr.demo.basis.enumration.ConsumerTag;
 import me.zuhr.demo.basis.enumration.ConsumerTopic;
+import me.zuhr.demo.basis.utils.JvmUtils;
 import me.zuhr.demo.rocketmq.common.RocketMqProducer;
 import me.zuhr.demo.server.entity.LoggerEntity;
 import org.apache.rocketmq.common.message.Message;
@@ -29,7 +30,8 @@ public class LoggerService {
     public void sendExceptionLog(byte[] body) {
         // 此处keys不设置,因为请求日志没有唯一值, 设置的话会导致哈希冲突
         producer.sendOneWayMsg(new Message(ConsumerTopic.LOG.getTopic(), ConsumerTag.EXCEPTION.getTag(), body));
-
+        // jvm
+        JvmUtils.setNull(producer);
     }
 
     /**
@@ -41,6 +43,7 @@ public class LoggerService {
     public void sendRequestLog(LoggerEntity loggerEntity) {
         // 此处keys不设置,因为请求日志没有唯一值, 设置的话会导致哈希冲突
         producer.sendOneWayMsg(new Message(ConsumerTopic.LOG.getTopic(), ConsumerTag.REQUEST.getTag(), JSONObject.toJSONBytes(loggerEntity)));
-
+        // jvm
+        JvmUtils.setNull(loggerEntity);
     }
 }

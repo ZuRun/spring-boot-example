@@ -56,7 +56,7 @@
   - 项目默认业务异常为BusinessException,自定义业务异常需要继承此异常
   - 通过control的请求,抛的异常都将在GlobalExceptionHandler中被处理,所以业务中尽量不要加try.catch 
   - 被调用的微服务抛的异常,框架调用方在[MyResponseErrorHandler](common/base-server/src/main/java/me/zuhr/demo/server/restful/MyResponseErrorHandler.java)中根据相应策略进行处理
-  - rest请求返回400和500可能会抛RestException和AbstractRestHttpException异常,调用方可根据实际情况捕获
+  - rest请求返回400和500可能会抛AbstractRestServerException和AbstractRestHttpException异常,调用方可根据实际情况捕获
   
 ## 打包+Docker部署
 ### [打包](http://blog.csdn.net/Ser_Bad/article/details/78433340)

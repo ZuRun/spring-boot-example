@@ -8,6 +8,7 @@ import me.zuhr.demo.server.util.LoggerUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,6 +28,8 @@ public class LoggerInterceptor implements HandlerInterceptor {
 
     @Autowired
     LoggerService loggerService;
+    @Value("${spring.application.name}")
+    private String serverName;
 
     /**
      * 请求日志实体标识
@@ -94,11 +97,17 @@ public class LoggerInterceptor implements HandlerInterceptor {
         loggerEntity.setReturnTime(currentTime);
         //设置返回错误码
         loggerEntity.setHttpStatusCode(status + "");
+        //服务端地址,用来区分机器
+        loggerEntity.setLocalAddr(request.getLocalAddr());
+        //服务端端口号,用来区分机器
+        loggerEntity.setLocalPort(request.getLocalPort());
+        //微服务名
+        loggerEntity.setServerName(serverName);
         //设置返回值
 //        loggerEntity.setReturnData(JSON.toJSONString(request.getAttribute(LoggerUtils.LOGGER_RETURN),
 //                SerializerFeature.DisableCircularReferenceDetect,
 //                SerializerFeature.WriteMapNullValue));
-        logger.warn(loggerEntity.toString());
+        logger.info(loggerEntity.toString());
         loggerService.sendRequestLog(loggerEntity);
     }
 }
