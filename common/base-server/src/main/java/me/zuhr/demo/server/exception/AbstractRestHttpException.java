@@ -14,7 +14,6 @@ import java.nio.charset.Charset;
 public abstract class AbstractRestHttpException extends AbstractRestException {
     private static final String DEFAULT_CHARSET = "ISO-8859-1";
 
-    protected final HttpStatus statusCode;
 
     protected final int rawStatusCode;
 
@@ -28,8 +27,7 @@ public abstract class AbstractRestHttpException extends AbstractRestException {
 
     public AbstractRestHttpException(HttpStatus statusCode, String statusText,
                                      HttpHeaders responseHeaders, byte[] responseBody, Charset responseCharset) {
-        super(new String(responseBody, responseCharset));
-        this.statusCode = statusCode;
+        super(statusCode,new String(responseBody, responseCharset));
         this.rawStatusCode = statusCode.value();
         this.statusText = statusText;
         this.responseHeaders = responseHeaders;

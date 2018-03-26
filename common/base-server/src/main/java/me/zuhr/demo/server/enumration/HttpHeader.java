@@ -4,6 +4,7 @@ package me.zuhr.demo.server.enumration;
 import me.zuhr.demo.server.constants.HttpHeaderException;
 import me.zuhr.demo.server.exception.RestBusinessException;
 import me.zuhr.demo.server.exception.RestUnhandledException;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 
 /**
@@ -40,12 +41,13 @@ public enum HttpHeader {
         BUSINESS {
             /**
              * 直接抛出RestBusinessException异常,内容不做处理
+             * @param statusCode
              * @param msg
              * @return
              */
             @Override
-            public boolean handleError(String msg) {
-                throw new RestBusinessException(this, msg);
+            public boolean handleError(HttpStatus statusCode, String msg) {
+                throw new RestBusinessException(statusCode, this, msg);
             }
         },
         /**
@@ -53,8 +55,8 @@ public enum HttpHeader {
          */
         UNHANDLED {
             @Override
-            public boolean handleError(String msg) {
-                throw new RestUnhandledException(this, msg);
+            public boolean handleError(HttpStatus statusCode, String msg) {
+                throw new RestUnhandledException(statusCode, this, msg);
             }
         },
         /**
@@ -63,8 +65,8 @@ public enum HttpHeader {
          */
         UNKNOWN {
             @Override
-            public boolean handleError(String msg) {
-                throw new RestUnhandledException(this, msg);
+            public boolean handleError(HttpStatus statusCode, String msg) {
+                throw new RestUnhandledException(statusCode, this, msg);
             }
         };
 

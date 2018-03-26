@@ -17,12 +17,23 @@ package me.zuhr.demo.basis.constants;
  */
 public interface ErrorCode {
     enum common implements IMessage {
+        DEFAULT_ERROR_CODE(1, "请求失败!"),
         /**
          * 无效的错误码
          */
         INVALID_ERROR_CODE(2, "无效的错误码"),
-
-        DEFAULT_ERROR_CODE(1, "默认错误信息");
+        /**
+         * 默认Result.fail错误码
+         */
+        DEFAULT_FAIL_CODE(10, "失败!"),
+        /**
+         * 默认业务异常码
+         */
+        DEFAULT_BUSINESS_EXCEPTION_CODE(11, "请求失败!"),
+        /**
+         * 默认非业务异常码
+         */
+        DEFAULT_EXCEPTION_CODE(12, "请求失败!");
 
         private int errCode;
         private String errMsg;

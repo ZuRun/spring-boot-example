@@ -1,6 +1,7 @@
 package me.zuhr.demo.server.exception;
 
 import me.zuhr.demo.server.enumration.HttpHeader;
+import org.springframework.http.HttpStatus;
 
 /**
  * 发送rest请求后,服务端返回异常且有Exception-Type请求头,接收方需要直接抛此异常,body为接收到的body
@@ -13,8 +14,8 @@ import me.zuhr.demo.server.enumration.HttpHeader;
 public abstract class AbstractRestServerException extends AbstractRestException {
     private HttpHeader.ExceptionType exceptionType;
 
-    public AbstractRestServerException(HttpHeader.ExceptionType exceptionType, String message) {
-        super(message);
+    public AbstractRestServerException(HttpStatus statusCode, HttpHeader.ExceptionType exceptionType, String message) {
+        super(statusCode, message);
         this.exceptionType = exceptionType;
     }
 

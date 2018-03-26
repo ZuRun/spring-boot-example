@@ -35,7 +35,7 @@ public class ExceptionController {
 
     @RequestMapping("/restBusinessException")
     public String restBusinessException() {
-        return restTemplate.getForObject("http://" + ServiceNameEnum.ECC.getValue() + "/businessException", String.class);
+        return restTemplate.getForObject("http://" + ServiceNameEnum.ECC.getValue() + "/exception", String.class);
 //        throw new RestBusinessException("rest接受业务异常!RestBusinessException");
     }
 }

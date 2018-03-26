@@ -31,7 +31,7 @@ public class LoggerService {
         // 此处keys不设置,因为请求日志没有唯一值, 设置的话会导致哈希冲突
         producer.sendOneWayMsg(new Message(ConsumerTopic.LOG.getTopic(), ConsumerTag.EXCEPTION.getTag(), body));
         // jvm
-        JvmUtils.setNull(producer);
+        JvmUtils.setNull(body);
     }
 
     /**

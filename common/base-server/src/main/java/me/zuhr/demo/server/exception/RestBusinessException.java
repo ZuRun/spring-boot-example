@@ -1,6 +1,7 @@
 package me.zuhr.demo.server.exception;
 
 import me.zuhr.demo.server.enumration.HttpHeader;
+import org.springframework.http.HttpStatus;
 
 /**
  * 发送rest请求后,服务端返回异常且Exception-Type请求头为BUSINESS,接收方需要直接抛此异常,body为接收到的body
@@ -13,7 +14,7 @@ import me.zuhr.demo.server.enumration.HttpHeader;
 public class RestBusinessException extends AbstractRestServerException {
 
 
-    public RestBusinessException(HttpHeader.ExceptionType exceptionType, String message) {
-        super(exceptionType, message);
+    public RestBusinessException(HttpStatus statusCode, HttpHeader.ExceptionType exceptionType, String message) {
+        super(statusCode,exceptionType, message);
     }
 }

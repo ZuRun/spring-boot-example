@@ -31,6 +31,11 @@ public class ExceptionLogger extends AbstractHibernateEntity {
      */
     @Column(name = "exception_name")
     private String exceptionName;
+    /**
+     * 服务名
+     */
+    @Column(name = "server_name")
+    private String serverName;
 
     /**
      * 根本导致原因

@@ -26,7 +26,7 @@ public class BusinessException extends RuntimeException {
 
     public BusinessException(String errMsg) {
         super(errMsg);
-        errCode = ErrorCode.common.DEFAULT_ERROR_CODE;
+        errCode = ErrorCode.common.DEFAULT_BUSINESS_EXCEPTION_CODE;
     }
 
     public BusinessException(IMessage errCode) {

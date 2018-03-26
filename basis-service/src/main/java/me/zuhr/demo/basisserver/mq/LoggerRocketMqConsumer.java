@@ -1,4 +1,4 @@
-package me.zuhr.demo.basisserver.rocketmq;
+package me.zuhr.demo.basisserver.mq;
 
 import com.alibaba.fastjson.JSONObject;
 import me.zuhr.demo.basis.enumration.ConsumerGroup;
@@ -54,9 +54,8 @@ public class LoggerRocketMqConsumer extends AbstractRocketMqConsumer {
     public boolean consumeMsg(MessageExt messageExt) {
         byte[] bytes = messageExt.getBody();
         String message = new String(bytes);
-        System.out.println("--------------message:");
+        logger.info("--------------message----- topic : {} , tags : {}",messageExt.getTopic(),messageExt.getTags());
         System.out.println(message);
-
 
         // 异常信息记录
         if (messageExt.getTags().equals(EXCEPTION.getTag())) {

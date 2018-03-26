@@ -1,5 +1,7 @@
 package me.zuhr.demo.basis.model;
 
+import me.zuhr.demo.basis.constants.ErrorCode;
+
 /**
  * @author zurun
  * @date 2018/3/11 13:14:18
@@ -28,7 +30,7 @@ public class Result<T> extends BaseResult<T> {
     }
 
     public static Result fail(String message) {
-        Result result = fail(1000, message);
+        Result result = fail(ErrorCode.common.DEFAULT_FAIL_CODE.getErrCode(), message);
         return result;
     }
 

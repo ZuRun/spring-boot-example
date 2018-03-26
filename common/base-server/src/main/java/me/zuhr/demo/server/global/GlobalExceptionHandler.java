@@ -1,6 +1,7 @@
 package me.zuhr.demo.server.global;
 
 import com.alibaba.fastjson.JSONObject;
+import me.zuhr.demo.basis.constants.ErrorCode;
 import me.zuhr.demo.basis.exception.BusinessException;
 import me.zuhr.demo.basis.model.Result;
 import me.zuhr.demo.server.constants.MyHttpHeader;
@@ -10,6 +11,7 @@ import me.zuhr.demo.server.exception.AbstractRestServerException;
 import me.zuhr.demo.server.service.LoggerService;
 import me.zuhr.demo.server.util.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.AbstractErrorController;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.http.HttpHeaders;
@@ -35,6 +37,9 @@ public class GlobalExceptionHandler extends AbstractErrorController {
 
     @Autowired
     LoggerService loggerService;
+
+    @Value("${spring.application.name}")
+    private String serverName;
 
     public GlobalExceptionHandler(ErrorAttributes errorAttributes) {
         super(errorAttributes);
@@ -64,7 +69,7 @@ public class GlobalExceptionHandler extends AbstractErrorController {
      * @return
      */
     @ExceptionHandler(AbstractRestHttpException.class)
-    public ResponseEntity<String> handlerException(AbstractRestHttpException e){
+    public ResponseEntity<String> handlerException(AbstractRestHttpException e) {
         sendLog(e);
         HttpHeaders headers = createHeaders(HttpHeader.ExceptionType.UNKNOWN);
         return new ResponseEntity<>(e.getMessage(), headers, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -98,7 +103,7 @@ public class GlobalExceptionHandler extends AbstractErrorController {
     public ResponseEntity<Result> handlerException(Exception e) {
         sendLog(e);
         HttpHeaders headers = createHeaders(HttpHeader.ExceptionType.UNHANDLED);
-        return new ResponseEntity<>(Result.fail(e.getMessage()), headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(Result.fail(ErrorCode.common.DEFAULT_EXCEPTION_CODE.getErrCode(), e.getMessage()), headers, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -115,26 +120,63 @@ public class GlobalExceptionHandler extends AbstractErrorController {
         return headers;
     }
 
+    /**
+     * 服务抛的业务异常
+     *
+     * @param e
+     */
     private void sendLog(BusinessException e) {
         e.printStackTrace();
-        JSONObject json = new JSONObject();
+        JSONObject json = createJsonObject(e);
         json.put("errCode", e.getErrCode());
-        json.put("errMsg", e.getMessage());
-        json.put("exceptionName", e.getClass().getSimpleName());
+        byte[] body = json.toJSONString().getBytes();
+        loggerService.sendExceptionLog(body);
+    }
+
+    /**
+     * rest接收到的服务端抛的异常
+     *
+     * @param e
+     */
+    private void sendLog(AbstractRestServerException e) {
+        e.printStackTrace();
+        JSONObject json = createJsonObject(e);
+        json.put("errCode", e.getStatusCode().value());
+        byte[] body = json.toJSONString().getBytes();
+        loggerService.sendExceptionLog(body);
+    }
+
+    /**
+     * 请求头中没有Exception-Type请求头
+     *
+     * @param e
+     */
+    private void sendLog(AbstractRestHttpException e) {
+        e.printStackTrace();
+        JSONObject json = createJsonObject(e);
+        json.put("errCode", e.getStatusCode().value());
+        json.put("stackTrace", ExceptionUtil.getExceptionDetail(e));
+        json.put("causeBy", ExceptionUtil.getCauseBy(e));
         byte[] body = json.toJSONString().getBytes();
         loggerService.sendExceptionLog(body);
     }
 
     private void sendLog(Exception e) {
         e.printStackTrace();
-        JSONObject json = new JSONObject();
-        json.put("errCode", 1);
-        json.put("errMsg", e.getMessage());
-        json.put("exceptionName", e.getClass().getSimpleName());
+        JSONObject json = createJsonObject(e);
+        json.put("errCode", -1);
         json.put("stackTrace", ExceptionUtil.getExceptionDetail(e));
         json.put("causeBy", ExceptionUtil.getCauseBy(e));
         byte[] body = json.toJSONString().getBytes();
         loggerService.sendExceptionLog(body);
+    }
+
+    private JSONObject createJsonObject(Exception e) {
+        JSONObject json = new JSONObject();
+        json.put("serverName", serverName);
+        json.put("errMsg", e.getMessage());
+        json.put("exceptionName", e.getClass().getSimpleName());
+        return json;
     }
 
 
