@@ -32,7 +32,7 @@ spring:
     show-sql: true
 # 第一次创建表,后期更改实体不更新表
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
     properties:
       hibernate:
