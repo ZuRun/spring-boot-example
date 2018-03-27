@@ -57,7 +57,10 @@
   - 通过control的请求,抛的异常都将在GlobalExceptionHandler中被处理,所以业务中尽量不要加try.catch 
   - 被调用的微服务抛的异常,框架调用方在[MyResponseErrorHandler](common/base-server/src/main/java/me/zuhr/demo/server/restful/MyResponseErrorHandler.java)中根据相应策略进行处理
   - rest请求返回400和500可能会抛AbstractRestServerException和AbstractRestHttpException异常,调用方可根据实际情况捕获
-  
+- **jpa**
+    配置禁止自动修改表，因为使用了flyway来管理数据库版本
+     `spring.jpa.hibernate.ddl-auto=none`
+
 ## 打包+Docker部署
 ### [打包](http://blog.csdn.net/Ser_Bad/article/details/78433340)
 ### [Docker部署](http://blog.csdn.net/u011699931/article/details/70226504)

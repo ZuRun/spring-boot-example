@@ -28,6 +28,8 @@
         <jedis-version>2.9.0</jedis-version>
         <!--集成Lombok,让代码更简洁-->
         <lombok-version>1.16.18</lombok-version>
+        <!--flyway-数据库版本控制-->
+        <flyway-version>5.0.3</flyway-version>
 
     </properties>
 
