@@ -47,7 +47,11 @@
   因为注册比较慢,开发环境可以将所有serviceName都加到hosts中
 - Assert
     项目中的断言使用org.springframework.util.Assert,原生的在生产环境会默认忽略
-    
+
+- 字符集
+    项目为utf-8,数据库为utf8mb4
+    因为Mysql的utf8编码最多3个字节,4个字节会报错(Emoji)
+
 - **微服务通信**
    约定微服务之间通信,成功则返回需要的数据,异常则直接抛业务异常,框架会返回[Result](common/basis/src/main/java/me/zuhr/demo/basis/model/Result.java)实体
 
