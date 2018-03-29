@@ -21,6 +21,7 @@
         <module>base-server</module>
         <module>jpa</module>
         <module>email</module>
+        <module>redisson</module>
     </modules>
 
 </project>

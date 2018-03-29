@@ -26,6 +26,8 @@
         <email-version>1.5.1.RELEASE</email-version>
         <fastjson-version>1.2.35</fastjson-version>
         <jedis-version>2.9.0</jedis-version>
+        <!--用来支持分布式锁等-->
+        <redisson-version>3.6.4</redisson-version>
         <!--集成Lombok,让代码更简洁-->
         <lombok-version>1.16.18</lombok-version>
         <!--flyway-数据库版本控制-->
