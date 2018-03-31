@@ -77,6 +77,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--使用junit进行多线程并发测试，需引入第三方仓库获取此jar包-->
+        <dependency>
+            <groupId>net.sourceforge.groboutils</groupId>
+            <artifactId>groboutils-core</artifactId>
+            <version>5</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -132,6 +138,12 @@
             <id>nexus-aliyun</id>
             <name>nexus aliyun</name>
             <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        </repository>
+        <!--另一个仓库，主要用来使用groboutils-->
+        <repository>
+            <id>nexus-sonatype</id>
+            <name>nexus sonatype</name>
+            <url>https://oss.sonatype.org/content/repositories/opensymphony-releases</url>
         </repository>
     </repositories>
     <pluginRepositories>

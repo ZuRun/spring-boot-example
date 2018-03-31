@@ -43,15 +43,14 @@ public class SingleDistributedLockTemplate implements DistributedLockTemplate {
     public <T> T tryLock(String lockName, DistributedLockCallback<T> callback, long waitTime, long leaseTime, TimeUnit timeUnit, boolean fairLock) {
         RLock lock = getLock(lockName, fairLock);
         try {
-
-            return callback.process(lock.tryLock(waitTime, leaseTime, timeUnit));
+            boolean isLocked = lock.tryLock(waitTime, leaseTime, timeUnit);
+            if(isLocked){
+                lock.unlock();
+            }
+            return callback.process(isLocked);
 
         } catch (InterruptedException e) {
 
-        } finally {
-            if (lock != null && lock.isLocked()) {
-                lock.unlock();
-            }
         }
         return null;
     }
