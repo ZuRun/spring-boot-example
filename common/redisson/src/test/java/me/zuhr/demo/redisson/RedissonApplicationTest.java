@@ -3,11 +3,14 @@ package me.zuhr.demo.redisson;
 import me.zuhr.demo.redisson.lock.DistributedLockTemplate;
 import net.sourceforge.groboutils.junit.v1.MultiThreadedTestRunner;
 import net.sourceforge.groboutils.junit.v1.TestRunnable;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.function.Supplier;
 
 
 /**
@@ -21,48 +24,45 @@ public class RedissonApplicationTest {
     @Autowired
     DistributedLockTemplate lockTemplate;
 
-
     @Test
     public void test() {
-        Boolean result = lockTemplate.lock("", (isLocked) -> {
-            System.out.println("锁");
+        go(() -> {
+            //测试内容
+            Boolean result = lockTemplate.lockIfAbsent("_lockName", (isLocked) -> {
+                System.out.println("锁");
+                try {
+                    Thread.sleep(1L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (isLocked) {
+                    return true;
+                } else {
+                    return false;
+                }
 
-            if (isLocked) {
-                return true;
-            } else {
-                return false;
-            }
+            }, 20);
+            System.out.println(result);
+        });
 
-        }, false);
-        System.out.println(result);
 
     }
 
-    @Test
-    public void t() {
-        lockTemplate.unlock("sss", false);
+
+    interface TestMethod {
+        void todo();
+    }
+
+    private void go(TestMethod method) {
         // 构造一个Runner
         TestRunnable runner = new TestRunnable() {
             @Override
             public void runTest() {
-                //你的测试内容
-                Boolean result = lockTemplate.lockIfAbsent("_lockName", (isLocked) -> {
-                    System.out.println("锁");
-                    try {
-                        Thread.sleep(1L);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    if (isLocked) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-
-                }, 20);
-                System.out.println(result);
+                // 方法内容
+                method.todo();
             }
         };
+
         int runnerCount = 50;
         //Rnner数组，想当于并发多少个。
         TestRunnable[] trs = new TestRunnable[runnerCount];
@@ -78,6 +78,5 @@ public class RedissonApplicationTest {
             e.printStackTrace();
         }
     }
-
 
 }
