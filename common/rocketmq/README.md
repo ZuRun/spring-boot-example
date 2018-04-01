@@ -20,9 +20,29 @@
  `yum install wget`
 - maven依赖
 ```
-wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
-yum install apache-maven -y
+wget http://mirrors.shu.edu.cn/apache/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz
+tar -zxvf apache-maven-3.5.3-bin.tar.gz
+vim /etc/profile
+#环境变量
+M2_HOME=/root/apache-maven-3.5.3
+export PATH=${M2_HOME}/bin:${PATH}
+#重载/etc/profile这个文件
+ source /etc/profile
 ```
+- jdk1.8
+```
+# 下载
+# 解压
+tar -zxvf jdk-8u161-linux-x64.tar.gz
+# 环境变量 vim /etc/profile
+ JAVA_HOME=/root/jdk1.8.0_161
+ JRE_HOME=$JAVA_HOME/jre
+ PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+ CLASSPATH=:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib/dt.jar
+#重载/etc/profile这个文件
+source /etc/profile
+```
+
 - maven 阿里镜像
 修改 settings.xml,`<mirrors>`标签中增加以下内容
 ```
