@@ -1,15 +1,13 @@
 package me.zuhr.demo.redisson;
 
+import me.zuhr.demo.redisson.lock.DistributedLockTemplate;
 import net.sourceforge.groboutils.junit.v1.MultiThreadedTestRunner;
 import net.sourceforge.groboutils.junit.v1.TestRunnable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -21,11 +19,11 @@ import java.util.concurrent.TimeUnit;
 public class RedissonApplicationTest {
 
     @Autowired
-    RedissonClient redissonClient;
+    DistributedLockTemplate lockTemplate;
+
 
     @Test
     public void test() {
-        SingleDistributedLockTemplate lockTemplate = new SingleDistributedLockTemplate(redissonClient);
         Boolean result = lockTemplate.lock("", (isLocked) -> {
             System.out.println("锁");
 
@@ -42,23 +40,26 @@ public class RedissonApplicationTest {
 
     @Test
     public void t() {
-        SingleDistributedLockTemplate lockTemplate = new SingleDistributedLockTemplate(redissonClient);
-
+        lockTemplate.unlock("sss", false);
         // 构造一个Runner
         TestRunnable runner = new TestRunnable() {
             @Override
-            public void runTest() throws Throwable {
+            public void runTest() {
                 //你的测试内容
-                Boolean result = lockTemplate.tryLock("_lockName", (isLocked) -> {
+                Boolean result = lockTemplate.lockIfAbsent("_lockName", (isLocked) -> {
                     System.out.println("锁");
-
+                    try {
+                        Thread.sleep(1L);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     if (isLocked) {
                         return true;
                     } else {
                         return false;
                     }
 
-                }, -1, 100, TimeUnit.SECONDS, false);
+                }, 20);
                 System.out.println(result);
             }
         };

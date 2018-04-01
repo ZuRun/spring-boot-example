@@ -18,11 +18,13 @@
             <artifactId>basis</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!--阿里mq-->
         <dependency>
             <groupId>me.zuhr</groupId>
             <artifactId>rocketmq</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!--数据库版本控制-->
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
@@ -42,8 +44,8 @@
 
         <!--feign-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-feign</artifactId>-->
+        <!--<groupId>org.springframework.cloud</groupId>-->
+        <!--<artifactId>spring-cloud-starter-feign</artifactId>-->
         <!--</dependency>-->
         <!--Hystrix断路器-->
         <dependency>

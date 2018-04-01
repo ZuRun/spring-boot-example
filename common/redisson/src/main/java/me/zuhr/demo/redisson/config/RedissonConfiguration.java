@@ -1,11 +1,9 @@
 package me.zuhr.demo.redisson.config;
 
-import me.zuhr.demo.redisson.AbstractDistributedLockTemplate;
+import me.zuhr.demo.redisson.lock.DistributedLockTemplate;
 import org.redisson.Redisson;
-import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
-import org.redisson.config.SingleServerConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,7 +16,11 @@ public class RedissonConfiguration {
 //    @Value("classpath:/redisson-conf.yml")
 //    Resource configFile;
 
-
+    /**
+     * 单机redis
+     *
+     * @return
+     */
     @Bean
     public RedissonClient redissonSingle() {
         Config config = new Config();
@@ -27,9 +29,7 @@ public class RedissonConfiguration {
     }
 
     @Bean
-    public AbstractDistributedLockTemplate distributedLockTemplate(RedissonClient redissonSingle){
-        return new AbstractDistributedLockTemplate(redissonSingle) {
-
-        };
+    public DistributedLockTemplate distributedLockTemplate(RedissonClient redissonSingle) {
+        return new DistributedLockTemplate(redissonSingle);
     }
 }

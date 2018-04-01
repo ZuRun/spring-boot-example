@@ -1,4 +1,4 @@
-package me.zuhr.demo.redisson;
+package me.zuhr.demo.redisson.lock;
 
 /**
  * 分布式锁回调接口

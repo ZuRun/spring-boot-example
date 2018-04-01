@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.zuhr</groupId>
-    <artifactId>SpringBootTest</artifactId>
+    <artifactId>spring-boot-example</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
@@ -82,6 +82,11 @@
             <groupId>net.sourceforge.groboutils</groupId>
             <artifactId>groboutils-core</artifactId>
             <version>5</version>
+        </dependency>
+        <!--切面-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
