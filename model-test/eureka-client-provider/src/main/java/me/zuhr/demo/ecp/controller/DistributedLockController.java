@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DistributedLockController extends BaseController {
 
-    @DistributedLock
+    @DistributedLock(waitTime = -1L)
     @RequestMapping("/distributedLockTest")
     public Result distributedLockTest() throws InterruptedException {
         logger.info("------distributedLockTest");

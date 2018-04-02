@@ -18,6 +18,12 @@
             <artifactId>redisson</artifactId>
             <version>${redisson-version}</version>
         </dependency>
+        <!--低版本会和redisson中引入的netty部分jar包冲突-->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.22.Final</version>
+        </dependency>
 
         <dependency>
             <groupId>me.zuhr</groupId>
