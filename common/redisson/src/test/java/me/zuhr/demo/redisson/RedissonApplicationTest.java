@@ -1,16 +1,15 @@
 package me.zuhr.demo.redisson;
 
+import me.zuhr.demo.basis.model.Result;
+import me.zuhr.demo.redisson.annotation.DistributedLock;
 import me.zuhr.demo.redisson.lock.DistributedLockTemplate;
 import net.sourceforge.groboutils.junit.v1.MultiThreadedTestRunner;
 import net.sourceforge.groboutils.junit.v1.TestRunnable;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.function.Supplier;
 
 
 /**
@@ -20,25 +19,46 @@ import java.util.function.Supplier;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = RedissonApplication.class)
 public class RedissonApplicationTest {
+    int i = 0;
 
     @Autowired
     DistributedLockTemplate lockTemplate;
 
     @Test
+    public void annotationTest() {
+        go(() -> {
+            try {
+                todo();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @DistributedLock
+    private void todo() throws InterruptedException {
+//        i++;
+//        Thread.sleep(100L);
+        i++;
+        System.out.println(i);
+    }
+
+    @Test
+//    @DistributedLock(tryLock = false)
     public void test() {
         go(() -> {
             //测试内容
-            Boolean result = lockTemplate.lockIfAbsent("_lockName", (isLocked) -> {
+            Result result = lockTemplate.lockIfAbsent("_lockName", (isLocked) -> {
                 System.out.println("锁");
-                try {
-                    Thread.sleep(1L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    Thread.sleep(1L);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
                 if (isLocked) {
-                    return true;
+                    return Result.ok();
                 } else {
-                    return false;
+                    return Result.fail("shibai");
                 }
 
             }, 20);
@@ -63,7 +83,7 @@ public class RedissonApplicationTest {
             }
         };
 
-        int runnerCount = 50;
+        int runnerCount = 10;
         //Rnner数组，想当于并发多少个。
         TestRunnable[] trs = new TestRunnable[runnerCount];
         for (int i = 0; i < runnerCount; i++) {

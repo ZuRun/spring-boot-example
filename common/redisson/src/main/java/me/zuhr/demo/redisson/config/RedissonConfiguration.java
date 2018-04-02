@@ -4,6 +4,7 @@ import me.zuhr.demo.redisson.lock.DistributedLockTemplate;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,7 +30,7 @@ public class RedissonConfiguration {
     }
 
     @Bean
-    public DistributedLockTemplate distributedLockTemplate(RedissonClient redissonSingle) {
+    public DistributedLockTemplate distributedLockTemplate(@Qualifier("redissonSingle") RedissonClient redissonSingle) {
         return new DistributedLockTemplate(redissonSingle);
     }
 }

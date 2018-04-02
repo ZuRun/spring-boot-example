@@ -34,6 +34,11 @@ public class BusinessException extends RuntimeException {
         this.errCode = errCode;
     }
 
+    public BusinessException(IMessage errCode,String errMsg) {
+        super(errMsg);
+        this.errCode = errCode;
+    }
+
     public Integer getErrCode() {
         return errCode.getErrCode();
     }

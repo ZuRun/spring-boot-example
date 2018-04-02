@@ -24,8 +24,8 @@
 
 ## [错误码定义](../common/basis/src/main/java/me/zuhr/demo/basis/constants/ErrorCode.java)
 ### 1位
-0 成功
-2 无效的错误码
+- 0 成功
+- 2 无效的错误码
 
 ### 通用异常 - 2位
 - 10 DEFAULT_FAIL_CODE 默认Result.fail错误码

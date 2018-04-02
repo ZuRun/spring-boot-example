@@ -3,13 +3,14 @@
 ## 目录
 
 - **api-gateway** API网关
-- **[basis-service](basis-service/README.md)** : 打杂的服务
+- **[basis-service](basis-service/README.md)** : 记录日志,发送邮件等
 - **common** : 被依赖的模块,非单独启动的服务
     - **[base-server](common/base-server/README.md)**   : 一般的微服务都需要依赖此模块
     - **[basis](common/basis/README.md)**   : 
     - **email** : 发送邮件服务,建议需要发送邮件的都通过消息队列,由指定的服务统一发送邮件
     - **[jpa](common/jpa/README.md)** : hibernate,使用了druid连接池
     - **redis**
+    - **[redisson](common/redisson/README.md)** 利用redis实现分布式锁
     - **[rocketmq](common/rocketmq/README.md)** : 阿里的消息队列
     - **shiro**
     - **web**
@@ -62,7 +63,7 @@
   - 被调用的微服务抛的异常,框架调用方在[MyResponseErrorHandler](common/base-server/src/main/java/me/zuhr/demo/server/restful/MyResponseErrorHandler.java)中根据相应策略进行处理
   - rest请求返回400和500可能会抛AbstractRestServerException和AbstractRestHttpException异常,调用方可根据实际情况捕获
 - **jpa**
-    配置禁止自动修改表，因为使用了flyway来管理数据库版本
+    配置禁止自动修改表，因为使用了[flyway](note/flyway.md)来管理数据库版本
      `spring.jpa.hibernate.ddl-auto=none`
 
 ## 打包+Docker部署

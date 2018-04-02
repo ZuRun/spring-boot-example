@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
  * @date 2018/3/11 12:31:23
  */
 public class BaseService {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
     protected static ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
