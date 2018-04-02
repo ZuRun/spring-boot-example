@@ -17,7 +17,7 @@ public class DistributedLockController extends BaseController {
     @RequestMapping("/distributedLockTest")
     public Result distributedLockTest() throws InterruptedException {
         logger.info("------distributedLockTest");
-        Thread.sleep(1000L);
+        Thread.sleep(3000L);
         logger.info("------"+System.currentTimeMillis());
 
         return Result.ok();
