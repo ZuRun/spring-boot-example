@@ -3,10 +3,14 @@ package me.zuhr.demo.redisson.config;
 import me.zuhr.demo.redisson.lock.DistributedLockTemplate;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
+import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.Config;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 /**
  * @author ZuRun
@@ -17,6 +21,24 @@ public class RedissonConfiguration {
 //    @Value("classpath:/redisson-conf.yml")
 //    Resource configFile;
 
+    @Value("${spring.redis.host}")
+    private String host;
+    @Value("${spring.redis.port}")
+    private int port;
+    @Value("${spring.redis.password}")
+    private String password;
+
+    /**
+     * 是否启用集群
+     */
+    @Value("${spring.redis.iscluster}")
+    private Boolean isluster;
+    /**
+     * Redis 集群的节点
+     */
+    @Value("${spring.redis.cluster.nodes}")
+    private List<String> nodesList;
+
     /**
      * 单机redis
      *
@@ -25,7 +47,22 @@ public class RedissonConfiguration {
     @Bean
     public RedissonClient redissonSingle() {
         Config config = new Config();
-        config.useSingleServer().setAddress("redis://127.0.0.1:6379");
+
+
+        if (isluster) {
+            // redis集群模式
+            ClusterServersConfig clusterServersConfig = config.useClusterServers();
+            for (String nodes : nodesList) {
+                String[] node = nodes.split(",");
+                for (int i = 0, length = node.length; i < length; i++) {
+                    clusterServersConfig.addNodeAddress("redis://".concat(node[i]));
+                }
+
+            }
+        } else {
+            // 单机模式
+            config.useSingleServer().setAddress("redis://".concat(host.concat(":") + port));
+        }
         return Redisson.create(config);
     }
 
