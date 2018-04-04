@@ -22,6 +22,7 @@
         <module>jpa</module>
         <module>email</module>
         <module>redisson</module>
+        <module>mybatis</module>
     </modules>
 
 </project>
