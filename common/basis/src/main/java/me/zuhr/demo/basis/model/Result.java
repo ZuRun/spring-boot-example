@@ -1,6 +1,7 @@
 package me.zuhr.demo.basis.model;
 
 import me.zuhr.demo.basis.constants.ErrorCode;
+import me.zuhr.demo.basis.constants.IMessage;
 
 /**
  * @author zurun
@@ -30,8 +31,11 @@ public class Result<T> extends BaseResult<T> {
     }
 
     public static Result fail(String message) {
-        Result result = fail(ErrorCode.common.DEFAULT_FAIL_CODE.getErrCode(), message);
-        return result;
+        return fail(ErrorCode.common.DEFAULT_FAIL_CODE.getErrCode(), message);
+    }
+
+    public static Result fail(IMessage errorCode) {
+        return fail(errorCode.getErrCode(), errorCode.getErrMsg());
     }
 
     public static Result fail(int code, String message) {

@@ -22,6 +22,7 @@
 - **model-test** : 用来练习和测试的模块
     - **eureka-client-provider** : 模拟 服务提供方
     - **eureka-client-consumer** : 模拟 服务消费者
+- **wxapp** : 微信小程序服务端
 
 ## 开始使用
 ### 本项目集成了[lombok](https://segmentfault.com/a/1190000011433462),让代码更简洁

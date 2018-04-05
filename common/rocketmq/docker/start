@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo "hello word"
+export NAMESRV_ADDR=127.0.0.1:9876
+cd /root/rocketmq/distribution/target/apache-rocketmq
+nohup sh bin/mqnamesrv & 
+# 不走后台,因为dockerfile中ENTRYPOINT命令执行完就会关闭docker
+sh bin/mqbroker -n 127.0.0.1:9876 -c broker.properties
+echo "hello word2"

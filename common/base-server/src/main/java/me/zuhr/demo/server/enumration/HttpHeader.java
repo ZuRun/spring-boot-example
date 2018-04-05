@@ -60,6 +60,15 @@ public enum HttpHeader {
             }
         },
         /**
+         * 被调用方返回的404，直接原封不动返回
+         */
+        NOT_FOUND {
+            @Override
+            public boolean handleError(HttpStatus statusCode, String msg) {
+                throw new RestBusinessException(statusCode, this, msg);
+            }
+        },
+        /**
          * 未知异常,一般是第三方接口？
          * response中没有Exception-Type请求头
          */

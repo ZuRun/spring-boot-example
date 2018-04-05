@@ -67,7 +67,7 @@ public class MyResponseErrorHandler implements ResponseErrorHandler {
         HttpHeader.ExceptionType exceptionType = HttpHeader.ExceptionType.getByName(exceptionTypeValue);
         if (exceptionType != null) {
             // 如果是项目中定义的异常类型,执行相应的策略,如果返回true,不在执行后续检查
-            if (exceptionType.handleError(  statusCode,body)) {
+            if (exceptionType.handleError(statusCode, body)) {
                 return;
             }
         }

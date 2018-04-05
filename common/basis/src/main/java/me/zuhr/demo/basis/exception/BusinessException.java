@@ -34,13 +34,23 @@ public class BusinessException extends RuntimeException {
         this.errCode = errCode;
     }
 
-    public BusinessException(IMessage errCode,String errMsg) {
+    public BusinessException(IMessage errCode, String errMsg) {
         super(errMsg);
         this.errCode = errCode;
     }
 
     public Integer getErrCode() {
         return errCode.getErrCode();
+    }
+
+    /**
+     * 慎用，因为实际错误信息不一定对应此枚举的错误信息
+     *
+     * @return
+     */
+    @Deprecated
+    public IMessage getErrorCode() {
+        return errCode;
     }
 
 
