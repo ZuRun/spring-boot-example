@@ -18,16 +18,20 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author zurun
  * @date 2018/2/26 11:17:17
  */
 @RestControllerAdvice
-@Component
+@Controller
 public class GlobalExceptionHandler extends AbstractErrorController {
 
     /**
@@ -45,6 +49,33 @@ public class GlobalExceptionHandler extends AbstractErrorController {
         super(errorAttributes);
     }
 
+    /**
+     * 返回404
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping
+    @ResponseBody
+    public ResponseEntity<Result> error(HttpServletRequest request) {
+        // TODO-zurun 日志
+        HttpHeaders headers = createHeaders(HttpHeader.ExceptionType.NOT_FOUND);
+        return new ResponseEntity<>(Result.fail(404, "未找到请求路径！"), headers, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * 返回404页面，接口中content-type为text/html的也返回json
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+//    @RequestMapping(produces = {"text/html"})
+//    public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
+//        HttpStatus status = getStatus(request);
+//        response.setStatus(status.value());
+//        return new ModelAndView("error");
+//    }
 
     /**
      * rest请求接收到的业务异常,直接继续向调用方抛出
