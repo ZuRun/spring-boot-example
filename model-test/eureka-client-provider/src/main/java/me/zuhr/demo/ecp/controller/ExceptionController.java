@@ -6,6 +6,8 @@ import me.zuhr.demo.ecp.constants.ErrorCode;
 import me.zuhr.demo.server.restful.MyRestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -37,5 +39,10 @@ public class ExceptionController {
     public String restBusinessException() {
         return restTemplate.getForObject("http://" + ServiceNameEnum.ECC.getValue() + "/exception", String.class);
 //        throw new RestBusinessException("rest接受业务异常!RestBusinessException");
+    }
+
+    @RequestMapping(value = "/notfound", method = RequestMethod.GET)
+    public String notfound(@RequestParam("param") String param) {
+        return "参数:" + param;
     }
 }

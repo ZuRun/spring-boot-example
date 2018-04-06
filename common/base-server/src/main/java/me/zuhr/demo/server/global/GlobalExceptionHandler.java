@@ -19,63 +19,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author zurun
  * @date 2018/2/26 11:17:17
  */
 @RestControllerAdvice
-@Controller
-public class GlobalExceptionHandler extends AbstractErrorController {
-
-    /**
-     * 默认错误页面路径,可以考虑放在配置文件中
-     */
-    private static String errorPath = "/error";
+public class GlobalExceptionHandler {
 
     @Autowired
     LoggerService loggerService;
 
     @Value("${spring.application.name}")
     private String serverName;
-
-    public GlobalExceptionHandler(ErrorAttributes errorAttributes) {
-        super(errorAttributes);
-    }
-
-    /**
-     * 返回404
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping
-    @ResponseBody
-    public ResponseEntity<Result> error(HttpServletRequest request) {
-        // TODO-zurun 日志
-        HttpHeaders headers = createHeaders(HttpHeader.ExceptionType.NOT_FOUND);
-        return new ResponseEntity<>(Result.fail(404, "未找到请求路径！"), headers, HttpStatus.NOT_FOUND);
-    }
-
-    /**
-     * 返回404页面，接口中content-type为text/html的也返回json
-     *
-     * @param request
-     * @param response
-     * @return
-     */
-//    @RequestMapping(produces = {"text/html"})
-//    public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
-//        HttpStatus status = getStatus(request);
-//        response.setStatus(status.value());
-//        return new ModelAndView("error");
-//    }
 
     /**
      * rest请求接收到的业务异常,直接继续向调用方抛出
@@ -89,7 +55,8 @@ public class GlobalExceptionHandler extends AbstractErrorController {
         sendLog(e);
 
         HttpHeaders headers = createHeaders(e.getExceptionType());
-        return new ResponseEntity<>(e.getMessage(), headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        // todo-zurun 此处返回的状态码 也许应该用500?
+        return new ResponseEntity<>(e.getMessage(), headers, e.getStatusCode());
 
     }
 
@@ -103,7 +70,8 @@ public class GlobalExceptionHandler extends AbstractErrorController {
     public ResponseEntity<String> handlerException(AbstractRestHttpException e) {
         sendLog(e);
         HttpHeaders headers = createHeaders(HttpHeader.ExceptionType.UNKNOWN);
-        return new ResponseEntity<>(e.getMessage(), headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        // todo-zurun 此处返回的状态码 也许应该用500?
+        return new ResponseEntity<>(e.getMessage(), headers, e.getStatusCode());
     }
 
 
@@ -136,6 +104,46 @@ public class GlobalExceptionHandler extends AbstractErrorController {
         HttpHeaders headers = createHeaders(HttpHeader.ExceptionType.UNHANDLED);
         return new ResponseEntity<>(Result.fail(ErrorCode.common.DEFAULT_EXCEPTION_CODE.getErrCode(), e.getMessage()), headers, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    /**
+     * 404页面
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<Result> handlerException(NoHandlerFoundException e) {
+        sendLog(e);
+        HttpHeaders headers = createHeaders(HttpHeader.ExceptionType.NOT_FOUND);
+        return new ResponseEntity<>(Result.fail(404, "未找到请求路径！"), headers, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * 请求method错误(post、get)
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<Result> handlerException(HttpRequestMethodNotSupportedException e) {
+        sendLog(e);
+        HttpHeaders headers = createHeaders(HttpHeader.ExceptionType.NOT_FOUND);
+        return new ResponseEntity<>(Result.fail(404, "未找到请求路径！").addResult(e.getMessage()), headers, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * 请求错误
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(ServletException.class)
+    public ResponseEntity<Result> handlerException(ServletException e) {
+        sendLog(e);
+        HttpHeaders headers = createHeaders(HttpHeader.ExceptionType.SERVLET_EXCEPTION);
+        return new ResponseEntity<>(Result.fail(400, "请求错误！").addResult(e.getMessage()), headers, HttpStatus.BAD_REQUEST);
+    }
+
 
     /**
      * 生成header
@@ -192,6 +200,21 @@ public class GlobalExceptionHandler extends AbstractErrorController {
         loggerService.sendExceptionLog(body);
     }
 
+    /**
+     * 请求错误
+     *
+     * @param e
+     */
+    private void sendLog(ServletException e) {
+        e.printStackTrace();
+        JSONObject json = createJsonObject(e);
+        json.put("errCode", 400);
+        json.put("stackTrace", ExceptionUtil.getExceptionDetail(e));
+        json.put("causeBy", ExceptionUtil.getCauseBy(e));
+        byte[] body = json.toJSONString().getBytes();
+        loggerService.sendExceptionLog(body);
+    }
+
     private void sendLog(Exception e) {
         e.printStackTrace();
         JSONObject json = createJsonObject(e);
@@ -205,14 +228,10 @@ public class GlobalExceptionHandler extends AbstractErrorController {
     private JSONObject createJsonObject(Exception e) {
         JSONObject json = new JSONObject();
         json.put("serverName", serverName);
+        json.put("time", System.currentTimeMillis());
         json.put("errMsg", e.getMessage());
         json.put("exceptionName", e.getClass().getSimpleName());
         return json;
     }
 
-
-    @Override
-    public String getErrorPath() {
-        return null;
-    }
 }
