@@ -2,11 +2,11 @@ package me.zuhr.demo.basisserver.entity;
 
 import lombok.Data;
 import me.zuhr.demo.jpa.base.AbstractHibernateEntity;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -17,7 +17,19 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "t_logger_request")
-public class RequestLogger extends AbstractHibernateEntity {
+@EntityListeners(AuditingEntityListener.class)
+public class RequestLogger {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    protected Long id;
+    /**
+     * 创建时间
+     */
+    @Column(name = "create_time")
+    @CreatedDate
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    protected Date createTime;
     /**
      * 客户端请求ip
      */
@@ -75,7 +87,7 @@ public class RequestLogger extends AbstractHibernateEntity {
     private Timestamp responseReturnTime;
 
     /**
-     * 请求时httpStatusCode代码，如：200,400,404等
+     * 请求时返回的httpStatusCode代码，如：200,400,404等
      */
     @Column(name = "http_status_code")
     private String httpStatusCode;
@@ -85,9 +97,4 @@ public class RequestLogger extends AbstractHibernateEntity {
     @Column(name = "time_consuming")
     private int timeConsuming;
 
-    /**
-     * 忽略修改时间
-     */
-    @Transient
-    private Date lastModifiedTime;
 }

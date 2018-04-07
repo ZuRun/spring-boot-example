@@ -2,10 +2,13 @@ package me.zuhr.demo.basisserver.entity;
 
 import lombok.Data;
 import me.zuhr.demo.jpa.base.AbstractHibernateEntity;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * @author zurun
@@ -14,8 +17,25 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "t_logger_exception")
-public class ExceptionLogger extends AbstractHibernateEntity {
+@EntityListeners(AuditingEntityListener.class)
+public class ExceptionLogger {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    protected Long id;
+    /**
+     * 创建时间
+     */
+    @Column(name = "create_time")
+    @CreatedDate
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    protected Date createTime;
 
+    /**
+     * 请求时间
+     */
+    @Column(name = "time", insertable = true)
+    private Timestamp time;
     /**
      * 错误码
      */
