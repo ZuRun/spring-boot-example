@@ -23,6 +23,7 @@
         <module>email</module>
         <module>redisson</module>
         <module>mybatis</module>
+        <module>flyway</module>
     </modules>
 
 </project>

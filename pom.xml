@@ -22,9 +22,15 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <spring.boot.version>1.5.10.RELEASE</spring.boot.version>
+        <!--阿里数据库连接池-->
         <druid-version>1.1.9</druid-version>
+        <!--mybatis-->
+        <mybatis-version>1.3.0</mybatis-version>
+        <!--mybatis-generator自动生成代码插件-->
+        <mybatis-generator-version>1.3.2</mybatis-generator-version>
         <email-version>1.5.1.RELEASE</email-version>
         <fastjson-version>1.2.35</fastjson-version>
+        <!--jedis-->
         <jedis-version>2.9.0</jedis-version>
         <!--用来支持分布式锁等-->
         <redisson-version>3.6.4</redisson-version>
