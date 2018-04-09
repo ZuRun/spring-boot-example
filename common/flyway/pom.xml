@@ -18,6 +18,12 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>${flyway-version}</version>
+                <configuration>
+                    <user>admin</user>
+                    <password>123456</password>
+                    <driver>com.mysql.jdbc.Driver</driver>
+                    <url>jdbc:mysql://localhost:3306/mydb</url>
+                </configuration>
             </plugin>
         </plugins>
     </build>
