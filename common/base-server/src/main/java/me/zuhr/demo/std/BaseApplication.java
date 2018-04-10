@@ -11,5 +11,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
  */
 @EnableAsync
 @SpringCloudApplication
+//@EnableFeignClients //(此注解不支持继承)
 public class BaseApplication {
 }
