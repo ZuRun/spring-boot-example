@@ -78,3 +78,6 @@ source ~/.bash_profile
 
 # 启动
 `docker run -t -i --name rocketmq -p 9876:9876 -p 10911:10911 -p 10909:10909 -d rocketmq sh`
+
+- 进入docker
+`docker exec -ti rocketmq sh`
