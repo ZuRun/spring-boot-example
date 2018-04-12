@@ -1,6 +1,7 @@
 package me.zuhr.demo.ecc.controller;
 
 import me.zuhr.demo.basis.enumration.ServiceNameEnum;
+import me.zuhr.demo.ecp.feign.ExceptionFeignClient;
 import me.zuhr.demo.server.restful.MyRestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,9 @@ public class ExceptionController {
     @Autowired
     MyRestTemplate restTemplate;
 
+    @Autowired
+    ExceptionFeignClient exceptionFeignClient;
+
 
     @RequestMapping("/exception")
     public String exception() {
@@ -24,17 +28,20 @@ public class ExceptionController {
 
     @RequestMapping("/runtimeException")
     public String runtimeException() {
-        return restTemplate.getForObject("http://" + ServiceNameEnum.ECP.getValue() + "/runtimeException", String.class);
+        return exceptionFeignClient.runtimeException();
+//        return restTemplate.getForObject("http://" + ServiceNameEnum.ECP.getValue() + "/runtimeException", String.class);
     }
 
     @RequestMapping("/businessException")
     public String businessException() {
-        return restTemplate.getForObject("http://" + ServiceNameEnum.ECP.getValue() + "/businessException", String.class);
+        return exceptionFeignClient.businessException();
+//        return restTemplate.getForObject("http://" + ServiceNameEnum.ECP.getValue() + "/businessException", String.class);
     }
 
     @RequestMapping("/restBusinessException")
     public String restBusinessException() {
-        return restTemplate.getForObject("http://" + ServiceNameEnum.ECP.getValue() + "/restBusinessException", String.class);
+        return exceptionFeignClient.restBusinessException();
+//        return restTemplate.getForObject("http://" + ServiceNameEnum.ECP.getValue() + "/restBusinessException", String.class);
     }
 
     @RequestMapping(value = "/notfound0", method = RequestMethod.GET)
