@@ -22,8 +22,9 @@ public class ExceptionController {
 
 
     @RequestMapping("/exception")
-    public String exception() {
-        return restTemplate.getForObject("http://" + ServiceNameEnum.ECP.getValue() + "/exception", String.class);
+    public String exception() throws Exception {
+        return exceptionFeignClient.exception();
+//        return restTemplate.getForObject("http://" + ServiceNameEnum.ECP.getValue() + "/exception", String.class);
     }
 
     @RequestMapping("/runtimeException")

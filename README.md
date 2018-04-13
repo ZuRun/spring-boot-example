@@ -44,7 +44,7 @@
 ## 约定
 - hosts文件增加:
     ```
-    127.0.0.1 std-eureka-server
+    127.0.0.1 std-eureka-server-1
     ```
   因为注册比较慢,开发环境可以将所有serviceName都加到hosts中
 - Assert

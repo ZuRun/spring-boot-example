@@ -8,6 +8,9 @@
     <artifactId>spring-boot-example</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
+    <name>spring-boot-example</name>
+
     <modules>
         <module>common</module>
         <module>server</module>
@@ -29,7 +32,10 @@
         <!--mybatis-generator自动生成代码插件-->
         <mybatis-generator-version>1.3.2</mybatis-generator-version>
         <email-version>1.5.1.RELEASE</email-version>
+        <!--fashjson-->
         <fastjson-version>1.2.35</fastjson-version>
+        <!--谷歌工具类-->
+        <guava-version>24.1-jre</guava-version>
         <!--jedis-->
         <jedis-version>2.9.0</jedis-version>
         <!--用来支持分布式锁等-->
@@ -69,7 +75,6 @@
 
     <!--依赖-->
     <dependencies>
-
 
 
         <!--spring-boot web支持-->
@@ -117,8 +122,8 @@
     <build>
         <plugins>
             <!--<plugin>-->
-                <!--<groupId>org.springframework.boot</groupId>-->
-                <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
             <!--</plugin>-->
             <!--指明jdk版本-->
             <plugin>
