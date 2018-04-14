@@ -44,6 +44,8 @@
         <lombok-version>1.16.18</lombok-version>
         <!--flyway-数据库版本控制-->
         <flyway-version>5.0.3</flyway-version>
+        <!--spring-boot-admin-server-->
+        <admin-version>1.5.7</admin-version>
 
     </properties>
 

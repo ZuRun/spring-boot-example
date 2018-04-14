@@ -9,6 +9,7 @@
     - **[basis](common/basis/README.md)**   : 
     - **email** : 发送邮件服务,建议需要发送邮件的都通过消息队列,由指定的服务统一发送邮件
     - **[jpa](common/jpa/README.md)** : hibernate,使用了druid连接池
+    - **mybatis**
     - **redis**
     - **[redisson](common/redisson/README.md)** 利用redis实现分布式锁
     - **[rocketmq](common/rocketmq/README.md)** : 阿里的消息队列
