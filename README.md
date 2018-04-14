@@ -1,3 +1,5 @@
+[![Apache License 2](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE)
+
 # SpringBoot + SpringCloud 实践
 
 ## 目录
