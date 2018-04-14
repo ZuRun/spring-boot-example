@@ -13,6 +13,16 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+        </dependency>
+        <!--Hystrix断路器-->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.cloud</groupId>-->
+            <!--<artifactId>spring-cloud-starter-hystrix</artifactId>-->
+        <!--</dependency>-->
+
+        <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-server</artifactId>
             <version>${admin-version}</version>

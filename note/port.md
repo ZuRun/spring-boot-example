@@ -1,5 +1,6 @@
 ## 端口
 
+- spring-boot-admin: 18000
 - eureka: 18001
 - config-server: 18031
 - api-gateway: 18021
