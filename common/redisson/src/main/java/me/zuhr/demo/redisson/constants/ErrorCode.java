@@ -6,7 +6,7 @@ import me.zuhr.demo.basis.constants.IMessage;
  * @author zurun
  * @date 2018/4/2 15:19:35
  */
-public interface ErrorCode {
+public interface ErrorCode extends me.zuhr.demo.basis.constants.ErrorCode {
     /**
      * 分布式锁异常
      */
