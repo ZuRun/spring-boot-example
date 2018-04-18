@@ -63,6 +63,11 @@
             <artifactId>spring-boot-admin-starter-client</artifactId>
             <version>${admin-version}</version>
         </dependency>
+        <!--监控与管理-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
     </dependencies>
 
 

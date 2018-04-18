@@ -1,0 +1,4 @@
+management:
+  security:
+    # 关闭安全限制
+    enabled: false

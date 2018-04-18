@@ -19,10 +19,12 @@
     - **config-repo** : 配置文件
     - **[config-server](server/config-server/README.md)** : 配置服务,微服务从此服务中获取配置
     - **discovery** : 服务治理(eureka-server) 
-    - **web-service** : 没用上,测试的
+    - **spring-boot-admin** : 监控
 - **model-test** : 用来练习和测试的模块
     - **eureka-client-provider** : 模拟 服务提供方
     - **eureka-client-consumer** : 模拟 服务消费者
+    - **web-service** : 没用上,测试的
+
 - **wxapp** : 微信小程序服务端
 
 ## 开始使用
