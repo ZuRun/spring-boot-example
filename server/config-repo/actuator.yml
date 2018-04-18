@@ -1,8 +1,4 @@
-endpoints:
-  mappings:
-    # 敏感信息访问限制,鉴权为false
-    sensitive: false
+management:
   security:
     # 关闭安全限制
     enabled: false
-
