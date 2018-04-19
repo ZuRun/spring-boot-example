@@ -1,5 +1,6 @@
 package me.zuhr.demo.ecc.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import me.zuhr.demo.basis.enumration.ServiceNameEnum;
 import me.zuhr.demo.ecp.feign.ExceptionFeignClient;
 import me.zuhr.demo.server.restful.MyRestTemplate;
@@ -33,6 +34,7 @@ public class ExceptionController {
 //        return restTemplate.getForObject("http://" + ServiceNameEnum.ECP.getValue() + "/runtimeException", String.class);
     }
 
+    @HystrixCommand(fallbackMethod="fallback")// 使用HystrixCommand注解，在fallbackMethod属性中指定fallback的方法
     @RequestMapping("/businessException")
     public String businessException() {
         return exceptionFeignClient.businessException();
@@ -60,8 +62,16 @@ public class ExceptionController {
         return restTemplate.getForObject("http://" + ServiceNameEnum.ECP.getValue() + "/notfound?param=" + param, String.class);
     }
 
+    @HystrixCommand(fallbackMethod="fallback")// 使用HystrixCommand注解，在fallbackMethod属性中指定fallback的方法
     @RequestMapping(value = "/notfound3", method = RequestMethod.GET)
     public String notfound3(String param) {
         return restTemplate.postForObject("http://" + ServiceNameEnum.ECP.getValue() + "/notfound", null, String.class);
+    }
+
+    private String fallback(){
+        return "default哈哈";
+    }
+    private String fallback(String param){
+        return "default哈哈:"+param;
     }
 }

@@ -47,6 +47,16 @@
 >    开发环境可以在dashboard中指定参数
 
 ## 约定
+- 编码规范: 见阿里java开发手册
+    - idea中安装alibaba java coding guidelines 插件
+    - 文件注释(File Header)
+    ```
+    /**
+     * @author ${USER}
+     * @date ${DATE} ${HOUR}:${MINUTE}:${SECOND}
+     */
+    ```
+    
 - hosts文件增加:
     ```
     127.0.0.1 std-eureka-server-1
