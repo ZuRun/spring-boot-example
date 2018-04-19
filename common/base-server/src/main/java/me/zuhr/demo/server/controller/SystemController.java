@@ -17,7 +17,7 @@ public class SystemController {
     @Value("${spring.application.name}")
     private String applicationName;
 
-    @RequestMapping("info")
+    @RequestMapping("msinfo")
     public JSONObject info(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("HostName", SystemInfo.getInstance().getHostName());
