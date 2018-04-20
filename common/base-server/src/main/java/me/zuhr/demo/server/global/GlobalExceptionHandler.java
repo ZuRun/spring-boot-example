@@ -159,6 +159,8 @@ public class GlobalExceptionHandler {
         return headers;
     }
 
+    // 记录日志
+
     /**
      * 服务抛的业务异常
      *
