@@ -15,7 +15,7 @@ public class Result<T> extends BaseResult<T> {
     }
 
     public Result<T> addResult(T t) {
-        this.setResult(t);
+        this.setData(t);
         return this;
     }
 
