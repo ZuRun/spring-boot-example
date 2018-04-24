@@ -17,7 +17,7 @@ spring:
       label: master
       discovery:
         enabled: true
-        serviceId: std-config-server
+        serviceId: std-config-server-1
       failFast: true
       retry:
         initialInterval: 10000

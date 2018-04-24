@@ -10,7 +10,7 @@ eureka:
 ## 使用git
 #spring:
 #  application:
-#    name: std-config-server #@project.artifactId@
+#    name: std-config-server-1 #@project.artifactId@
 #  cloud:
 #    config:
 #      server:
@@ -24,7 +24,7 @@ eureka:
 ### 使用本地配置
 spring:
   application:
-    name: std-config-server #@project.artifactId@
+    name: std-config-server-1 #@project.artifactId@
   profiles:
     # 本地配置
     active: native
