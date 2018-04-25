@@ -1,6 +1,5 @@
 package me.zuhr.demo.zuul.filter;
 
-import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import me.zuhr.demo.zuul.enumration.FilterTypeEnum;
 import org.slf4j.Logger;
@@ -23,17 +22,12 @@ public class CheckLoginStateFilter extends AbstractZuulFilter {
 
     @Override
     public int filterOrder() {
-        return 0;
-    }
-
-    @Override
-    public boolean shouldFilter() {
-        return true;
+        return 5;
     }
 
     @Override
     public Object run() {
-        init();
+        RequestContext ctx = getRequestContext();
 
         ctx.setSendZuulResponse(false);
         ctx.setResponseStatusCode(401);

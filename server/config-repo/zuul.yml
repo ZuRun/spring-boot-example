@@ -1,0 +1,8 @@
+jwt:
+  secret: xxxxxsdafawfwzjjlhhkasdfjkasdf
+#  主体
+  audience: clientId
+#  发行人
+  issuer: zurun
+#  超时时间(毫秒)
+  expiresMillisecond: 3600000
