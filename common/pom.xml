@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>SpringBootTest</artifactId>
+        <artifactId>spring-boot-example</artifactId>
         <groupId>me.zuhr</groupId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
@@ -21,6 +21,9 @@
         <module>base-server</module>
         <module>jpa</module>
         <module>email</module>
+        <module>redisson</module>
+        <module>mybatis</module>
+        <module>flyway</module>
     </modules>
 
 </project>

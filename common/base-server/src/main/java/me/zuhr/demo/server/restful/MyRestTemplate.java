@@ -27,25 +27,25 @@ public class MyRestTemplate<T> extends RestTemplate {
 
     public Result<T> postForObject(ServiceNameEnum serviceNameEnum, String uri, Object requestBody, Class<T> c, Object... uriVariables) {
         Result<T> result = super.postForObject(createUrl(serviceNameEnum, uri), requestBody, Result.class, uriVariables);
-        result.setResult(objectMapper.convertValue(result.getResult(), c));
+        result.addResult(objectMapper.convertValue(result.getData(), c));
         return result;
     }
 
     public Result<T> postForObject(ServiceNameEnum serviceNameEnum, String uri, Object requestBody, Class<T> c, Map<String, ?> map) {
         Result<T> result = super.postForObject(createUrl(serviceNameEnum, uri), requestBody, Result.class, map);
-        result.setResult(objectMapper.convertValue(result.getResult(), c));
+        result.addResult(objectMapper.convertValue(result.getData(), c));
         return result;
     }
 
     public Result<T> getForObject(ServiceNameEnum serviceNameEnum, String uri, Class<T> c, Object... uriVariables) {
         Result<T> result = super.getForObject(createUrl(serviceNameEnum, uri), Result.class, uriVariables);
-        result.setResult(objectMapper.convertValue(result.getResult(), c));
+        result.addResult(objectMapper.convertValue(result.getData(), c));
         return result;
     }
 
     public Result<T> getForObject(ServiceNameEnum serviceNameEnum, String uri, Class<T> c, Map<String, ?> map) {
         Result<T> result = super.getForObject(createUrl(serviceNameEnum, uri), Result.class, map);
-        result.setResult(objectMapper.convertValue(result.getResult(), c));
+        result.addResult(objectMapper.convertValue(result.getData(), c));
         return result;
     }
 

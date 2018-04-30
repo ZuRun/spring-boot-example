@@ -1,15 +1,14 @@
 package me.zuhr.demo.server.interceptor;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import me.zuhr.demo.rocketmq.common.RocketMqProducer;
 import me.zuhr.demo.server.entity.LoggerEntity;
+import me.zuhr.demo.server.service.LoggerService;
 import me.zuhr.demo.server.util.LoggerUtils;
-import org.apache.rocketmq.common.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,7 +27,9 @@ public class LoggerInterceptor implements HandlerInterceptor {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    RocketMqProducer producer;
+    LoggerService loggerService;
+    @Value("${spring.application.name}")
+    private String serverName;
 
     /**
      * 请求日志实体标识
@@ -61,7 +62,7 @@ public class LoggerInterceptor implements HandlerInterceptor {
         //设置sessionId
         logger.setSessionId(sessionId);
         //设置请求开始时间
-        logger.setCreateTime(System.currentTimeMillis());
+        logger.setRequestCreateTime(System.currentTimeMillis());
         //设置请求实体到request内，方面afterCompletion方法调用
         request.setAttribute(LOGGER_ENTITY, logger);
         return true;
@@ -91,18 +92,22 @@ public class LoggerInterceptor implements HandlerInterceptor {
         //获取本次请求日志实体
         LoggerEntity loggerEntity = (LoggerEntity) request.getAttribute(LOGGER_ENTITY);
         //设置请求时间差
-        loggerEntity.setTimeConsuming(currentTime - loggerEntity.getCreateTime());
+        loggerEntity.setTimeConsuming(currentTime - loggerEntity.getRequestCreateTime());
         //设置返回时间
-        loggerEntity.setReturnTime(currentTime);
+        loggerEntity.setResponseReturnTime(currentTime);
         //设置返回错误码
         loggerEntity.setHttpStatusCode(status + "");
+        //服务端地址,用来区分机器
+        loggerEntity.setLocalAddr(request.getLocalAddr());
+        //服务端端口号,用来区分机器
+        loggerEntity.setLocalPort(request.getLocalPort());
+        //微服务名
+        loggerEntity.setServerName(serverName);
         //设置返回值
 //        loggerEntity.setReturnData(JSON.toJSONString(request.getAttribute(LoggerUtils.LOGGER_RETURN),
 //                SerializerFeature.DisableCircularReferenceDetect,
 //                SerializerFeature.WriteMapNullValue));
-        logger.warn(loggerEntity.toString());
-
-        // 此处keys不设置,因为请求日志没有唯一值, 设置的话会导致哈希冲突
-        producer.sendOneWayMsg(new Message("log", "request", JSONObject.toJSONBytes(loggerEntity)));
+        logger.info(loggerEntity.toString());
+        loggerService.sendRequestLog(loggerEntity);
     }
 }

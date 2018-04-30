@@ -10,8 +10,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>eureka-client-consumer</artifactId>
+    <packaging>pom</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>me.zuhr</groupId>
+            <artifactId>eureka-client-provider-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>me.zuhr</groupId>
             <artifactId>base-server</artifactId>
@@ -27,15 +33,6 @@
             <artifactId>rocketmq</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <!--放在common/service模块中-->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-eureka</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-ribbon</artifactId>-->
-        <!--</dependency>-->
 
     </dependencies>
 

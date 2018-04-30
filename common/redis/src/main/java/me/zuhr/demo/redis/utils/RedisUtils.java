@@ -22,14 +22,13 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * 不同使用场景下使用不同方法:
  * 1. 保存的是对象,且此对象的获取一般全部获取所有属性
- *      - 保存:set(String key, V value)方法
+ * - 保存:set(String key, V value)方法
  * 2. 保存的是对象,但是:
- *      a.此对象经常需要修改部分字段;
- *      b.此对象有多并发的使用场景
- *  - 保存:
- *      a.{@link RedisUtils#hashSet(String key,String hashKey,V v)}
- *      b.{@link RedisUtils#hashSet(String key,V v)}
- *
+ * a.此对象经常需要修改部分字段;
+ * b.此对象有多并发的使用场景
+ * - 保存:
+ * a.{@link RedisUtils#hashSet(String key, String hashKey, V v)}
+ * b.{@link RedisUtils#hashSet(String key, V v)}
  *
  * @param <V>  value
  * @param <HM> hash的map
@@ -242,22 +241,27 @@ public class RedisUtils<V, HM, HV> {
     public void set(String key, V value, Long second, TimeUnit timeUnit) {
         jackson2.set(key, value, second, timeUnit);
     }
+
     @SuppressWarnings("unchecked")
     public void set(String key, String value) {
         primitive.set(key, (V) value);
     }
+
     @SuppressWarnings("unchecked")
     public void set(String key, Integer value) {
         jackson2.set(key, (V) value);
     }
+
     @SuppressWarnings("unchecked")
     public void set(String key, Long value) {
         jackson2.set(key, (V) value);
     }
+
     @SuppressWarnings("unchecked")
     public void set(String key, Double value) {
         jackson2.set(key, (V) value);
     }
+
     @SuppressWarnings("unchecked")
     public void set(String key, Boolean value) {
         jackson2.set(key, (V) value);
@@ -462,12 +466,14 @@ public class RedisUtils<V, HM, HV> {
     }
 
     /**
+     * 生产环境不建议使用
      * 获取指定key的所有hashkey.  Get key set (fields) of hash at {@code key}.
      * HKEYS key
      *
      * @param key
      * @return
      */
+    @Deprecated
     public Set hashKeys(String key) {
         return jackson2.hashKeys(key);
     }
@@ -811,6 +817,7 @@ public class RedisUtils<V, HM, HV> {
          * @return
          */
         @SuppressWarnings("unchecked")
+        @Deprecated
         public Set hashKeys(String key) {
             return hashOperations.keys(key);
         }

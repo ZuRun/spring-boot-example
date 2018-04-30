@@ -1,5 +1,8 @@
 package me.zuhr.demo.basis.model;
 
+import me.zuhr.demo.basis.constants.ErrorCode;
+import me.zuhr.demo.basis.constants.IMessage;
+
 /**
  * @author zurun
  * @date 2018/3/11 13:14:18
@@ -12,7 +15,7 @@ public class Result<T> extends BaseResult<T> {
     }
 
     public Result<T> addResult(T t) {
-        this.setResult(t);
+        this.setData(t);
         return this;
     }
 
@@ -28,8 +31,11 @@ public class Result<T> extends BaseResult<T> {
     }
 
     public static Result fail(String message) {
-        Result result = fail(1000, message);
-        return result;
+        return fail(ErrorCode.common.DEFAULT_FAIL_CODE.getErrCode(), message);
+    }
+
+    public static Result fail(IMessage errorCode) {
+        return fail(errorCode.getErrCode(), errorCode.getErrMsg());
     }
 
     public static Result fail(int code, String message) {

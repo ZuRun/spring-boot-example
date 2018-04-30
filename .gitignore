@@ -1,6 +1,10 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
 
+# 插件
+# 热部署 jRebel
+rebel.xml
+
 ### MAC ###
 .DS_Store
 

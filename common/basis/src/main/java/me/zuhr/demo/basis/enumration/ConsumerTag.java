@@ -9,6 +9,8 @@ package me.zuhr.demo.basis.enumration;
 public enum ConsumerTag {
     // 请求日志相关
     REQUEST("request", ConsumerTopic.LOG),
+    // 业务异常记录
+    EXCEPTION("exception", ConsumerTopic.LOG),
     // 练习用
     PUSH("push", ConsumerTopic.PushTopic);
 

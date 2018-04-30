@@ -1,0 +1,12 @@
+#!/bin/sh
+
+rocketmqip="127.0.0.1"
+
+echo "hello word"
+export NAMESRV_ADDR=$rocketmqip:9876
+cd /root/rocketmq/distribution/target/apache-rocketmq
+echo "brokerIP1=$rocketmqip" > broker.properties
+nohup sh bin/mqnamesrv & 
+# 不走后台,因为dockerfile中ENTRYPOINT命令执行完就会关闭docker
+sh bin/mqbroker -n $rocketmqip:9876 -c broker.properties
+echo "hello word2"

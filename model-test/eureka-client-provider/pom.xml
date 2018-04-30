@@ -10,9 +10,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>eureka-client-provider</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>eureka-client-provider-api</module>
+    </modules>
 
 
     <dependencies>
+        <dependency>
+            <groupId>me.zuhr</groupId>
+            <artifactId>eureka-client-provider-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>me.zuhr</groupId>
             <artifactId>base-server</artifactId>
@@ -26,6 +35,11 @@
         <dependency>
             <groupId>me.zuhr</groupId>
             <artifactId>redis</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>me.zuhr</groupId>
+            <artifactId>redisson</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 

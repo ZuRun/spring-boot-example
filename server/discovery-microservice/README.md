@@ -19,4 +19,7 @@
     - 启动类上需要额外添加@EnableEurekaServer，声明这是一个Eureka服务器。
     
 - 配置文件
-    
+
+### 参考配置
+
+- [spring eureka 服务实例实现快速下线快速感知快速刷新配置解析](https://blog.csdn.net/zhxdick/article/details/78560993)

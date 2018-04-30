@@ -5,6 +5,7 @@ import com.netflix.zuul.context.RequestContext;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 /**
  * @author zurun
  * @date 2018/4/21 22:54:19
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class AbstractZuulFilter extends ZuulFilter {
     @Autowired
     protected BeanFactory beanFactory;
+
 
     protected RequestContext getRequestContext() {
         return RequestContext.getCurrentContext();

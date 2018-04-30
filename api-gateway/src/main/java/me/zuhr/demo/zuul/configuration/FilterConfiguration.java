@@ -27,4 +27,5 @@ public class FilterConfiguration {
     public PermissionFilter permissionFilter(){
         return new PermissionFilter();
     }
+
 }
