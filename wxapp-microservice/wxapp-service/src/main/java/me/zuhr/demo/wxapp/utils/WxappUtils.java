@@ -4,6 +4,7 @@ import me.zuhr.demo.redis.utils.RedisUtils;
 import me.zuhr.demo.wxapp.vo.SessionVo;
 import me.zuhr.demo.wxapp.vo.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.UUID;
 
@@ -19,8 +20,10 @@ public class WxappUtils {
     /**
      * redis缓存key的前缀
      */
-    private final String WXAPP_PREFIX = "wxapp_";
-    private final Long TIMEOUT = 3600L;
+    @Value("wxapp.config.redis.prefix")
+    private String WXAPP_PREFIX;
+    @Value("wxapp.config.redis.timeout")
+    private Long TIMEOUT;
 
     public void add(String key, UserInfo userInfo) {
 
