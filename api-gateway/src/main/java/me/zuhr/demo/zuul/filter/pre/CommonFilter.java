@@ -2,14 +2,13 @@ package me.zuhr.demo.zuul.filter.pre;
 
 import com.netflix.zuul.context.RequestContext;
 import me.zuhr.demo.zuul.enumration.FilterTypeEnum;
-import me.zuhr.demo.zuul.filter.AbstractZuulFilter;
-import me.zuhr.demo.zuul.filter.CheckPermission;
+import me.zuhr.demo.zuul.filter.Mapping;
 
 /**
  * @author zurun
  * @date 2018/4/30 17:12:52
  */
-public class PermissionFilter extends AbstractZuulFilter {
+public class CommonFilter extends AbstractZuulFilter {
 
     @Override
     public String filterType() {
@@ -28,7 +27,11 @@ public class PermissionFilter extends AbstractZuulFilter {
         String proxy = (String) ctx.get("proxy");
         // 微服务
         String serviceId = (String) ctx.get("serviceId");
-        CheckPermission bean = beanFactory.getBean("", CheckPermission.class);
+
+        // 根据需要访问的微服务名,进行相应的过滤操作
+        Mapping.getByName(serviceId).getCheck().authentication(ctx);
+
+
         return null;
     }
 }

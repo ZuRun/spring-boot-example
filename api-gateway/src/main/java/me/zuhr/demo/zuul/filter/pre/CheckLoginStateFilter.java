@@ -2,7 +2,6 @@ package me.zuhr.demo.zuul.filter.pre;
 
 import com.netflix.zuul.context.RequestContext;
 import me.zuhr.demo.zuul.enumration.FilterTypeEnum;
-import me.zuhr.demo.zuul.filter.AbstractZuulFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;

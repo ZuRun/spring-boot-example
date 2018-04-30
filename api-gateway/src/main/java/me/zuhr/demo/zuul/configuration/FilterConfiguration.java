@@ -1,7 +1,7 @@
 package me.zuhr.demo.zuul.configuration;
 
 import me.zuhr.demo.zuul.filter.pre.CheckLoginStateFilter;
-import me.zuhr.demo.zuul.filter.pre.PermissionFilter;
+import me.zuhr.demo.zuul.filter.pre.CommonFilter;
 import me.zuhr.demo.zuul.filter.pre.TokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,19 +13,19 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FilterConfiguration {
 
-    @Bean
+//    @Bean
     public CheckLoginStateFilter accessFilter() {
         return new CheckLoginStateFilter();
     }
 
-    @Bean
+//    @Bean
     public TokenFilter tokenFilter(){
         return new TokenFilter();
     }
 
     @Bean
-    public PermissionFilter permissionFilter(){
-        return new PermissionFilter();
+    public CommonFilter permissionFilter(){
+        return new CommonFilter();
     }
 
 }
