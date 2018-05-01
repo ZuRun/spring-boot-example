@@ -24,6 +24,7 @@
         <module>redisson</module>
         <module>mybatis</module>
         <module>flyway</module>
+        <module>mybatis-plus</module>
     </modules>
 
 </project>
