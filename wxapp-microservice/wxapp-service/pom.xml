@@ -27,11 +27,17 @@
             <artifactId>redis</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>me.zuhr</groupId>-->
-        <!--<artifactId>mybatis</artifactId>-->
-        <!--<version>1.0-SNAPSHOT</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>me.zuhr</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!--数据库版本控制-->
+        <dependency>
+            <groupId>me.zuhr</groupId>
+            <artifactId>flyway</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <!--spring boot打包的话需要指定一个唯一的入门-->
     <build>
@@ -52,17 +58,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <!-- mybatis generator 自动生成代码插件  -->
-            <plugin>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>${mybatis-generator-version}</version>
-                <configuration>
-                    <configurationFile>${basedir}/src/main/resources/generator/generatorConfig.xml</configurationFile>
-                    <overwrite>true</overwrite>
-                    <verbose>true</verbose>
-                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -15,6 +15,7 @@
         <module>eureka-client-provider</module>
         <module>eureka-client-consumer</module>
         <module>web-service</module>
+        <module>mybatis-test</module>
     </modules>
 
 

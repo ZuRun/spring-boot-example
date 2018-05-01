@@ -20,9 +20,9 @@ public class WxappUtils {
     /**
      * redis缓存key的前缀
      */
-    @Value("wxapp.config.redis.prefix")
+    @Value("${wxapp.config.redis.prefix}")
     private String WXAPP_PREFIX;
-    @Value("wxapp.config.redis.timeout")
+    @Value("${wxapp.config.redis.timeout}")
     private Long TIMEOUT;
 
     public void add(String key, UserInfo userInfo) {

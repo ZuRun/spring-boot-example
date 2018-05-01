@@ -1,4 +1,4 @@
-package me.zuhr.demo.mybatis.mapper;
+package me.zuhr.demo.mybatis.base;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
