@@ -8,7 +8,7 @@ package me.zuhr.demo.basis.constants;
  * <p>
  * 4位错误码定义：
  * 首位，应用标识； 1
- * 二号位  ，应用模块标识（common：0 | wxapp : 1 | ecc : 8 | ecp : 9）；
+ * 二号位  ，应用模块标识（common：0 | wxapp : 2 | ecc : 8 | ecp : 9）；
  * 三四位为错误码
  * 详见:{@link http://blog.csdn.net/huangwenyi1010/article/details/51581906}
  *

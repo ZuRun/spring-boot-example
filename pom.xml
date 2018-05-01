@@ -17,7 +17,7 @@
         <module>model-test</module>
         <module>api-gateway</module>
         <module>basis-service</module>
-        <module>wxapp</module>
+        <module>wxapp-microservice</module>
     </modules>
 
     <properties>

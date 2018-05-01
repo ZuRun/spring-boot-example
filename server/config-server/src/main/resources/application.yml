@@ -33,6 +33,6 @@ spring:
       server:
         # 属性文件地址，只要指定文件夹的路径
         native:
-          searchLocations: /Users/zurun/zu/javacode/spring-boot-example/server/config-repo/
-#          searchLocations: /Users/ZuRun/javacode/SpringBootTest/server/config-repo/
+#          searchLocations: /Users/zurun/zu/javacode/spring-boot-example/server/config-repo/
+          searchLocations: /Users/ZuRun/javacode/SpringBootTest/server/config-repo/
 #          searchLocations: classpath:../../../config-reop/

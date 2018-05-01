@@ -1,7 +1,9 @@
 package me.zuhr.demo.wxapp.config;
 
 import lombok.Data;
+import me.zuhr.demo.wxapp.utils.WxappUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -18,4 +20,8 @@ public class WxAppConfiguration {
     private String appId;
 
 
+    @Bean
+    public WxappUtils wxappUtils(){
+        return new WxappUtils();
+    }
 }

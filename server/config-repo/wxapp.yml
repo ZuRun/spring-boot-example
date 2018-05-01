@@ -1,6 +1,12 @@
 wxapp:
   appId: '{cipher}2ed0bc4d96410d6f222c8cc33ddc5327161cac4370fc0c1e1149d744145df0541566645a9a4d80407815c7f4e48997ef'
   appSecret: '{cipher}8abb0401b141818e2ce5e95da4ca0d1a26168e8850b327b4e018ed46bbd6ff85653fe839e052dddaec29083f65b6dff0765a41ea35b559c3a6c9d6548dc05f19'
+  config:
+    redis:
+      # 前缀
+      prefix: wxapp_
+      # 超时时间
+      timeout: 3600
 
 spring:
     datasource:

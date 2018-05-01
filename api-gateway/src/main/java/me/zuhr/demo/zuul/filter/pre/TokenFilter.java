@@ -1,14 +1,15 @@
-package me.zuhr.demo.zuul.filter;
+package me.zuhr.demo.zuul.filter.pre;
 
 import com.netflix.zuul.context.RequestContext;
+import me.zuhr.demo.basis.model.Result;
 import me.zuhr.demo.zuul.configuration.JwtConfiguration;
 import me.zuhr.demo.zuul.enumration.FilterTypeEnum;
+import me.zuhr.demo.zuul.util.FilterHelper;
 import me.zuhr.demo.zuul.util.JwtHelper;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 
 import java.util.HashMap;
 
@@ -29,7 +30,7 @@ public class TokenFilter extends AbstractZuulFilter {
 
     @Override
     public int filterOrder() {
-        return 4;
+        return 10;
     }
 
 
@@ -40,10 +41,7 @@ public class TokenFilter extends AbstractZuulFilter {
         String authHeader = ctx.getRequest().getHeader("authorization");
 
         if (StringUtils.isEmpty(authHeader)) {
-            ctx.setSendZuulResponse(false);
-            ctx.setResponseStatusCode(401);
-            ctx.getResponse().setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-            ctx.setResponseBody("{\"code\":1}");
+            FilterHelper.fail(ctx, Result.fail("鉴权失败"));
             ctx.addZuulResponseHeader("authorization", JwtHelper.createToken(jwt, new HashMap()));
             logger.info("checkLoginState");
             return null;

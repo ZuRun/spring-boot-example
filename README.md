@@ -72,14 +72,14 @@
 - **微服务通信**
    约定微服务之间通信,成功则返回需要的数据,异常则直接抛业务异常,框架会返回[Result](common/basis/src/main/java/me/zuhr/demo/basis/model/Result.java)实体
 
-- **[异常处理](note/Exception.md)**
+- **[异常处理](docs/Exception.md)**
   - [项目异常继承关系](https://www.processon.com/view/link/5ab60ee8e4b027675e3854b9),密码boot
   - 项目默认业务异常为BusinessException,自定义业务异常需要继承此异常
   - 通过control的请求,抛的异常都将在GlobalExceptionHandler中被处理,所以业务中尽量不要加try.catch 
   - 被调用的微服务抛的异常,框架调用方在[MyResponseErrorHandler](common/base-server/src/main/java/me/zuhr/demo/server/restful/MyResponseErrorHandler.java)中根据相应策略进行处理
   - rest请求返回400和500可能会抛AbstractRestServerException和AbstractRestHttpException异常,调用方可根据实际情况捕获
 - **jpa**
-    配置禁止自动修改表，因为使用了[flyway](note/flyway.md)来管理数据库版本
+    配置禁止自动修改表，因为使用了[flyway](docs/flyway.md)来管理数据库版本
      `spring.jpa.hibernate.ddl-auto=none`
 
 ## 打包+Docker部署

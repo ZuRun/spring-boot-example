@@ -1,4 +1,4 @@
-package me.zuhr.demo.zuul.filter;
+package me.zuhr.demo.zuul.filter.pre;
 
 import com.netflix.zuul.context.RequestContext;
 import me.zuhr.demo.zuul.enumration.FilterTypeEnum;
@@ -22,7 +22,7 @@ public class CheckLoginStateFilter extends AbstractZuulFilter {
 
     @Override
     public int filterOrder() {
-        return 5;
+        return 11;
     }
 
     @Override
