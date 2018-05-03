@@ -10,8 +10,10 @@
     - **[base-server](common/base-server/README.md)**   : 一般的微服务都需要依赖此模块
     - **[basis](common/basis/README.md)**   : 
     - **email** : 发送邮件服务,建议需要发送邮件的都通过消息队列,由指定的服务统一发送邮件
+    - **flyway** : 数据库版本控制
     - **[jpa](common/jpa/README.md)** : hibernate,使用了druid连接池
     - **mybatis**
+    - **mybatis-plus**  Mybatis 的增强工具,挺好用的
     - **redis**
     - **[redisson](common/redisson/README.md)** 利用redis实现分布式锁
     - **[rocketmq](common/rocketmq/README.md)** : 阿里的消息队列
@@ -26,8 +28,9 @@
     - **eureka-client-provider** : 模拟 服务提供方
     - **eureka-client-consumer** : 模拟 服务消费者
     - **web-service** : 没用上,测试的
-
-- **wxapp** : 微信小程序服务端
+- **wxapp-microservice** : 微信小程序服务端
+    - **wxapp** : 基础模块
+    - **wxapp-service** : 小程序微服务
 
 ## 开始使用
 ### 本项目集成了[lombok](https://segmentfault.com/a/1190000011433462),让代码更简洁
