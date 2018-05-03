@@ -32,19 +32,24 @@ public class LoginService extends WxService {
         String appId = wxAppConfiguration.getAppId();
         String appSecret = wxAppConfiguration.getAppSecret();
         String url = "https://api.weixin.qq.com/sns/jscode2session?appid={appId}&secret={secret}&js_code={js_code}&grant_type=authorization_code";
-        SessionVo sessionVo=  restTemplate.getForObject(url, SessionVo.class, appId, appSecret, jsCode);
-        if(sessionVo.success()){
+        SessionVo sessionVo = restTemplate.getForObject(url, SessionVo.class, appId, appSecret, jsCode);
+        if (sessionVo.success()) {
             WxAppUser wxAppUser;
-            List<WxAppUser> list=mapper.selectList(new EntityWrapper().eq("openid", sessionVo.getOpenid()));
-            if(list.size()==0){
-                wxAppUser=new WxAppUser();
+            List<WxAppUser> list = mapper.selectList(new EntityWrapper().eq("openid", sessionVo.getOpenid()));
+            if (list.size() == 0) {
+                wxAppUser = new WxAppUser();
                 wxAppUser.setOpenid(sessionVo.getOpenid());
                 wxAppUser.setUnionid(sessionVo.getOpenid());
+                wxAppUser.setAvatarUrl("xxxurl");
                 mapper.insert(wxAppUser);
+            } else {
+                wxAppUser = list.get(0);
+                wxAppUser.setNickname("nnnnname");
+                mapper.updateById(wxAppUser);
             }
             return Result.ok().addResult(wxappUtils.login(sessionVo));
         }
-        return Result.fail(sessionVo.getErrcode(),sessionVo.getErrmsg());
+        return Result.fail(sessionVo.getErrcode(), sessionVo.getErrmsg());
     }
 
 //    public UserInfo getUserInfo(){

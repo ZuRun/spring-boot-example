@@ -12,7 +12,7 @@ CREATE TABLE `t_wxapp_user` (
   `province`  VARCHAR(255)   COMMENT '省份'  NOT NULL  DEFAULT '',
   `city`  VARCHAR(255)   COMMENT '城市'  NOT NULL  DEFAULT '',
   `country`  VARCHAR(255)   COMMENT '国家'  NOT NULL  DEFAULT '',
-  `avatarUrl`    VARCHAR(500)   COMMENT '用户头像url',
+  `avatar_url`    VARCHAR(500)   COMMENT '用户头像url',
   PRIMARY KEY (`id`)
 )
   ENGINE = INNODB

@@ -1,9 +1,11 @@
-package me.zuhr.demo.mybatis.base;
+package me.zuhr.demo.mybatisplus.base;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import lombok.Data;
 
 import java.util.Date;
+
+import static com.baomidou.mybatisplus.enums.FieldFill.INSERT;
 
 /**
  * @author zurun
@@ -15,11 +17,11 @@ public class BaseEntity {
     /**
      * 创建时间
      */
-    @TableField("create_time")
+    @TableField(value = "create_time", fill = INSERT)
     protected Date createTime;
     /**
      * 更新时间
      */
-    @TableField("modified_time")
+    @TableField(value = "modified_time", update = "now()", fill = INSERT)
     protected Date modifiedTime;
 }

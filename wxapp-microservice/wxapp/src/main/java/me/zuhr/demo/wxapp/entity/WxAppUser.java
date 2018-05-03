@@ -2,7 +2,7 @@ package me.zuhr.demo.wxapp.entity;
 
 import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
-import me.zuhr.demo.mybatis.base.BaseEntity;
+import me.zuhr.demo.mybatisplus.base.BaseEntity;
 
 /**
  * @author zurun
