@@ -5,9 +5,10 @@ import me.zuhr.demo.basis.model.Result;
 import me.zuhr.demo.wxapp.config.WxAppConfiguration;
 import me.zuhr.demo.wxapp.config.WxService;
 import me.zuhr.demo.wxapp.entity.WxAppUser;
-import me.zuhr.demo.wxapp.mapper.WxAppUserMapper;
+import me.zuhr.demo.wxapp.mapper.WxAppUserInfoMapper;
 import me.zuhr.demo.wxapp.utils.WxappUtils;
 import me.zuhr.demo.wxapp.vo.SessionVo;
+import me.zuhr.demo.wxapp.vo.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class LoginService extends WxService {
     WxappUtils wxappUtils;
 
     @Autowired
-    WxAppUserMapper mapper;
+    WxAppUserInfoMapper userInfoMapper;
 
     public Result login(String jsCode) {
         String appId = wxAppConfiguration.getAppId();
@@ -35,25 +36,27 @@ public class LoginService extends WxService {
         SessionVo sessionVo = restTemplate.getForObject(url, SessionVo.class, appId, appSecret, jsCode);
         if (sessionVo.success()) {
             WxAppUser wxAppUser;
-            List<WxAppUser> list = mapper.selectList(new EntityWrapper().eq("openid", sessionVo.getOpenid()));
+            List<WxAppUser> list = userInfoMapper.selectList(new EntityWrapper().eq("openid", sessionVo.getOpenid()));
             if (list.size() == 0) {
                 wxAppUser = new WxAppUser();
                 wxAppUser.setOpenid(sessionVo.getOpenid());
                 wxAppUser.setUnionid(sessionVo.getOpenid());
                 wxAppUser.setAvatarUrl("xxxurl");
-                mapper.insert(wxAppUser);
+                userInfoMapper.insert(wxAppUser);
             } else {
                 wxAppUser = list.get(0);
                 wxAppUser.setNickname("nnnnname");
-                mapper.updateById(wxAppUser);
+                userInfoMapper.updateById(wxAppUser);
             }
             return Result.ok().addResult(wxappUtils.login(sessionVo));
         }
         return Result.fail(sessionVo.getErrcode(), sessionVo.getErrmsg());
     }
 
-//    public UserInfo getUserInfo(){
-//        UserInfo userInfo;
-//        userInfo
-//    }
+
+    public void updateUserInfo(String token,UserInfoVo userInfoVo){
+        WxAppUser user=userInfoMapper.findByOpenId(userInfoVo.getOpenid());
+        userInfoMapper.updateById(user);
+
+    }
 }

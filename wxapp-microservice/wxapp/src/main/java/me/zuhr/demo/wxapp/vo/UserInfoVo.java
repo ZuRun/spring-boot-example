@@ -9,7 +9,7 @@ import lombok.Data;
  * @date 2018/4/29 22:04:34
  */
 @Data
-public class UserInfo extends SessionVo {
+public class UserInfoVo extends SessionVo {
 
     /**
      * 用户昵称

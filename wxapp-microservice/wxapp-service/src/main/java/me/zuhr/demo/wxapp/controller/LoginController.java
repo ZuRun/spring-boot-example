@@ -2,7 +2,7 @@ package me.zuhr.demo.wxapp.controller;
 
 import me.zuhr.demo.basis.model.Result;
 import me.zuhr.demo.wxapp.service.LoginService;
-import me.zuhr.demo.wxapp.vo.UserInfo;
+import me.zuhr.demo.wxapp.vo.UserInfoVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +27,10 @@ public class LoginController {
     }
 
     @PostMapping(value = "userInfo")
-    public Result getUserInfo(HttpServletRequest httpRequest, @RequestBody UserInfo userInfo) {
+    public Result updateUserInfo(HttpServletRequest httpRequest, @RequestBody UserInfoVo userInfoVo) {
         String token = httpRequest.getHeader("wxapp-token");
 
-        return Result.ok();
+        loginService.updateUserInfo(token, userInfoVo);
+        return Result.ok("更新成功!");
     }
 }

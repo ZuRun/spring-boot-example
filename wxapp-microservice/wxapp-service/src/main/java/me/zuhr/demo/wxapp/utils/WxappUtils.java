@@ -2,7 +2,7 @@ package me.zuhr.demo.wxapp.utils;
 
 import me.zuhr.demo.redis.utils.RedisUtils;
 import me.zuhr.demo.wxapp.vo.SessionVo;
-import me.zuhr.demo.wxapp.vo.UserInfo;
+import me.zuhr.demo.wxapp.vo.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -25,7 +25,7 @@ public class WxappUtils {
     @Value("${wxapp.config.redis.timeout}")
     private Long TIMEOUT;
 
-    public void add(String key, UserInfo userInfo) {
+    public void add(String key, UserInfoVo userInfo) {
 
     }
 

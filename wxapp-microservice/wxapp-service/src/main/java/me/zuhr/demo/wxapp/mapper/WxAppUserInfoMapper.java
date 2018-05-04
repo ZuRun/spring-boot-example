@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2018/5/1 15:55:58
  */
 @Mapper
-public interface WxAppUserMapper extends SuperMapper<WxAppUser> {
+public interface WxAppUserInfoMapper extends SuperMapper<WxAppUser> {
 
+    WxAppUser findByOpenId(String openId);
 }
