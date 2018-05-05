@@ -9,7 +9,13 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2018/5/1 15:55:58
  */
 @Mapper
-public interface WxAppUserInfoMapper extends SuperMapper<WxAppUser> {
+public interface WxAppUserInfoMapper<T extends WxAppUser> extends SuperMapper<WxAppUser> {
 
-    WxAppUser findByOpenId(String openId);
+    /**
+     * 根据openid获取微信用户信息
+     *
+     * @param openId
+     * @return
+     */
+    T findByOpenId(String openId);
 }

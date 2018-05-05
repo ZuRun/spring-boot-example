@@ -27,7 +27,7 @@ public class LoginService extends WxService {
     WxappUtils wxappUtils;
 
     @Autowired
-    WxAppUserInfoMapper userInfoMapper;
+    WxAppUserInfoMapper<WxAppUser> userInfoMapper;
 
     public Result login(String jsCode) {
         String appId = wxAppConfiguration.getAppId();
@@ -36,7 +36,7 @@ public class LoginService extends WxService {
         SessionVo sessionVo = restTemplate.getForObject(url, SessionVo.class, appId, appSecret, jsCode);
         if (sessionVo.success()) {
             WxAppUser wxAppUser;
-            List<WxAppUser> list = userInfoMapper.selectList(new EntityWrapper().eq("openid", sessionVo.getOpenid()));
+            List<WxAppUser> list = userInfoMapper.selectList(new EntityWrapper<WxAppUser>().eq("openid", sessionVo.getOpenid()));
             if (list.size() == 0) {
                 wxAppUser = new WxAppUser();
                 wxAppUser.setOpenid(sessionVo.getOpenid());

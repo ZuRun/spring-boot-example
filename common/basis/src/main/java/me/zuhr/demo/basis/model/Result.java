@@ -14,14 +14,13 @@ public class Result<T> extends BaseResult<T> {
         return 0 == getCode();
     }
 
-    public Result<T> addResult(T t) {
+    public Result addResult(T t) {
         this.setData(t);
         return this;
     }
 
     public static Result ok() {
-        Result result = new Result();
-        return result;
+        return new Result();
     }
 
     public static Result ok(String message) {

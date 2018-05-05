@@ -1,5 +1,6 @@
 package me.zuhr.demo.redis.config;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,7 @@ import java.util.List;
  */
 //@EnableConfigurationProperties
 @Configuration
+@Data
 //@PropertySource(value = "classpath:/config/redis.properties")
 //@ConfigurationProperties(prefix = "spring.redis")
 public class RedisConfig {
@@ -167,43 +169,4 @@ public class RedisConfig {
 //    }
 
 
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<String> getNodes() {
-        return nodes;
-    }
-
-    public void setNodes(List<String> nodes) {
-        this.nodes = nodes;
-    }
-
-    public Boolean getIsluster() {
-        return isluster;
-    }
-
-    public void setIsluster(Boolean isluster) {
-        this.isluster = isluster;
-    }
 }
