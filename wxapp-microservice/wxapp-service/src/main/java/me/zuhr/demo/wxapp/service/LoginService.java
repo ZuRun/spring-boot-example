@@ -56,7 +56,19 @@ public class LoginService extends WxService {
 
     public void updateUserInfo(String token,UserInfoVo userInfoVo){
         WxAppUser user=userInfoMapper.findByOpenId(userInfoVo.getOpenid());
-        userInfoMapper.updateById(user);
+        if(user!=null){
+            user.setNickname(userInfoVo.getNickname());
+            user.setGender(userInfoVo.getGender());
+            user.setLanguage(userInfoVo.getLanguage());
+
+            user.setCountry(userInfoVo.getCountry());
+            user.setProvince(userInfoVo.getProvince());
+            user.setCity(userInfoVo.getCity());
+
+            user.setAvatarUrl(userInfoVo.getAvatarUrl());
+
+            userInfoMapper.updateById(user);
+        }
 
     }
 }

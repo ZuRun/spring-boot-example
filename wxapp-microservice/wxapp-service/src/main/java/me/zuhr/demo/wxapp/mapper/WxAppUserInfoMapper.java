@@ -18,4 +18,6 @@ public interface WxAppUserInfoMapper<T extends WxAppUser> extends SuperMapper<Wx
      * @return
      */
     T findByOpenId(String openId);
+
+
 }

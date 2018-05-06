@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.zuhr.demo.wxapp.mapper.WxAppUserInfoMapper" >
+
+    <resultMap id="WxAppUser" type="me.zuhr.demo.wxapp.entity.WxAppUser">
+
+    </resultMap>
+
+    <select id="findByOpenId" resultMap="WxAppUser">
+        SELECT * FROM t_wxapp_user WHERE openid=#{openId}
+    </select>
+</mapper>
