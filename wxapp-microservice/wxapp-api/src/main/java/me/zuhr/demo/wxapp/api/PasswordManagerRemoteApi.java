@@ -1,5 +1,6 @@
 package me.zuhr.demo.wxapp.api;
 
+import me.zuhr.demo.basis.model.Result;
 import me.zuhr.demo.wxapp.vo.PassWordInfoVo;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +13,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("pwd")
 public interface PasswordManagerRemoteApi {
 
-    @PostMapping("add")
-    void add(@RequestBody PassWordInfoVo passWordInfoVo);
+    /**
+     * 新增并返回主键
+     *
+     * @param passWordInfoVo
+     * @return
+     */
+    @RequestMapping(value = "add", method = {RequestMethod.POST})
+    Result<Integer> add(@RequestBody PassWordInfoVo passWordInfoVo);
 
     @GetMapping("{id}")
-    PassWordInfoVo get(@PathVariable Long id);
+    Result<PassWordInfoVo> get(@PathVariable Long id);
 
 }

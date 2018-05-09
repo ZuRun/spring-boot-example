@@ -7,7 +7,7 @@ import me.zuhr.demo.std.BaseController;
  * @author zurun
  * @date 2018/5/9 01:03:43
  */
-public class WxAppBaseController extends BaseController {
+public class AbstractWxAppController extends BaseController {
 
     /**
      * 获取token,不需要判null,zuul过滤器中会拦截的

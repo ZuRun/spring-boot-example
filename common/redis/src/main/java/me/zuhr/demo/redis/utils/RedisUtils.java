@@ -27,17 +27,15 @@ import java.util.concurrent.TimeUnit;
  * a.此对象经常需要修改部分字段;
  * b.此对象有多并发的使用场景
  * - 保存:
- * a.{@link RedisUtils#hashSet(String key, String hashKey, V v)}
- * b.{@link RedisUtils#hashSet(String key, V v)}
+ * a.{@link RedisUtils#hashSet<V>(String key, String hashKey, V v)}
+ * b.{@link RedisUtils#hashSet<V>(String key, V v)}
  *
- * @param <V>  value
- * @param <HM> hash的map
- * @param <HV> 哈希表中指定 key 的值
+ *
  * @author zurun
  * @date 2018/2/10 00:37:06
  */
 @Component
-public class RedisUtils<V, HM, HV> {
+public class RedisUtils {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
 
@@ -202,8 +200,8 @@ public class RedisUtils<V, HM, HV> {
      * @param key
      * @return
      */
-    public V get(String key) {
-        return jackson2.get(key);
+    public <V> V get(String key) {
+        return (V) jackson2.get(key);
     }
 
     /**
@@ -213,8 +211,8 @@ public class RedisUtils<V, HM, HV> {
      * @param c   返回指定类型的对象
      * @return
      */
-    public HM get(String key, Class<HM> c) {
-        return jackson2.get(key, c);
+    public <HM> HM get(String key, Class<HM> c) {
+        return (HM) jackson2.get(key, c);
     }
 
     /**
@@ -225,7 +223,7 @@ public class RedisUtils<V, HM, HV> {
      * @param value
      * @param second
      */
-    public void set(String key, V value, Long... second) {
+    public <V> void set(String key, V value, Long... second) {
         jackson2.set(key, value, second);
     }
 
@@ -238,33 +236,33 @@ public class RedisUtils<V, HM, HV> {
      * @param second
      * @param timeUnit
      */
-    public void set(String key, V value, Long second, TimeUnit timeUnit) {
+    public <V> void set(String key, V value, Long second, TimeUnit timeUnit) {
         jackson2.set(key, value, second, timeUnit);
     }
 
     @SuppressWarnings("unchecked")
     public void set(String key, String value) {
-        primitive.set(key, (V) value);
+        primitive.set(key, value);
     }
 
     @SuppressWarnings("unchecked")
     public void set(String key, Integer value) {
-        jackson2.set(key, (V) value);
+        jackson2.set(key, value);
     }
 
     @SuppressWarnings("unchecked")
     public void set(String key, Long value) {
-        jackson2.set(key, (V) value);
+        jackson2.set(key, value);
     }
 
     @SuppressWarnings("unchecked")
     public void set(String key, Double value) {
-        jackson2.set(key, (V) value);
+        jackson2.set(key, value);
     }
 
     @SuppressWarnings("unchecked")
     public void set(String key, Boolean value) {
-        jackson2.set(key, (V) value);
+        jackson2.set(key, value);
     }
 
     /**
@@ -276,7 +274,7 @@ public class RedisUtils<V, HM, HV> {
      */
     @SuppressWarnings("unchecked")
     public String getAndSet(String key, String value) {
-        return (String) primitive.getAndSet(key, (V) value);
+        return (String) primitive.getAndSet(key, value);
     }
 
     /**
@@ -286,8 +284,8 @@ public class RedisUtils<V, HM, HV> {
      * @param v
      * @return
      */
-    public V getAndSet(String key, V v) {
-        return jackson2.getAndSet(key, v);
+    public <V> V getAndSet(String key, V v) {
+        return (V) jackson2.getAndSet(key, v);
     }
 
     /**
@@ -299,8 +297,8 @@ public class RedisUtils<V, HM, HV> {
      * @param second
      * @return
      */
-    public V getAndSet(String key, V v, Long second) {
-        return jackson2.getAndSet(key, v, second);
+    public <V> V getAndSet(String key, V v, Long second) {
+        return (V) jackson2.getAndSet(key, v, second);
     }
 
     /**
@@ -313,8 +311,8 @@ public class RedisUtils<V, HM, HV> {
      * @param timeUnit
      * @return
      */
-    public V getAndSet(String key, V v, Long second, TimeUnit timeUnit) {
-        return jackson2.getAndSet(key, v, second, timeUnit);
+    public <V> V getAndSet(String key, V v, Long second, TimeUnit timeUnit) {
+        return (V) jackson2.getAndSet(key, v, second, timeUnit);
     }
 
     /**
@@ -324,7 +322,7 @@ public class RedisUtils<V, HM, HV> {
      * @param v
      * @return
      */
-    public Boolean setNx(String key, V v) {
+    public <V> Boolean setNx(String key, V v) {
         return jackson2.setNx(key, v);
     }
 
@@ -337,7 +335,7 @@ public class RedisUtils<V, HM, HV> {
      */
     @SuppressWarnings("unchecked")
     public Boolean setNx(String key, String value) {
-        return primitive.setNx(key, (V) value);
+        return primitive.setNx(key, value);
     }
 
     /**      **   HASH 部分   **       **/
@@ -348,7 +346,7 @@ public class RedisUtils<V, HM, HV> {
      * @param key
      * @param v   对象
      */
-    public void hashSet(String key, V v) {
+    public <V> void hashSet(String key, V v) {
         jackson2.hashSet(key, v);
     }
 
@@ -359,11 +357,11 @@ public class RedisUtils<V, HM, HV> {
      * @param v
      * @param second
      */
-    public void hashSet(String key, V v, Long second) {
+    public <V> void hashSet(String key, V v, Long second) {
         jackson2.hashSet(key, v, second);
     }
 
-    public void hashSet(String key, V v, Long timeout, TimeUnit timeUnit) {
+    public <V> void hashSet(String key, V v, Long timeout, TimeUnit timeUnit) {
         jackson2.hashSet(key, v, timeout, timeUnit);
     }
 
@@ -420,7 +418,7 @@ public class RedisUtils<V, HM, HV> {
      * @param hashKey
      * @param v       true表示是设置成功,之前没有这个hashKey
      */
-    public Boolean hashSetNx(String key, String hashKey, V v) {
+    public <V> Boolean hashSetNx(String key, String hashKey, V v) {
         return jackson2.hashSetNx(key, hashKey, v);
     }
 
@@ -432,12 +430,12 @@ public class RedisUtils<V, HM, HV> {
      * @param hashKey
      * @return
      */
-    public V hashGet(String key, String hashKey) {
-        return jackson2.hashGet(key, hashKey);
+    public <V> V hashGet(String key, String hashKey) {
+        return (V) jackson2.hashGet(key, hashKey);
     }
 
-    public HV hashGet(String key, String hashKey, Class<HV> c) {
-        return jackson2.hashGet(key, hashKey, c);
+    public <HV> HV hashGet(String key, String hashKey, Class<HV> c) {
+        return (HV) jackson2.hashGet(key, hashKey, c);
     }
 
     /**
@@ -461,8 +459,8 @@ public class RedisUtils<V, HM, HV> {
      * @return
      */
     @Deprecated
-    public HM hashGet(String key, Class<HM> c) {
-        return jackson2.hashGet(key, c);
+    public <HM> HM hashGet(String key, Class<HM> c) {
+        return (HM) jackson2.hashGet(key, c);
     }
 
     /**
@@ -527,7 +525,7 @@ public class RedisUtils<V, HM, HV> {
     private abstract class AbstractTemplate<V> {
         public RedisTemplate redisTemplate;
         HashOperations hashOperations;
-        ValueOperations valueOperations;
+        ValueOperations<String, V> valueOperations;
 
         AbstractTemplate(RedisTemplate redisTemplate) {
             this.redisTemplate = redisTemplate;
@@ -575,7 +573,7 @@ public class RedisUtils<V, HM, HV> {
 
         @SuppressWarnings("unchecked")
         public V get(String key) {
-            return (V) valueOperations.get(key);
+            return valueOperations.get(key);
         }
 
         /**
@@ -876,7 +874,7 @@ public class RedisUtils<V, HM, HV> {
      * 基本类型,还没想好这个地方怎么处理
      */
     @Deprecated
-    public class PrimitiveType extends AbstractTemplate<V> {
+    public class PrimitiveType<V> extends AbstractTemplate<V> {
         PrimitiveType() {
             super(stringRedisTemplate);
         }
@@ -886,7 +884,7 @@ public class RedisUtils<V, HM, HV> {
     /**
      * jackson2序列化方式
      */
-    public class Jackson2 extends AbstractTemplate<V> {
+    public class Jackson2<V> extends AbstractTemplate<V> {
         Jackson2() {
             super(jackson2RedisTemplate);
         }
@@ -899,8 +897,8 @@ public class RedisUtils<V, HM, HV> {
          * @return
          */
         @SuppressWarnings("unchecked")
-        public HM get(String key, Class<HM> c) {
-            V v = primitive.get(key);
+        public <HM> HM get(String key, Class<HM> c) {
+            V v = (V) primitive.get(key);
             try {
                 return objectMapper.readValue((String) v, c);
             } catch (IOException e) {
@@ -918,7 +916,7 @@ public class RedisUtils<V, HM, HV> {
          * @return
          */
         @SuppressWarnings("unchecked")
-        public HV hashGet(String key, String hashKey, Class<HV> c) {
+        public <HV> HV hashGet(String key, String hashKey, Class<HV> c) {
             return objectMapper.convertValue(hashGet(key, hashKey), c);
         }
 
@@ -931,7 +929,7 @@ public class RedisUtils<V, HM, HV> {
          * @return
          */
         @Deprecated
-        public HM hashGet(String key, Class<HM> c) {
+        public <HM> HM hashGet(String key, Class<HM> c) {
             return objectMapper.convertValue(hashGet(key), c);
         }
     }
@@ -939,7 +937,7 @@ public class RedisUtils<V, HM, HV> {
     /**
      * jdk原生序列化
      */
-    public class Jdk extends AbstractTemplate<V> {
+    public class Jdk extends AbstractTemplate {
         Jdk() {
             super(jdkRedisTemplate);
         }

@@ -13,6 +13,7 @@
 
 
     <dependencies>
+        <!--fastJson-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
@@ -23,6 +24,12 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava-version}</version>
+        </dependency>
+        <!--AES-->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.55</version>
         </dependency>
     </dependencies>
 

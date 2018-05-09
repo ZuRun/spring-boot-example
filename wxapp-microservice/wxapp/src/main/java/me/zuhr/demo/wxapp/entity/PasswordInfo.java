@@ -14,7 +14,7 @@ import me.zuhr.demo.mybatisplus.base.BaseEntity;
 @TableName("t_wxapp_password_info")
 public class PasswordInfo extends BaseEntity {
 
-    private String openId;
+    private String openid;
 
     /**
      * 账号name
@@ -30,5 +30,9 @@ public class PasswordInfo extends BaseEntity {
      * 随机盐
      */
     private String salt;
+
+    public static String decryption(String userSecret){
+        return null;
+    }
 
 }

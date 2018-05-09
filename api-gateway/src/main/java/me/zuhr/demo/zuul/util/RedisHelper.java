@@ -27,6 +27,6 @@ public class RedisHelper {
      * @return
      */
     public boolean wxappCheckToken(String token) {
-        return redisUtils.expire(token, WXAPP_TIMEOUT);
+        return redisUtils.expire(WXAPP_PREFIX + token, WXAPP_TIMEOUT);
     }
 }

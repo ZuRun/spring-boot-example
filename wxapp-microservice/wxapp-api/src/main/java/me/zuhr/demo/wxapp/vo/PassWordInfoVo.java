@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 public class PassWordInfoVo {
-
+    private Long id;
     /**
      * 账号name
      */
@@ -38,4 +38,9 @@ public class PassWordInfoVo {
      * 自定义内容,存为json字符串
      */
     private JSONObject userDefined;
+
+    public String toJsonString() {
+        return JSONObject.toJSONString(this);
+    }
+
 }

@@ -4,9 +4,9 @@ CREATE TABLE `t_wxapp_password_info` (
   `create_time`    DATETIME COMMENT '创建时间'      DEFAULT NULL,
   `modified_time`  DATETIME COMMENT '修改时间'      DEFAULT NULL,
 
-  `open_id`     VARCHAR(255)   COMMENT '用户身份id'   NOT NULL,
+  `openid`     VARCHAR(255)   COMMENT '用户身份id'   NOT NULL,
   `name`  VARCHAR(255)   COMMENT '用户昵称'  NOT NULL  DEFAULT '',
-  `cipherText`  TEXT  COMMENT '密文'  NOT NULL  DEFAULT '',
+  `cipher_text`  TEXT  COMMENT '密文'  NOT NULL ,
   `salt`  VARCHAR(255)   COMMENT '随机盐'  NOT NULL  DEFAULT '',
   PRIMARY KEY (`id`)
 )

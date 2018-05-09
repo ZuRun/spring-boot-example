@@ -30,14 +30,24 @@ public class WxappUtils {
     }
 
     /**
-     * 登录
+     * 登录记录登录信息并返回token
      *
      * @param vo
      * @return
      */
     public String login(SessionVo vo) {
-        String key = UUID.randomUUID().toString();
-        redisUtils.hashSet(key, vo, TIMEOUT);
-        return key;
+        String token = UUID.randomUUID().toString();
+        redisUtils.hashSet(WXAPP_PREFIX + token, vo, TIMEOUT);
+        return token;
+    }
+
+
+    /**
+     * @param token
+     * @return
+     * @author ZuRun
+     */
+    public SessionVo getSession(String token) {
+        return redisUtils.hashGet(WXAPP_PREFIX + token, SessionVo.class);
     }
 }

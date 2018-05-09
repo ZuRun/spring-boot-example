@@ -8,7 +8,9 @@ import java.util.concurrent.TimeUnit;
 public class DistributedLockTemplate {
     // 默认等待锁时间
     private final long DEFAULT_WAIT_TIME = 30;
-    // 默认锁超时时间,如果没有手动解锁则自动解锁
+    /**
+     * 默认锁超时时间,如果没有手动解锁则自动解锁
+     */
     private final long DEFAULT_TIMEOUT = 5;
     private final TimeUnit DEFAULT_TIME_UNIT = TimeUnit.SECONDS;
 
