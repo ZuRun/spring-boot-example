@@ -17,7 +17,8 @@ import java.util.Arrays;
  *
  * @author zurun
  * @link=https://developers.weixin.qq.com/miniprogram/dev/api/signature.html#wxchecksessionobject
- * @link=http://lib.csdn.net/article/wechat/59562?knId=1796 1.对称解密使用的算法为 AES-128-CBC，数据采用PKCS#7填充。
+ * @link=http://lib.csdn.net/article/wechat/59562?knId=1796 说明:
+ * 1.对称解密使用的算法为 AES-128-CBC，数据采用PKCS#7填充。
  * 2.对称解密的目标密文为 Base64_Decode(encryptedData)。
  * 3.对称解密秘钥 aeskey = Base64_Decode(session_key), aeskey 是16字节。
  * 4.对称解密算法初始向量 为Base64_Decode(iv)，其中iv由数据接口返回。
@@ -34,7 +35,7 @@ public class AesUtils {
     static final String algorithmStr = "AES/CBC/PKCS7Padding";
     private static Key key;
     private static Cipher cipher;
-    boolean isInited = false;
+    boolean isinited = false;
 
     /**
      * 默认对称解密算法初始向量 iv
@@ -144,21 +145,39 @@ public class AesUtils {
     }
 
 
-    public static void main(String[] args) throws Exception {
-        String encryptedData = "CiyLU1Aw2KjvrjMdj8YKliAjtP4gsMZMQmRzooG2xrDcvSnxIMXFufNstNGTyaGS9uT5geRa0W4oTOb1WT7fJlAC+oNPdbB+3hVbJSRgv+4lGOETKUQz6OYStslQ142dNCuabNPGBzlooOmB231qMM85d2/fV6ChevvXvQP8Hkue1poOFtnEtpyxVLW1zAo6/1Xx1COxFvrc2d7UL/lmHInNlxuacJXwu0fjpXfz/YqYzBIBzD6WUfTIF9GRHpOn/Hz7saL8xz+W//FRAUid1OksQaQx4CMs8LOddcQhULW4ucetDf96JcR3g0gfRK4PC7E/r7Z6xNrXd2UIeorGj5Ef7b1pJAYB6Y5anaHqZ9J6nKEBvB4DnNLIVWSgARns/8wR2SiRS7MNACwTyrGvt9ts8p12PKFdlqYTopNHR1Vf7XjfhQlVsAJdNiKdYmYVoKlaRv85IfVunYzO0IKXsyl7JCUjCpoG20f0a04COwfneQAGGwd5oa+T8yO5hzuyDb/XcxxmK01EpqOyuxINew==";
-        String iv = "r7BXXKkLb8qrSNn05n0qiA==";
-        String sessionKey = "tiihtNczf5v6AKRyjwEUhQ==";
+    public static void test2() throws Exception {
+        byte[] keyBytes = "aaaaaaaaaaaaaaaa".getBytes();
+        byte[] cleartext = "ttest".getBytes();
+
+        System.out.println(new String(decrypt(encrypt(cleartext,keyBytes),keyBytes)));
+//
+//        byte[] encryptedData = encrypt(Base64Utils.encryptBASE64("tttest".getBytes()), keyBytes);
+//        System.out.println(encryptedData);
+//
+//        byte[] decryptedData = decrypt(Base64Utils.decryptBASE64(encryptedData), keyBytes);
+//        System.out.println(ByteUtils.toObject(decryptedData));
+//        String encryptedData = "CiyLU1Aw2KjvrjMdj8YKliAjtP4gsMZMQmRzooG2xrDcvSnxIMXFufNstNGTyaGS9uT5geRa0W4oTOb1WT7fJlAC+oNPdbB+3hVbJSRgv+4lGOETKUQz6OYStslQ142dNCuabNPGBzlooOmB231qMM85d2/fV6ChevvXvQP8Hkue1poOFtnEtpyxVLW1zAo6/1Xx1COxFvrc2d7UL/lmHInNlxuacJXwu0fjpXfz/YqYzBIBzD6WUfTIF9GRHpOn/Hz7saL8xz+W//FRAUid1OksQaQx4CMs8LOddcQhULW4ucetDf96JcR3g0gfRK4PC7E/r7Z6xNrXd2UIeorGj5Ef7b1pJAYB6Y5anaHqZ9J6nKEBvB4DnNLIVWSgARns/8wR2SiRS7MNACwTyrGvt9ts8p12PKFdlqYTopNHR1Vf7XjfhQlVsAJdNiKdYmYVoKlaRv85IfVunYzO0IKXsyl7JCUjCpoG20f0a04COwfneQAGGwd5oa+T8yO5hzuyDb/XcxxmK01EpqOyuxINew==";
+//        String iv = "r7BXXKkLb8qrSNn05n0qiA==";
+//        String sessionKey = "tiihtNczf5v6AKRyjwEUhQ==";
 //        toStr(sessionKey, encryptedData, iv);
     }
 //
-//    private static void toStr(String sessionKey, String encryptedData, String iv) throws Exception {
-//        byte[] sessionKeyBy = Base64.decodeBase64(sessionKey.getBytes());//  BASE64.decryptBASE64(sessionKey.getBytes());
-//        byte[] encryptedDataBy = Base64.decodeBase64(encryptedData.getBytes());//BASE64.decryptBASE64(encryptedData.getBytes());
-//        byte[] ivBy =Base64.decodeBase64(iv.getBytes());// BASE64.decryptBASE64(iv.getBytes());
-//        byte[] dec = Pkcs7Encoder.decryptOfDiyIV(encryptedDataBy, sessionKeyBy, ivBy);
-//        System.out.println(new String(dec));
-//
-//    }
+public static void main(String[] args) throws Exception {
+    test2();
+    String  encryptedData = "CiyLU1Aw2KjvrjMdj8YKliAjtP4gsMZMQmRzooG2xrDcvSnxIMXFufNstNGTyaGS9uT5geRa0W4oTOb1WT7fJlAC+oNPdbB+3hVbJSRgv+4lGOETKUQz6OYStslQ142dNCuabNPGBzlooOmB231qMM85d2/fV6ChevvXvQP8Hkue1poOFtnEtpyxVLW1zAo6/1Xx1COxFvrc2d7UL/lmHInNlxuacJXwu0fjpXfz/YqYzBIBzD6WUfTIF9GRHpOn/Hz7saL8xz+W//FRAUid1OksQaQx4CMs8LOddcQhULW4ucetDf96JcR3g0gfRK4PC7E/r7Z6xNrXd2UIeorGj5Ef7b1pJAYB6Y5anaHqZ9J6nKEBvB4DnNLIVWSgARns/8wR2SiRS7MNACwTyrGvt9ts8p12PKFdlqYTopNHR1Vf7XjfhQlVsAJdNiKdYmYVoKlaRv85IfVunYzO0IKXsyl7JCUjCpoG20f0a04COwfneQAGGwd5oa+T8yO5hzuyDb/XcxxmK01EpqOyuxINew==";
+    String iv="r7BXXKkLb8qrSNn05n0qiA==";
+    String sessionKey = "tiihtNczf5v6AKRyjwEUhQ==";
+    toStr(sessionKey,encryptedData,iv);
+}
+
+    private static void  toStr(String sessionKey,String  encryptedData ,String iv) throws Exception{
+        byte[] sessionKeyBy = Base64Utils.decryptBASE64(sessionKey.getBytes());
+        byte[] encryptedDataBy = Base64Utils.decryptBASE64(encryptedData.getBytes());
+        byte[] ivBy = Base64Utils.decryptBASE64(iv.getBytes());
+        byte[] dec = decryptOfDiyIV(encryptedDataBy, sessionKeyBy,ivBy);
+        System.out.println(new String(dec));
+
+    }
 
 
 }

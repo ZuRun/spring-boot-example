@@ -1,6 +1,5 @@
 package me.zuhr.demo.wxapp.service;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import me.zuhr.demo.wxapp.base.AbstractWxAppService;
 import me.zuhr.demo.wxapp.entity.PasswordInfo;
 import me.zuhr.demo.wxapp.mapper.PwdInfoMapper;
@@ -49,7 +48,7 @@ public class PwdManagerService extends AbstractWxAppService {
         if (passwordInfo == null) {
             return null;
         }
-        passwordInfo.
+        passwordInfo.decryption()
     }
 
     /**
