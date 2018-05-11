@@ -18,6 +18,7 @@
         <module>api-gateway</module>
         <module>basis-service</module>
         <module>wxapp-microservice</module>
+        <module>lottery-microservice</module>
     </modules>
 
     <properties>
