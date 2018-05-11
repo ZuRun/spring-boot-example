@@ -149,6 +149,7 @@ public class AesUtils {
         byte[] keyBytes = "aaaaaaaaaaaaaaaa".getBytes();
         byte[] cleartext = "ttest".getBytes();
 
+
         System.out.println(new String(decrypt(encrypt(cleartext,keyBytes),keyBytes)));
 //
 //        byte[] encryptedData = encrypt(Base64Utils.encryptBASE64("tttest".getBytes()), keyBytes);
