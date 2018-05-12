@@ -54,4 +54,28 @@ public interface ErrorCode {
             return this.errMsg;
         }
     }
+
+    enum aes implements IMessage {
+        CIPHER_INSTANCE(91, "初始化cipher失败"),
+        AES_ERROR(91, "调用aes失败");
+
+        private int errCode;
+        private String errMsg;
+
+
+        aes(int errCode, String errMsg) {
+            this.errCode = errCode;
+            this.errMsg = errMsg;
+        }
+
+        @Override
+        public int getErrCode() {
+            return this.errCode;
+        }
+
+        @Override
+        public String getErrMsg() {
+            return this.errMsg;
+        }
+    }
 }

@@ -3,6 +3,7 @@ package me.zuhr.demo.server.global;
 import com.alibaba.fastjson.JSONObject;
 import me.zuhr.demo.basis.constants.ErrorCode;
 import me.zuhr.demo.basis.exception.BusinessException;
+import me.zuhr.demo.basis.exception.MyRuntimeException;
 import me.zuhr.demo.basis.model.Result;
 import me.zuhr.demo.server.constants.MyHttpHeader;
 import me.zuhr.demo.server.enumration.HttpHeader;
@@ -12,23 +13,16 @@ import me.zuhr.demo.server.service.LoggerService;
 import me.zuhr.demo.server.util.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.web.AbstractErrorController;
-import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * @author zurun
@@ -48,7 +42,6 @@ public class GlobalExceptionHandler {
      *
      * @param e
      * @return 用于springBoot框架返回response的body
-     * @ResponseStatus 返回的 HTTP 状态码为 HttpStatus.ZDY(自定义状态码 590)
      */
     @ExceptionHandler(AbstractRestServerException.class)
     public ResponseEntity<String> handlerException(AbstractRestServerException e) {
@@ -86,6 +79,22 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Result> handlerException(BusinessException e) {
         sendLog(e);
         HttpHeaders headers = createHeaders(HttpHeader.ExceptionType.BUSINESS);
+
+        return new ResponseEntity<>(Result.fail(e.getErrCode(), e.getMessage()), headers, HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
+
+    /**
+     * 自定义非业务运行异常
+     *
+     * @param e
+     * @return 用于springBoot框架返回response的body
+     * @ResponseStatus 返回的 HTTP 状态码为 HttpStatus.ZDY(自定义状态码 590)
+     */
+    @ExceptionHandler(MyRuntimeException.class)
+    public ResponseEntity<Result> handlerException(MyRuntimeException e) {
+        sendLog(e);
+        HttpHeaders headers = createHeaders(HttpHeader.ExceptionType.Z_RUNTIME);
 
         return new ResponseEntity<>(Result.fail(e.getErrCode(), e.getMessage()), headers, HttpStatus.INTERNAL_SERVER_ERROR);
 

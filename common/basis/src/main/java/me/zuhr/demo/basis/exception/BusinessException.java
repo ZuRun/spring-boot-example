@@ -2,9 +2,6 @@ package me.zuhr.demo.basis.exception;
 
 import me.zuhr.demo.basis.constants.ErrorCode;
 import me.zuhr.demo.basis.constants.IMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 /**
  * 业务异常
@@ -15,49 +12,21 @@ import org.springframework.util.StringUtils;
  * @author zurun
  * @date 2018/3/11 12:59:07
  */
-public class BusinessException extends RuntimeException {
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
-
-    /**
-     * 异常码/错误码
-     */
-    protected IMessage errCode;
+public class BusinessException extends MyRuntimeException {
 
 
     public BusinessException(String errMsg) {
-        super(errMsg);
-        errCode = ErrorCode.common.DEFAULT_BUSINESS_EXCEPTION_CODE;
+        super(ErrorCode.common.DEFAULT_BUSINESS_EXCEPTION_CODE, errMsg);
     }
 
     public BusinessException(IMessage errCode) {
-        super(errCode.getErrMsg());
-        this.errCode = errCode;
+        super(errCode);
     }
 
     public BusinessException(IMessage errCode, String errMsg) {
-        super(errMsg);
-        this.errCode = errCode;
+        super(errCode, errMsg);
     }
 
-    public Integer getErrCode() {
-        return errCode.getErrCode();
-    }
-
-    /**
-     * 慎用，因为实际错误信息不一定对应此枚举的错误信息
-     *
-     * @return
-     */
-    @Deprecated
-    public IMessage getErrorCode() {
-        return errCode;
-    }
-
-
-    @Override
-    public String getMessage() {
-        return StringUtils.isEmpty(super.getMessage()) ? errCode.getErrMsg() : super.getMessage();
-    }
 
     /**
      * 减少开销

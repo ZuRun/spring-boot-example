@@ -51,6 +51,21 @@ public enum HttpHeader {
             }
         },
         /**
+         * 自定义非业务运行异常
+         */
+        Z_RUNTIME {
+            /**
+             * 直接抛出RestBusinessException异常,内容不做处理
+             * @param statusCode
+             * @param msg
+             * @return
+             */
+            @Override
+            public boolean handleError(HttpStatus statusCode, String msg) {
+                throw new RestBusinessException(statusCode, this, msg);
+            }
+        },
+        /**
          * 一般在exception中接的异常,也就是未单独处理的异常
          */
         UNHANDLED {
