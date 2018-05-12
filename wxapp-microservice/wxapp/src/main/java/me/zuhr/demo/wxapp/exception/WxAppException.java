@@ -2,6 +2,7 @@ package me.zuhr.demo.wxapp.exception;
 
 import me.zuhr.demo.basis.constants.IMessage;
 import me.zuhr.demo.basis.exception.BusinessException;
+import me.zuhr.demo.wxapp.constants.ErrorCode;
 
 /**
  * @author zurun
@@ -9,7 +10,7 @@ import me.zuhr.demo.basis.exception.BusinessException;
  */
 public class WxAppException extends BusinessException {
     public WxAppException(String errMsg) {
-        super(errMsg);
+        super(ErrorCode.WxAppErrorCode.DEFAULT_WXAPP_ERROR);
     }
 
     public WxAppException(IMessage errCode) {

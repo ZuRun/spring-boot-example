@@ -3,6 +3,7 @@ package me.zuhr.demo.wxapp.service;
 import me.zuhr.demo.basis.utils.AesUtils;
 import me.zuhr.demo.wxapp.base.AbstractWxAppService;
 import me.zuhr.demo.wxapp.entity.PasswordInfo;
+import me.zuhr.demo.wxapp.exception.WxAppException;
 import me.zuhr.demo.wxapp.mapper.PwdInfoMapper;
 import me.zuhr.demo.wxapp.utils.WxappUtils;
 import me.zuhr.demo.wxapp.vo.PassWordInfoVo;
@@ -10,6 +11,7 @@ import me.zuhr.demo.wxapp.vo.SessionVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -33,7 +35,7 @@ public class PwdManagerService extends AbstractWxAppService {
      */
     public Integer add(PassWordInfoVo passWordInfoVo) {
         SessionVo sessionVo = getSessionVo();
-        String userSecret = "";
+        String userSecret = getSessionVo().getOpenid();
 
 
         PasswordInfo passwordInfo = new PasswordInfo();
@@ -44,14 +46,16 @@ public class PwdManagerService extends AbstractWxAppService {
         return pwdInfoMapper.insert(passwordInfo);
     }
 
+    public List getSimpleList() {
+        SessionVo sessionVo = getSessionVo();
+        return pwdInfoMapper.getSimpleList(sessionVo.getOpenid());
+    }
+
 
     public PassWordInfoVo getPassWordInfoVoById(Long id) {
         PasswordInfo passwordInfo = getPasswordInfoById(id);
-        if (passwordInfo == null) {
-            return null;
-        }
         //TODO-zurun
-        String userSecret = "";
+        String userSecret = getSessionVo().getOpenid();
         PassWordInfoVo passWordInfoVo = passwordInfo.decryptionToVo(userSecret);
         return passWordInfoVo;
     }
@@ -66,10 +70,10 @@ public class PwdManagerService extends AbstractWxAppService {
         SessionVo sessionVo = getSessionVo();
         PasswordInfo passwordInfo = pwdInfoMapper.selectById(id);
         if (passwordInfo == null) {
-            return null;
+            throw new WxAppException("未找到记录");
         }
-        if (sessionVo.getOpenid().equals(passwordInfo.getOpenid())) {
-            return null;
+        if (!sessionVo.getOpenid().equals(passwordInfo.getOpenid())) {
+            throw new WxAppException("未找到记录");
         }
         return passwordInfo;
     }

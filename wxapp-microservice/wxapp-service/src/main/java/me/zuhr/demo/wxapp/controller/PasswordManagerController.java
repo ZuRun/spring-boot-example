@@ -6,8 +6,11 @@ import me.zuhr.demo.wxapp.base.AbstractWxAppController;
 import me.zuhr.demo.wxapp.service.PwdManagerService;
 import me.zuhr.demo.wxapp.vo.PassWordInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author zurun
@@ -25,8 +28,13 @@ public class PasswordManagerController extends AbstractWxAppController implement
     }
 
     @Override
-    public Result<PassWordInfoVo> get(Long id) {
-//        pwdManagerService.
-        return null;
+    public Result<PassWordInfoVo> get(@PathVariable Long id) {
+        PassWordInfoVo passWordInfoVo = pwdManagerService.getPassWordInfoVoById(id);
+        return Result.ok().addResult(passWordInfoVo);
+    }
+
+    @Override
+    public Result<List> getSimpleList() {
+        return Result.ok().addResult(pwdManagerService.getSimpleList());
     }
 }

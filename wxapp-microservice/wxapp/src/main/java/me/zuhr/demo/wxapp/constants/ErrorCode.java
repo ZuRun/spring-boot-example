@@ -8,9 +8,10 @@ import me.zuhr.demo.basis.constants.IMessage;
  */
 public interface ErrorCode extends me.zuhr.demo.basis.constants.ErrorCode {
 
-    enum WxAppErrorCode implements IMessage{
-        TOKEN_MISSING(1251,"缺少token"),
-        INVALID_TOKEN(1252,"token错误");
+    enum WxAppErrorCode implements IMessage {
+        DEFAULT_WXAPP_ERROR(1250, "错误!"),
+        TOKEN_MISSING(1251, "缺少token"),
+        INVALID_TOKEN(1252, "token错误");
 
         private int errCode;
         private String errMsg;

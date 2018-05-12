@@ -2,7 +2,10 @@ package me.zuhr.demo.wxapp.mapper;
 
 import me.zuhr.demo.mybatisplus.base.SuperMapper;
 import me.zuhr.demo.wxapp.entity.PasswordInfo;
+import me.zuhr.demo.wxapp.vo.SimplePassWordInfoVo;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * @author zurun
@@ -11,4 +14,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface PwdInfoMapper<T extends PasswordInfo> extends SuperMapper<PasswordInfo> {
 
+    List<SimplePassWordInfoVo> getSimpleList(String openid);
 }

@@ -32,7 +32,7 @@ public class AbstractWxAppService extends BaseService {
      */
     protected SessionVo getSessionVo() {
         SessionVo sessionVo = wxappUtils.getSession(getToken());
-        if (sessionVo == null) {
+        if (sessionVo == null || sessionVo.getOpenid() == null) {
             throw new WxAppException(ErrorCode.WxAppErrorCode.INVALID_TOKEN);
         }
         return sessionVo;
