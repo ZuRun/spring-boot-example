@@ -1,5 +1,6 @@
 package me.zuhr.demo.wxapp.service;
 
+import me.zuhr.demo.basis.utils.AesUtils;
 import me.zuhr.demo.wxapp.base.AbstractWxAppService;
 import me.zuhr.demo.wxapp.entity.PasswordInfo;
 import me.zuhr.demo.wxapp.mapper.PwdInfoMapper;
@@ -32,15 +33,16 @@ public class PwdManagerService extends AbstractWxAppService {
      */
     public Integer add(PassWordInfoVo passWordInfoVo) {
         SessionVo sessionVo = getSessionVo();
+        String userSecret = "";
+
 
         PasswordInfo passwordInfo = new PasswordInfo();
         passwordInfo.setName(passWordInfoVo.getName());
         passwordInfo.setOpenid(sessionVo.getOpenid());
         passwordInfo.setSalt(UUID.randomUUID().toString());
-        passwordInfo.setCipherText(passWordInfoVo.toJsonString());
+        passwordInfo.setCipherText(AesUtils.encrypt(passWordInfoVo.toJsonString(), userSecret));
         return pwdInfoMapper.insert(passwordInfo);
     }
-
 
 
     public PassWordInfoVo getPassWordInfoVoById(Long id) {
@@ -48,7 +50,10 @@ public class PwdManagerService extends AbstractWxAppService {
         if (passwordInfo == null) {
             return null;
         }
-        passwordInfo.decryption()
+        //TODO-zurun
+        String userSecret = "";
+        PassWordInfoVo passWordInfoVo = passwordInfo.decryptionToVo(userSecret);
+        return passWordInfoVo;
     }
 
     /**
