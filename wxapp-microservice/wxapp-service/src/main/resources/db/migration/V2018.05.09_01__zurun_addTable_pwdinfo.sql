@@ -5,9 +5,10 @@ CREATE TABLE `t_wxapp_password_info` (
   `modified_time`  DATETIME COMMENT '修改时间'      DEFAULT NULL,
 
   `openid`     VARCHAR(255)   COMMENT '用户身份id'   NOT NULL,
-  `name`  VARCHAR(255)   COMMENT '用户昵称'  NOT NULL  DEFAULT '',
+  `name`  VARCHAR(255)   COMMENT '账号名称'  NOT NULL,
+  `account`  VARCHAR(255)   COMMENT '账号'  NOT NULL ,
   `cipher_text`  TEXT  COMMENT '密文'  NOT NULL ,
-  `salt`  VARCHAR(255)   COMMENT '随机盐'  NOT NULL  DEFAULT '',
+  `salt`  VARCHAR(255)   COMMENT '随机盐'  NOT NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = INNODB

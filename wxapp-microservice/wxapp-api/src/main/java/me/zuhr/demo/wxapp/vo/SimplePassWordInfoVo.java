@@ -10,9 +10,13 @@ import lombok.Data;
 public class SimplePassWordInfoVo {
     private Long id;
     /**
-     * 账号name
+     * 账号名称
      */
     private String name;
+    /**
+     * 账号
+     */
+    private String account;
     /**
      * 创建时间
      */

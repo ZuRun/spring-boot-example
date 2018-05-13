@@ -40,6 +40,7 @@ public class PwdManagerService extends AbstractWxAppService {
 
         PasswordInfo passwordInfo = new PasswordInfo();
         passwordInfo.setName(passWordInfoVo.getName());
+        passwordInfo.setAccount(passWordInfoVo.getAccount());
         passwordInfo.setOpenid(sessionVo.getOpenid());
         passwordInfo.setSalt(UUID.randomUUID().toString());
         passwordInfo.setCipherText(AesUtils.encrypt(passWordInfoVo.toJsonString(), userSecret));

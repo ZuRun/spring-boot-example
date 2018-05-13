@@ -20,10 +20,14 @@ public class PasswordInfo extends BaseEntity {
     private String openid;
 
     /**
-     * 账号name
+     * 账号名称
      */
     private String name;
 
+    /**
+     * 账号
+     */
+    private String account;
     /**
      * 密文
      */

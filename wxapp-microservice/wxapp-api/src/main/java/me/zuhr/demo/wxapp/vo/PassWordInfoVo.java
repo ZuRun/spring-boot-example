@@ -11,7 +11,7 @@ import lombok.Data;
 public class PassWordInfoVo {
     private Long id;
     /**
-     * 账号name
+     * 账号名称
      */
     private String name;
 

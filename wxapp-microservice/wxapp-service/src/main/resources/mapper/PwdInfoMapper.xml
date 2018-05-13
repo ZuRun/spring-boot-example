@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="me.zuhr.demo.wxapp.mapper.PwdInfoMapper">
     <resultMap id="PwdInfo" type="me.zuhr.demo.wxapp.entity.PasswordInfo">
-        <result column="cipher_text" property="cipherText" />
-        <result column="create_time" property="createTime" />
-        <result column="modified_time" property="modifiedTime" />
+        <result column="cipher_text" property="cipherText"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modified_time" property="modifiedTime"/>
     </resultMap>
     <select id="getSimpleList" resultType="me.zuhr.demo.wxapp.vo.SimplePassWordInfoVo">
-        select id,name,create_time,modified_time from t_wxapp_password_info WHERE openid=#{openId}
+        select id,name,account,create_time,modified_time from t_wxapp_password_info WHERE openid=#{openId}
     </select>
 
 
