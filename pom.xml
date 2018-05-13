@@ -16,9 +16,9 @@
         <module>server</module>
         <module>model-test</module>
         <module>api-gateway</module>
-        <module>basis-service</module>
         <module>wxapp-microservice</module>
         <module>lottery-microservice</module>
+        <module>basis-ms</module>
     </modules>
 
     <properties>
