@@ -9,7 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>basis-service</artifactId>
+    <artifactId>log-server</artifactId>
+    <name>log-server</name>
 
     <dependencies>
         <dependency>

@@ -13,6 +13,6 @@
 
 
     <modules>
-        <module>basis-service</module>
+        <module>log-server</module>
     </modules>
 </project>
