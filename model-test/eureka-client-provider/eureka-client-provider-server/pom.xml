@@ -3,16 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>basis-ms</artifactId>
+        <artifactId>eureka-client-provider</artifactId>
         <groupId>me.zuhr</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>log-server</artifactId>
-    <name>log-server</name>
+    <artifactId>eureka-client-provider-server</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>me.zuhr</groupId>
+            <artifactId>eureka-client-provider-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>me.zuhr</groupId>
             <artifactId>base-server</artifactId>
@@ -20,10 +24,22 @@
         </dependency>
         <dependency>
             <groupId>me.zuhr</groupId>
-            <artifactId>jpa</artifactId>
+            <artifactId>rocketmq</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>me.zuhr</groupId>
+            <artifactId>redis</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>me.zuhr</groupId>
+            <artifactId>redisson</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
+
     <!--spring boot打包的话需要指定一个唯一的入门-->
     <build>
         <plugins>
@@ -32,7 +48,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <!-- 指定该Main Class为全局的唯一入口 -->
-                    <mainClass>me.zuhr.demo.BasisServerApplication</mainClass>
+                    <mainClass>me.zuhr.demo.EurekaClientProviderApplication</mainClass>
                     <layout>ZIP</layout>
                 </configuration>
                 <executions>
