@@ -6,6 +6,7 @@
 - api-gateway: 18021
 
 - basis-service: 18051
+- user-server: 18081
 - wxapp: 18082
 
 - ecc: 19011

@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
  * @author zurun
  * @date 2018/3/11 12:31:23
  */
-public class BaseService extends AbstractControllerOrService{
+public abstract class BaseService extends AbstractControllerOrService{
 
     protected static ObjectMapper objectMapper = new ObjectMapper();
 
