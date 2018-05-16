@@ -3,21 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>spring-boot-example</artifactId>
+        <artifactId>model-test</artifactId>
         <groupId>me.zuhr</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>model-test</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>eureka-client-provider</module>
-        <module>eureka-client-consumer</module>
-        <module>web-service</module>
-        <module>mybatis-test</module>
-        <module>netty-test</module>
-    </modules>
+    <artifactId>netty-test</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.22.Final</version>
+        </dependency>
+    </dependencies>
 
 </project>
