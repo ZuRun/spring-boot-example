@@ -17,6 +17,7 @@
         <module>web-service</module>
         <module>mybatis-test</module>
         <module>netty-test</module>
+        <module>netty-client-test</module>
     </modules>
 
 

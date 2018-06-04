@@ -1,4 +1,4 @@
-package me.zuhr.test.netty;
+package me.zuhr.demo.test.netty.handle;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -8,7 +8,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * @author zurun
  * @date 2018/5/16 15:33:40
  */
-public class DiscardServerHandler extends ChannelInboundHandlerAdapter {
+public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
@@ -16,6 +16,13 @@ public class DiscardServerHandler extends ChannelInboundHandlerAdapter {
         System.out.println(ctx.channel().remoteAddress()+"->Server :"+ in.toString(io.netty.util.CharsetUtil.US_ASCII));
 
         ctx.writeAndFlush(msg);
+
+
+        System.out.println("server channelRead..");
+        System.out.println(ctx.channel().remoteAddress()+"->Server :"+ msg.toString());
+        ctx.write("server write"+msg);
+        ctx.flush();
+//        ctx.writeAndFlush(NettyController.result.getBytes());
 
 
 

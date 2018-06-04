@@ -9,14 +9,19 @@
 - user-server: 18081
 - wxapp: 18082
 
-- ecc: 19011
-- ecp: 19021
-
 - redis: 19926
 - rocketmq: 19927
 - jpa: 19928
 - email: 19929
 
+
+### 测试模块
+
+- ecc: 19011
+- ecp: 19021
+
+- netty-server: 31001
+- netty-client: 31002
 
 
 

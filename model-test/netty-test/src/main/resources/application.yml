@@ -1,0 +1,5 @@
+server:
+  port: 31001
+test:
+  netty:
+    port: 9999
