@@ -28,4 +28,16 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
         cause.printStackTrace();
         ctx.close();
     }
+
+    /**
+     * 通道断开,自动重连
+     *
+     * @param ctx
+     * @throws Exception
+     */
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+
+        super.channelInactive(ctx);
+    }
 }

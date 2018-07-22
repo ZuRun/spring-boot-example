@@ -1,6 +1,8 @@
 package me.zuhr.demo.test.netty.controller;
 
+import io.netty.channel.Channel;
 import me.zuhr.demo.basis.model.Result;
+import me.zuhr.demo.test.netty.global.NettyChannelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,11 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class NettyController {
-    public static String result = "r";
 
     @RequestMapping("nettyReply")
     public Result nettyReply(String param) {
-        result = param;
+        NettyChannelMap.getAll().forEach((key, val) -> {
+            Channel channel = (Channel) val;
+            channel.writeAndFlush(param);
+        });
         return Result.ok("ok了");
     }
 }

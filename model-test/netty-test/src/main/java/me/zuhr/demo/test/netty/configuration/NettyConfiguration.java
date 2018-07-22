@@ -3,9 +3,12 @@ package me.zuhr.demo.test.netty.configuration;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 import me.zuhr.demo.test.netty.handle.NettyServerHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +40,11 @@ public class NettyConfiguration {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) {
-                        ch.pipeline().addLast(new NettyServerHandler());
+                        ChannelPipeline p = ch.pipeline();
+                        // 接受与发送消息使用string类型
+                        p.addLast("decoder", new StringDecoder());
+                        p.addLast("encoder", new StringEncoder());
+                        p.addLast(new NettyServerHandler());
                     }
                 })
                 .option(ChannelOption.SO_BACKLOG, 128)
