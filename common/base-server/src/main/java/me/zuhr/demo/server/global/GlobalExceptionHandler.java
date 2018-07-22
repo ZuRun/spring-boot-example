@@ -25,6 +25,10 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import javax.servlet.ServletException;
 
 /**
+ * 全局异常处理
+ * 不同类型的异常具体返回的http状态码,根据业务来调整
+ * 对外服务建议返回的http状态码统一为200,系统内部调用的返回500就好了
+ *
  * @author zurun
  * @date 2018/2/26 11:17:17
  */

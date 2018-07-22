@@ -97,6 +97,11 @@ public class AesUtils {
         return Base64Utils.encryptToString(bytes);
     }
 
+    public static String encrypt(String content, String keyBytes,byte[] iv) {
+        byte[] bytes = encryptOfDiyIV(content.getBytes(), keyBytes.getBytes(), iv);
+        return Base64Utils.encryptToString(bytes);
+    }
+
 
     /**
      * 解密方法
@@ -131,7 +136,12 @@ public class AesUtils {
      * @return
      */
     public static String decrypt(String encryptedData, String keyBytes, String iv) {
-        byte[] bytes = decryptOfDiyIV(Base64Utils.decryptBASE64(encryptedData), Base64Utils.decryptBASE64(keyBytes), Base64Utils.decryptBASE64(iv));
+        byte[] bytes = decryptOfDiyIV(Base64Utils.decryptBASE64(encryptedData), keyBytes.getBytes(), Base64Utils.decryptBASE64(iv));
+        return new String(bytes);
+    }
+
+    public static String decrypt(String encryptedData, String keyBytes, byte[] iv) {
+        byte[] bytes = decryptOfDiyIV(Base64Utils.decryptBASE64(encryptedData), keyBytes.getBytes(), iv);
         return new String(bytes);
     }
 
@@ -186,11 +196,12 @@ public class AesUtils {
     public static void main(String[] args) throws Exception {
         String keyBytes = "aaaaaaa1aaaaaaaaa";
         String cleartext = "ttest";
+        String iv2="176d3805f01deeab";
 
         System.out.println("--------------------------");
         System.out.println("明文:"+cleartext);
-        System.out.println("密文:"+encrypt(cleartext,keyBytes));
-        System.out.println("密文解密:"+decrypt(encrypt(cleartext, keyBytes), keyBytes));
+        System.out.println("密文:"+encrypt(cleartext,keyBytes,iv2.getBytes()));
+        System.out.println("密文解密:"+decrypt(encrypt(cleartext, keyBytes,iv2.getBytes()), keyBytes,iv2.getBytes()));
 
 
         // 小程序解密

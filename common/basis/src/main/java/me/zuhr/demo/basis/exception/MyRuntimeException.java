@@ -23,17 +23,17 @@ public class MyRuntimeException extends RuntimeException {
 
 
 
-    public MyRuntimeException(String errMsg) {
+    protected MyRuntimeException(String errMsg) {
         super(errMsg);
         errCode = ErrorCode.common.DEFAULT_BUSINESS_EXCEPTION_CODE;
     }
 
-    public MyRuntimeException(IMessage errCode) {
+    protected MyRuntimeException(IMessage errCode) {
         super(errCode.getErrMsg());
         this.errCode = errCode;
     }
 
-    public MyRuntimeException(IMessage errCode, String errMsg) {
+    protected MyRuntimeException(IMessage errCode, String errMsg) {
         super(errMsg);
         this.errCode = errCode;
     }
